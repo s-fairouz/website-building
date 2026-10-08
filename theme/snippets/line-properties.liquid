@@ -1,0 +1,12 @@
+{%- comment -%}
+  Lists what the shopper typed for a cart line, such as an engraved name.
+  Accepts:
+  - item: {Object} the cart line item
+{%- endcomment -%}
+
+{%- for property in item.properties -%}
+  {%- assign first_character = property.first | slice: 0 -%}
+  {%- if property.last != blank and first_character != '_' -%}
+    <p>{{ property.first | escape }}: {{ property.last | escape }}</p>
+  {%- endif -%}
+{%- endfor -%}

@@ -1,0 +1,89 @@
+{%- comment -%}
+  Renders one product in a grid.
+  Accepts:
+  - product: {Object} the product to show
+{%- endcomment -%}
+
+{%- liquid
+  assign image = product.featured_image
+  assign hover_image = product.images[1]
+  assign artist = product.metafields.custom.artist.value
+  assign portrait = artist.portrait.value
+  assign variant = product.selected_or_first_available_variant
+
+  # One-tap "Add to cart" only when there is nothing to choose first.
+  assign quick_add = false
+  if product.available and product.has_only_default_variant
+    unless product.metafields.custom.personalizable.value
+      assign quick_add = true
+    endunless
+  endif
+-%}
+
+<article class="card">
+  <a class="tile card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if image -%}
+      <img
+        src="{{ image | image_url: width: 720 }}"
+        alt=""
+        width="{{ image.width }}"
+        height="{{ image.height }}"
+        loading="lazy"
+      >
+      {%- if hover_image -%}
+        <img
+          class="card__hover-image"
+          src="{{ hover_image | image_url: width: 720 }}"
+          alt=""
+          width="{{ hover_image.width }}"
+          height="{{ hover_image.height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if product.available and product.compare_at_price > product.price -%}
+      <span class="flag">{{ 'products.sale' | t }}</span>
+    {%- endif -%}
+  </a>
+
+  <div class="card__body">
+    {%- if artist -%}
+      <a class="card__maker" href="{{ artist.system.url }}">
+        {%- if portrait -%}
+          <img class="avatar" src="{{ portrait | image_url: width: 96 }}" alt="" width="24" height="24" loading="lazy">
+        {%- endif -%}
+        <span>{{ 'makers.made_by' | t }} {{ artist.name.value | escape }}</span>
+      </a>
+    {%- endif -%}
+
+    <h3 class="card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+
+    {% render 'product-specs', product: product, compact: true %}
+
+    <div class="card__foot">
+      {% render 'price', product: product %}
+
+      {%- if product.available == false -%}
+        <span class="badge badge--muted">{{ 'products.sold_out' | t }}</span>
+      {%- elsif variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 and variant.inventory_quantity <= 5 -%}
+        <span class="badge badge--stock">{{ 'products.in_stock' | t: count: variant.inventory_quantity }}</span>
+      {%- elsif product.metafields.custom.lead_time_min_days.value -%}
+        <span class="badge">{{ 'products.made_to_order' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if quick_add -%}
+      {% form 'product', product, class: 'card__action' %}
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <button type="submit" class="button button--soft" data-quick-add>{{ 'products.add_to_cart' | t }}</button>
+      {% endform %}
+    {%- elsif product.available -%}
+      <div class="card__action">
+        <a class="button button--soft" href="{{ product.url }}">{{ 'products.choose_options' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</article>

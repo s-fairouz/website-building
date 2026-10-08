@@ -1,0 +1,51 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "age": {
+          "type": "question",
+          "settings": {
+            "question": "What age are the dolls suitable for?",
+            "answer": "<p>Our dolls are made for children aged three and up. Faces are embroidered, so there are no button eyes, but clothes fasten with small snaps.</p>"
+          }
+        },
+        "wash": {
+          "type": "question",
+          "settings": {
+            "question": "Can I wash a doll?",
+            "answer": "<p>Spot clean the body with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>"
+          }
+        },
+        "time": {
+          "type": "question",
+          "settings": {
+            "question": "How long will my order take?",
+            "answer": "<p>Each doll is made to order and takes about a week. We email you a tracking number the day it ships.</p>"
+          }
+        },
+        "custom": {
+          "type": "question",
+          "settings": {
+            "question": "Can you make a doll that looks like my child?",
+            "answer": "<p>Yes. Send us a message with hair, skin and dress colours and we'll reply with a price and a timeline.</p>"
+          }
+        },
+        "returns": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return a doll?",
+            "answer": "<p>Unused dolls can be returned within 30 days for a refund. Custom dolls can't be returned unless they arrive damaged.</p>"
+          }
+        }
+      },
+      "block_order": ["age", "wash", "time", "custom", "returns"],
+      "settings": {}
+    }
+  },
+  "order": ["main", "faq"]
+}

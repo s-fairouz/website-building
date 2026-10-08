@@ -1,0 +1,21 @@
+{%- comment -%}
+  Engraving field for products whose "personalizable" metafield is on.
+  The name is sent as a line item property, so it shows on the order.
+  Accepts:
+  - product: {Object} the product
+{%- endcomment -%}
+
+{%- if product.metafields.custom.personalizable.value -%}
+  <div class="field">
+    <label for="engraving">{{ 'products.engraving_label' | t }}</label>
+    <input
+      id="engraving"
+      type="text"
+      name="properties[{{ 'products.engraving' | t }}]"
+      maxlength="20"
+      autocomplete="off"
+      aria-describedby="engraving-hint"
+    >
+    <p class="form-note" id="engraving-hint">{{ 'products.engraving_hint' | t }}</p>
+  </div>
+{%- endif -%}

@@ -1,0 +1,14 @@
+{%- comment -%}
+  Made-to-order dispatch estimate, from the product's lead time metafields.
+  Accepts:
+  - product: {Object} the product
+{%- endcomment -%}
+
+{%- liquid
+  assign min_days = product.metafields.custom.lead_time_min_days.value
+  assign max_days = product.metafields.custom.lead_time_max_days.value
+-%}
+
+{%- if min_days and max_days -%}
+  <p class="lead-time">{{ 'products.lead_time' | t: min: min_days, max: max_days }}</p>
+{%- endif -%}

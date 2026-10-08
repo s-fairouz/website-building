@@ -1,0 +1,44 @@
+{%- comment -%}
+  Results shown under the header search field while the shopper types.
+  The script in assets/theme.js fetches this section from Shopify's predictive search.
+{%- endcomment -%}
+
+{%- if predictive_search.performed -%}
+  {%- assign products = predictive_search.resources.products -%}
+
+  <div data-predictive-results>
+    {%- if products.size > 0 -%}
+      <ul role="list">
+        {%- for product in products -%}
+          <li>
+            <a class="search-hit" href="{{ product.url }}">
+              <span class="tile search-hit__media">
+                {%- if product.featured_image -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 120 }}"
+                    alt=""
+                    width="{{ product.featured_image.width }}"
+                    height="{{ product.featured_image.height }}"
+                  >
+                {%- endif -%}
+              </span>
+              <span class="search-hit__title">{{ product.title }}</span>
+              <span class="search-hit__price">{{ product.price | money }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <a class="search-all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product">
+        {{- 'search.see_all' | t: terms: predictive_search.terms -}}
+      </a>
+    {%- else -%}
+      <p class="search-none">{{ 'search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Search suggestions"
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "makers": {
+      "type": "artist-list",
+      "settings": {
+        "heading": ""
+      }
+    }
+  },
+  "order": ["main", "makers"]
+}

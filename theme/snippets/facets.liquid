@@ -1,0 +1,200 @@
+{%- comment -%}
+  Catalog controls for a collection or a search: quick filter pills, a filter drawer and a sort menu.
+  Filters come from Shopify (Search & Discovery app), so whatever the shop turns on appears here.
+  Accepts:
+  - results: {Object} the collection or search object
+  - clear_url: {String} where "All dolls" and "Clear filters" go
+  - terms: {String} optional, the search terms to keep when filtering a search
+{%- endcomment -%}
+
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by | default: 'relevance'
+  assign sort_name = ''
+  for option in results.sort_options
+    if option.value == sort_by
+      assign sort_name = option.name
+    endif
+  endfor
+
+  assign active_count = 0
+  for filter in results.filters
+    assign active_count = active_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value or filter.max_value.value
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+<div class="catalog-bar">
+  <ul class="catalog-bar__pills" role="list">
+    <li>
+      <a class="pill" href="{{ clear_url }}"{% if active_count == 0 %} aria-current="true"{% endif %}>
+        {{- 'collections.all' | t -}}
+      </a>
+    </li>
+    {%- for filter in results.filters -%}
+      {%- case filter.type -%}
+        {%- when 'list' -%}
+          {%- for value in filter.values -%}
+            {%- comment -%} "Sold out" is not something to browse by, and empty choices lead nowhere. {%- endcomment -%}
+            {%- if filter.param_name contains 'availability' and value.value == '0' -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- if value.active -%}
+              <li><a class="pill" href="{{ value.url_to_remove }}" aria-current="true">{{ value.label | escape }}</a></li>
+            {%- elsif value.count > 0 -%}
+              <li><a class="pill" href="{{ value.url_to_add }}">{{ value.label | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- when 'boolean' -%}
+          {%- if filter.true_value.active -%}
+            <li><a class="pill" href="{{ filter.true_value.url_to_remove }}" aria-current="true">{{ filter.label | escape }}</a></li>
+          {%- elsif filter.true_value.count > 0 -%}
+            <li><a class="pill" href="{{ filter.true_value.url_to_add }}">{{ filter.label | escape }}</a></li>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </ul>
+
+  <div class="catalog-bar__tools">
+    {%- if results.filters.size > 0 -%}
+      <button
+        type="button"
+        class="pill pill--tool"
+        commandfor="filter-drawer"
+        command="show-modal"
+        data-open-filters
+      >
+        {{ 'collections.filters' | t }}
+        {%- if active_count > 0 %} ({{ active_count }}){% endif -%}
+      </button>
+    {%- endif -%}
+
+    <form class="sort" method="get" data-auto-submit>
+      {%- comment -%} Changing the order must not drop the filters already chosen. {%- endcomment -%}
+      {%- if terms -%}
+        <input type="hidden" name="q" value="{{ terms | escape }}">
+        <input type="hidden" name="type" value="product">
+      {%- endif -%}
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">
+        {%- endfor -%}
+        {%- if filter.type == 'price_range' -%}
+          {%- if filter.min_value.value -%}
+            <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+          {%- endif -%}
+          {%- if filter.max_value.value -%}
+            <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <details class="dropdown" data-dropdown>
+        <summary class="pill pill--tool">{{ 'collections.sort_by' | t }}: {{ sort_name | escape }}</summary>
+        <div class="dropdown__panel">
+          {%- for option in results.sort_options -%}
+            <label class="dropdown__option">
+              <input type="radio" name="sort_by" value="{{ option.value | escape }}"{% if option.value == sort_by %} checked{% endif %}>
+              <span>{{ option.name | escape }}</span>
+            </label>
+          {%- endfor -%}
+          <button type="submit" class="button facets__apply">{{ 'collections.apply' | t }}</button>
+        </div>
+      </details>
+    </form>
+  </div>
+</div>
+
+{%- if results.filters.size > 0 -%}
+  <dialog class="drawer" id="filter-drawer" aria-labelledby="filter-drawer-title" data-filter-drawer>
+    <form class="drawer__body facets" method="get">
+      <div class="drawer__head">
+        <h2 id="filter-drawer-title">{{ 'collections.filters' | t }}</h2>
+        <button type="button" class="link" data-close-dialog>{{ 'general.close' | t }}</button>
+      </div>
+
+      {%- if terms -%}
+        <input type="hidden" name="q" value="{{ terms | escape }}">
+        <input type="hidden" name="type" value="product">
+      {%- endif -%}
+      {%- if results.sort_by -%}
+        <input type="hidden" name="sort_by" value="{{ results.sort_by | escape }}">
+      {%- endif -%}
+
+      <div class="facets__groups">
+        {%- for filter in results.filters -%}
+          <fieldset class="facet">
+            <legend>{{ filter.label | escape }}</legend>
+
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                <div class="chips">
+                  {%- for value in filter.values -%}
+                    <label class="chip">
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value | escape }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                      >
+                      <span>{{ value.label | escape }} ({{ value.count }})</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+
+              {%- when 'boolean' -%}
+                <div class="chips">
+                  <label class="chip">
+                    <input
+                      type="checkbox"
+                      name="{{ filter.true_value.param_name }}"
+                      value="{{ filter.true_value.value | escape }}"
+                      {% if filter.true_value.active %}checked{% endif %}
+                    >
+                    <span>{{ filter.label | escape }} ({{ filter.true_value.count }})</span>
+                  </label>
+                </div>
+
+              {%- when 'price_range' -%}
+                <div class="facet__range">
+                  <label>
+                    {{ 'collections.price_from' | t }}
+                    <input
+                      type="number"
+                      name="{{ filter.min_value.param_name }}"
+                      {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      min="0"
+                      step="any"
+                      placeholder="0"
+                    >
+                  </label>
+                  <label>
+                    {{ 'collections.price_to' | t }}
+                    <input
+                      type="number"
+                      name="{{ filter.max_value.param_name }}"
+                      {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      min="0"
+                      step="any"
+                      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    >
+                  </label>
+                </div>
+            {%- endcase -%}
+          </fieldset>
+        {%- endfor -%}
+      </div>
+
+      <div class="drawer__foot">
+        <button type="submit" class="button">{{ 'collections.show_results' | t }}</button>
+        {%- if active_count > 0 -%}
+          <a class="link" href="{{ clear_url }}">{{ 'collections.clear' | t }}</a>
+        {%- endif -%}
+      </div>
+    </form>
+  </dialog>
+{%- endif -%}

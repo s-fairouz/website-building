@@ -1,0 +1,64 @@
+{%- assign artists = shop.metaobjects.artist.values -%}
+
+<section class="band">
+  <div class="wrap">
+    {%- if section.settings.heading != blank -%}
+      <div class="band__head">
+        <h2>{{ section.settings.heading | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    {%- if artists.size > 0 -%}
+      <ul class="grid" role="list">
+        {%- for artist in artists -%}
+          {%- assign portrait = artist.portrait.value -%}
+          <li>
+            <article class="maker-card">
+              <a class="card__link" href="{{ artist.system.url }}">
+                <div class="tile maker-card__media">
+                  {%- if portrait -%}
+                    <img
+                      src="{{ portrait | image_url: width: 720 }}"
+                      alt=""
+                      width="{{ portrait.width }}"
+                      height="{{ portrait.height }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                <h3 class="card__title">{{ artist.name.value | escape }}</h3>
+              </a>
+              {%- if artist.location.value != blank -%}
+                <p class="maker-card__place">{{ artist.location.value | escape }}</p>
+              {%- endif -%}
+              {% render 'commission-status', artist: artist %}
+            </article>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <p class="lede">{{ 'makers.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Makers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our makers"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Makers"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+<div class="wrap wrap--narrow page-head">
+  <h1>{{ page.title }}</h1>
+</div>
+
+{%- if page.content != blank -%}
+  <div class="wrap wrap--narrow rte page-body">
+    {{ page.content }}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Page"
+}
+{% endschema %}

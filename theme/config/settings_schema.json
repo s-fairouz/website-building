@@ -1,0 +1,76 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Hazelwick",
+    "theme_version": "4.0.0",
+    "theme_author": "Custom",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Page background",
+        "default": "#FAF7F2"
+      },
+      {
+        "type": "color",
+        "id": "color_band",
+        "label": "Alternate background",
+        "info": "Used for the footer and for bands that break up a page.",
+        "default": "#F4EEE5"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Form fields and panels",
+        "default": "#FFFEFB"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Hairlines and image backdrop",
+        "default": "#EDE8DF"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text and buttons",
+        "default": "#2D2926"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Secondary text",
+        "default": "#8A6A66"
+      },
+      {
+        "type": "color",
+        "id": "color_blush",
+        "label": "Accent: powder pink",
+        "default": "#E8C5BE"
+      },
+      {
+        "type": "color",
+        "id": "color_sage",
+        "label": "Accent: light mint",
+        "default": "#C3D4C5"
+      },
+      {
+        "type": "color",
+        "id": "color_sky",
+        "label": "Accent: sky blue",
+        "default": "#BCD0DA"
+      },
+      {
+        "type": "color",
+        "id": "color_brass",
+        "label": "Accent: natural wood",
+        "default": "#C9A67E"
+      }
+    ]
+  }
+]

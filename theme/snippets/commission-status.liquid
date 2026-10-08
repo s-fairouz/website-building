@@ -1,0 +1,16 @@
+{%- comment -%}
+  Shows whether a maker is taking custom orders.
+  Accepts:
+  - artist: {Object} an "artist" metaobject. Its commission_status is Open, Limited or Waitlist.
+{%- endcomment -%}
+
+{%- case artist.commission_status.value -%}
+  {%- when 'Open' -%}
+    <p class="status status--open">{{ 'makers.status_open' | t }}</p>
+  {%- when 'Limited' -%}
+    <p class="status status--limited">
+      {{- 'makers.status_limited' | t: remaining: artist.slots_remaining.value, total: artist.slots_total.value -}}
+    </p>
+  {%- when 'Waitlist' -%}
+    <p class="status">{{ 'makers.status_waitlist' | t }}</p>
+{%- endcase -%}

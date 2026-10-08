@@ -1,0 +1,112 @@
+{
+  "general": {
+    "skip_to_content": "Aller au contenu",
+    "search_label": "Rechercher dans la boutique",
+    "cart": "Panier",
+    "menu_main": "Menu principal",
+    "menu_footer": "Pied de page",
+    "language": "Langue",
+    "update_language": "Changer de langue",
+    "pages": "Pages",
+    "placeholder_title": "Le nom de votre poupée",
+    "placeholder_text": "Ajoutez des produits dans votre interface Shopify pour remplir cette rangée.",
+    "close": "Fermer",
+    "search_placeholder": "Rechercher une poupée",
+    "search": "Rechercher",
+    "orders": "Mes commandes",
+    "menu": "Menu"
+  },
+  "products": {
+    "sold_out": "Épuisé",
+    "sale": "Promo",
+    "from": "À partir de",
+    "was": "Avant",
+    "quantity": "Quantité",
+    "add_to_cart": "Ajouter au panier",
+    "add_error": "L’ajout n’a pas fonctionné. Réessayez.",
+    "show_photo": "Afficher la photo {{ index }} sur {{ total }}",
+    "engraving": "Prénom gravé",
+    "engraving_label": "Prénom à graver (facultatif)",
+    "engraving_hint": "20 caractères maximum, gravés tels que saisis.",
+    "lead_time": "Fabriqué à la commande. Expédition actuelle sous {{ min }} à {{ max }} jours ouvrés.",
+    "choose_options": "Choisir les options",
+    "made_to_order": "Fait à la commande",
+    "in_stock": "{{ count }} en stock",
+    "height": "Hauteur",
+    "height_value": "{{ cm }} cm ({{ inches }} po)",
+    "height_short": "{{ cm }} cm de haut",
+    "size": "Taille",
+    "colors": "Couleurs disponibles"
+  },
+  "collections": {
+    "title": "Collections",
+    "sort_by": "Trier par",
+    "apply": "Appliquer les filtres",
+    "clear": "Effacer les filtres",
+    "price_from": "De",
+    "price_to": "À",
+    "empty": "Aucune poupée ne correspond à ces filtres.",
+    "all": "Toutes les poupées",
+    "filters": "Filtres",
+    "show_results": "Voir les résultats",
+    "count": {
+      "one": "{{ count }} poupée",
+      "other": "{{ count }} poupées"
+    }
+  },
+  "search": {
+    "title": "Recherche",
+    "results_for": "Résultats pour « {{ terms }} »",
+    "placeholder": "Rechercher par nom ou par type",
+    "submit": "Rechercher",
+    "no_results": "Aucun résultat pour « {{ terms }} ». Vérifiez l’orthographe ou essayez un mot plus court.",
+    "browse_all": "Voir toutes les poupées",
+    "results_count": {
+      "one": "{{ count }} résultat",
+      "other": "{{ count }} résultats"
+    },
+    "see_all": "Voir tous les résultats pour « {{ terms }} »",
+    "suggestions": "Suggestions de recherche"
+  },
+  "cart": {
+    "title": "Votre panier",
+    "empty": "Votre panier est vide.",
+    "shop": "Voir les poupées",
+    "each": "{{ price }} l’unité",
+    "quantity_for": "Quantité pour {{ title }}",
+    "remove": "Retirer",
+    "remove_item": "Retirer {{ title }}",
+    "subtotal": "Sous-total",
+    "shipping_note": "Les frais de livraison et les taxes sont calculés au moment du paiement.",
+    "update": "Mettre à jour le panier",
+    "checkout": "Passer la commande",
+    "close": "Fermer",
+    "view_cart": "Voir le panier",
+    "free_shipping_remaining": "Plus que {{ amount }} pour la livraison offerte.",
+    "free_shipping_reached": "La livraison de votre commande est offerte.",
+    "shipping_progress": "Progression vers la livraison offerte",
+    "gift_wrap": "Ajouter un emballage cadeau",
+    "gift_message": "Message cadeau (facultatif)"
+  },
+  "contact": {
+    "name": "Nom",
+    "email": "E-mail",
+    "message": "Message",
+    "send": "Envoyer le message"
+  },
+  "not_found": {
+    "title": "Cette page est introuvable",
+    "text": "Le lien est peut-être ancien, ou la poupée a trouvé un foyer. Tout ce que nous proposons en ce moment se trouve dans la boutique.",
+    "shop": "Voir les poupées"
+  },
+  "makers": {
+    "made_by": "Fait main par",
+    "status_open": "Commandes sur mesure ouvertes",
+    "status_limited": "{{ remaining }} créneaux sur mesure restants sur {{ total }}",
+    "status_waitlist": "Sur liste d’attente uniquement",
+    "materials": "Matières",
+    "instagram": "Suivre {{ name }} sur Instagram",
+    "pieces_by": "Créations de {{ name }}",
+    "empty": "Ajoutez vos artisans dans Contenu > Métaobjets de votre interface Shopify."
+  }
+}

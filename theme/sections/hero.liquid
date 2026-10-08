@@ -1,0 +1,105 @@
+{%- liquid
+  assign doll = section.settings.product
+  assign image = section.settings.image | default: doll.featured_image
+-%}
+
+<section class="hero">
+  <div class="wrap hero__inner">
+    <div class="hero__copy">
+      <h1>{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="lede">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+      <div class="hero__actions">
+        {%- if section.settings.button_label != blank -%}
+          <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{- section.settings.button_label | escape -}}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+          <a class="link" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hero__figure">
+      <div class="tile hero__frame">
+        {%- if image -%}
+          <img
+            src="{{ image | image_url: width: 1100 }}"
+            alt="{{ image.alt | escape }}"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
+            fetchpriority="high"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {%- if doll -%}
+        <a class="name-tag" href="{{ doll.url }}">
+          <span class="name-tag__name">{{ doll.title }}</span>
+          <span>{{ doll.price | money }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Cloth dolls, sewn one at a time."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Each doll is cut, stitched and stuffed by hand in our studio, so no two are quite alike."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the dolls"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Second link label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Second link"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured doll",
+      "info": "Shows this doll's photo with a name tag that links to it."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Replaces the featured doll's photo."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

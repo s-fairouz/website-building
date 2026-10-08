@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "button_link": "shopify://collections/all",
+        "secondary_label": "How they're made",
+        "secondary_link": "#how-they-are-made"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {}
+    },
+    "steps": {
+      "type": "steps",
+      "blocks": {
+        "cut": {
+          "type": "step",
+          "settings": {
+            "title": "Cut",
+            "text": "Each body is cut from unbleached cotton using paper patterns we drew ourselves."
+          }
+        },
+        "sew": {
+          "type": "step",
+          "settings": {
+            "title": "Sew",
+            "text": "Every seam is stitched twice, so arms and legs survive years of being carried by one hand."
+          }
+        },
+        "stuff": {
+          "type": "step",
+          "settings": {
+            "title": "Stuff",
+            "text": "We fill each doll with carded wool, firm in the neck and soft in the tummy."
+          }
+        },
+        "embroider": {
+          "type": "step",
+          "settings": {
+            "title": "Embroider",
+            "text": "Faces are embroidered by hand, which is why no two expressions match."
+          }
+        },
+        "dress": {
+          "type": "step",
+          "settings": {
+            "title": "Dress",
+            "text": "Clothes come off and go back on with snaps that small hands can manage."
+          }
+        }
+      },
+      "block_order": ["cut", "sew", "stuff", "embroider", "dress"],
+      "settings": {
+        "heading": "How a doll is made",
+        "text": "One doll takes about a week from first cut to last stitch."
+      }
+    },
+    "makers": {
+      "type": "artist-list",
+      "settings": {
+        "heading": "Our makers"
+      }
+    }
+  },
+  "order": ["hero", "featured", "steps", "makers"]
+}

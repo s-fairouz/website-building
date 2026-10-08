@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>
+      {{- page_title -}}
+      {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
+    </title>
+    {%- if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    {% style %}
+      :root {
+        --color-bg: {{ settings.color_background }};
+        --color-band: {{ settings.color_band }};
+        --color-surface: {{ settings.color_surface }};
+        --color-line: {{ settings.color_line }};
+        --color-text: {{ settings.color_text }};
+        --color-muted: {{ settings.color_muted }};
+        --color-blush: {{ settings.color_blush }};
+        --color-sage: {{ settings.color_sage }};
+        --color-sky: {{ settings.color_sky }};
+        --color-brass: {{ settings.color_brass }};
+        --font-display: "Cormorant Garamond", Georgia, serif;
+        --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+      }
+    {% endstyle %}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}">
+    <a class="skip-link" href="#main">{{ 'general.skip_to_content' | t }}</a>
+
+    {% section 'header' %}
+
+    <main id="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+    {% section 'cart-drawer' %}
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{%- comment -%}
+  Renders a price, with the old price struck through when on sale.
+  Accepts:
+  - product: {Object} the product
+  - variant: {Object} optional, shows this variant's price instead of the product's
+{%- endcomment -%}
+
+{%- liquid
+  assign target = variant | default: product
+  assign compare = target.compare_at_price
+-%}
+
+<p class="price">
+  {%- if variant == blank and product.price_varies %}{{ 'products.from' | t }} {% endif -%}
+  <span class="price__now">{{ target.price | money }}</span>
+  {%- if compare > target.price %}
+    <s class="price__was"><span class="visually-hidden">{{ 'products.was' | t }} </span>{{ compare | money }}</s>
+  {%- endif -%}
+</p>

@@ -1,0 +1,12 @@
+{
+  "name": "hazelwick-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shopify theme for a handmade doll shop, with a local preview server",
+  "scripts": {
+    "preview": "node preview/server.js"
+  },
+  "devDependencies": {
+    "liquidjs": "^10.21.0"
+  }
+}

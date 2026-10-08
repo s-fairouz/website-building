@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "materials": {
+          "type": "detail",
+          "settings": {
+            "heading": "Materials",
+            "content": "<p>Cotton body and clothes, wool felt shoes, carded wool stuffing, cotton embroidery thread.</p>"
+          }
+        },
+        "care": {
+          "type": "detail",
+          "settings": {
+            "heading": "Care",
+            "content": "<p>Spot clean with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>"
+          }
+        },
+        "shipping": {
+          "type": "detail",
+          "settings": {
+            "heading": "Shipping and returns",
+            "content": "<p>Each doll is made to order and ships within about a week. Unused dolls can be returned within 30 days.</p>"
+          }
+        }
+      },
+      "block_order": ["materials", "care", "shipping"],
+      "settings": {}
+    },
+    "more": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "More dolls",
+        "link_label": "See all dolls"
+      }
+    }
+  },
+  "order": ["main", "more"]
+}

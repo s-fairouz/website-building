@@ -1,0 +1,81 @@
+<div class="wrap page-head">
+  <h1>{{ 'cart.title' | t }}</h1>
+</div>
+
+<div class="wrap stack-end">
+  {%- if cart.item_count == 0 -%}
+    <div class="empty">
+      <p>{{ 'cart.empty' | t }}</p>
+      <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop' | t }}</a>
+    </div>
+  {%- else -%}
+    <form class="cart" action="{{ routes.cart_url }}" method="post">
+      <ul class="cart__items" role="list">
+        {%- for item in cart.items -%}
+          {%- assign unit_price = item.final_price | money -%}
+          <li class="cart-item">
+            <a class="tile cart-item__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+              {%- if item.image -%}
+                <img
+                  src="{{ item.image | image_url: width: 240 }}"
+                  alt=""
+                  width="{{ item.image.width }}"
+                  height="{{ item.image.height }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </a>
+
+            <div class="cart-item__details">
+              <a class="cart-item__title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <p>{{ item.variant.title }}</p>
+              {%- endunless -%}
+              {% render 'line-properties', item: item %}
+              <p>{{ 'cart.each' | t: price: unit_price }}</p>
+            </div>
+
+            <div class="cart-item__quantity">
+              <label class="visually-hidden" for="quantity-{{ forloop.index }}">
+                {{- 'cart.quantity_for' | t: title: item.product.title -}}
+              </label>
+              <input
+                id="quantity-{{ forloop.index }}"
+                type="number"
+                name="updates[]"
+                value="{{ item.quantity }}"
+                min="0"
+                inputmode="numeric"
+              >
+              <a class="link" href="{{ item.url_to_remove }}" aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}">
+                {{- 'cart.remove' | t -}}
+              </a>
+            </div>
+
+            <p class="cart-item__total">{{ item.final_line_price | money }}</p>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="cart__summary">
+        {% render 'gift-options', id_prefix: 'cart' %}
+
+        <p class="cart__subtotal">
+          <span>{{ 'cart.subtotal' | t }}</span>
+          <strong>{{ cart.total_price | money }}</strong>
+        </p>
+        <p class="form-note">{{ 'cart.shipping_note' | t }}</p>
+        <div class="cart__actions">
+          <button type="submit" name="update" class="button button--outline">{{ 'cart.update' | t }}</button>
+          <button type="submit" name="checkout" class="button">{{ 'cart.checkout' | t }}</button>
+        </div>
+      </div>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart"
+}
+{% endschema %}

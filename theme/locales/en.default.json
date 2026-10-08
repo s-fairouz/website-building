@@ -1,0 +1,112 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "search_label": "Search the shop",
+    "cart": "Cart",
+    "menu_main": "Main",
+    "menu_footer": "Footer",
+    "language": "Language",
+    "update_language": "Change language",
+    "pages": "Pages",
+    "placeholder_title": "Your doll's name",
+    "placeholder_text": "Add products in your Shopify admin to fill this row.",
+    "close": "Close",
+    "search_placeholder": "Search for a doll",
+    "search": "Search",
+    "orders": "My orders",
+    "menu": "Menu"
+  },
+  "products": {
+    "sold_out": "Sold out",
+    "sale": "Sale",
+    "from": "From",
+    "was": "Was",
+    "quantity": "Quantity",
+    "add_to_cart": "Add to cart",
+    "add_error": "That didn't go through. Try adding it again.",
+    "show_photo": "Show photo {{ index }} of {{ total }}",
+    "engraving": "Engraved name",
+    "engraving_label": "Name to engrave (optional)",
+    "engraving_hint": "Up to 20 characters, engraved exactly as typed.",
+    "lead_time": "Handcrafted to order. Currently dispatching in {{ min }}–{{ max }} business days.",
+    "choose_options": "Choose options",
+    "made_to_order": "Made to order",
+    "in_stock": "{{ count }} in stock",
+    "height": "Height",
+    "height_value": "{{ cm }} cm ({{ inches }} in)",
+    "height_short": "{{ cm }} cm tall",
+    "size": "Size",
+    "colors": "Available colors"
+  },
+  "collections": {
+    "title": "Collections",
+    "sort_by": "Sort by",
+    "apply": "Apply filters",
+    "clear": "Clear filters",
+    "price_from": "From",
+    "price_to": "To",
+    "empty": "No dolls match those filters.",
+    "all": "All dolls",
+    "filters": "Filters",
+    "show_results": "Show results",
+    "count": {
+      "one": "{{ count }} doll",
+      "other": "{{ count }} dolls"
+    }
+  },
+  "search": {
+    "title": "Search",
+    "results_for": "Results for “{{ terms }}”",
+    "placeholder": "Search by name or type",
+    "submit": "Search",
+    "no_results": "Nothing matched “{{ terms }}”. Check the spelling or try a shorter word.",
+    "browse_all": "Browse all dolls",
+    "results_count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    },
+    "see_all": "See all results for “{{ terms }}”",
+    "suggestions": "Search suggestions"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "shop": "Shop the dolls",
+    "each": "{{ price }} each",
+    "quantity_for": "Quantity for {{ title }}",
+    "remove": "Remove",
+    "remove_item": "Remove {{ title }}",
+    "subtotal": "Subtotal",
+    "shipping_note": "Shipping and taxes are calculated at checkout.",
+    "update": "Update cart",
+    "checkout": "Check out",
+    "close": "Close",
+    "view_cart": "View cart",
+    "free_shipping_remaining": "{{ amount }} away from free shipping.",
+    "free_shipping_reached": "Your order ships free.",
+    "shipping_progress": "Progress toward free shipping",
+    "gift_wrap": "Add gift wrapping",
+    "gift_message": "Gift message (optional)"
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send message"
+  },
+  "not_found": {
+    "title": "We can't find that page",
+    "text": "The link may be old, or the doll may have found a home. Everything we have right now is in the shop.",
+    "shop": "Shop the dolls"
+  },
+  "makers": {
+    "made_by": "Handmade by",
+    "status_open": "Open for commissions",
+    "status_limited": "{{ remaining }} of {{ total }} custom slots left",
+    "status_waitlist": "Waitlist only",
+    "materials": "Materials",
+    "instagram": "Follow {{ name }} on Instagram",
+    "pieces_by": "Made by {{ name }}",
+    "empty": "Add your makers under Content > Metaobjects in the Shopify admin."
+  }
+}

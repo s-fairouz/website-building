@@ -1,0 +1,37 @@
+<div class="wrap page-head">
+  <h1>{{ 'collections.title' | t }}</h1>
+</div>
+
+<div class="wrap stack-end">
+  <ul class="grid" role="list">
+    {%- for collection in collections -%}
+      {%- assign image = collection.featured_image | default: collection.products.first.featured_image -%}
+      <li>
+        <article class="card">
+          <a class="card__link" href="{{ collection.url }}">
+            <div class="tile card__media">
+              {%- if image -%}
+                <img
+                  src="{{ image | image_url: width: 720 }}"
+                  alt=""
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <h3 class="card__title">{{ collection.title }}</h3>
+          </a>
+        </article>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Collection list"
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+<div class="wrap page-head">
+  <h1>{{ 'not_found.title' | t }}</h1>
+</div>
+
+<div class="wrap stack-end">
+  <div class="empty">
+    <p>{{ 'not_found.text' | t }}</p>
+    <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'not_found.shop' | t }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page not found"
+}
+{% endschema %}

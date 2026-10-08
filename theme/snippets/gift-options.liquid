@@ -1,0 +1,25 @@
+{%- comment -%}
+  Gift wrap checkbox (saved as a cart attribute) and gift message (saved as the cart note).
+  Accepts:
+  - id_prefix: {String} keeps field ids unique when this is on the page twice
+{%- endcomment -%}
+
+<div class="gift-options">
+  <input type="hidden" name="attributes[Gift wrap]" value="">
+  <label class="check" for="{{ id_prefix }}-gift-wrap">
+    <input
+      id="{{ id_prefix }}-gift-wrap"
+      type="checkbox"
+      name="attributes[Gift wrap]"
+      value="Yes"
+      data-cart-attribute="Gift wrap"
+      {% if cart.attributes['Gift wrap'] == 'Yes' %}checked{% endif %}
+    >
+    {{ 'cart.gift_wrap' | t }}
+  </label>
+
+  <div class="field">
+    <label for="{{ id_prefix }}-note">{{ 'cart.gift_message' | t }}</label>
+    <textarea id="{{ id_prefix }}-note" name="note" rows="2" data-cart-note>{{ cart.note | escape }}</textarea>
+  </div>
+</div>

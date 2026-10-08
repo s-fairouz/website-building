@@ -1,0 +1,183 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign show_orders = shop.customer_accounts_enabled
+-%}
+
+{%- capture announcements -%}
+  {%- if section.settings.announcement != blank -%}
+    <li>{{ section.settings.announcement | escape }}</li>
+  {%- endif -%}
+  {%- if section.settings.announcement_2 != blank -%}
+    <li>{{ section.settings.announcement_2 | escape }}</li>
+  {%- endif -%}
+  {%- if section.settings.announcement_3 != blank -%}
+    <li>{{ section.settings.announcement_3 | escape }}</li>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture nav_links -%}
+  {%- for link in menu.links -%}
+    <li>
+      <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if announcements != blank -%}
+  <div class="announcement">
+    <ul role="list">
+      {{ announcements }}
+    </ul>
+  </div>
+{%- endif -%}
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    {%- comment -%} Phones: the menu folds behind this button so the header stays on one row. {%- endcomment -%}
+    {%- if menu.links.size > 0 -%}
+      <details class="menu" data-dropdown>
+        <summary class="icon-button" aria-label="{{ 'general.menu' | t }}">
+          <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+            <path d="M3 6h14M3 10h14M3 14h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </summary>
+        <nav class="menu__panel" aria-label="{{ 'general.menu_main' | t }}">
+          <ul role="list">
+            {{ nav_links }}
+            {%- if show_orders -%}
+              <li><a href="{{ routes.account_url }}">{{ 'general.orders' | t }}</a></li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      </details>
+    {%- endif -%}
+
+    <a class="site-header__logo" href="{{ routes.root_url }}">{{ shop.name }}</a>
+
+    {%- if menu.links.size > 0 -%}
+      <nav class="site-nav" aria-label="{{ 'general.menu_main' | t }}">
+        <ul role="list">
+          {{ nav_links }}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    <div class="site-header__actions">
+      {%- comment -%} Opens the search panel in place. Without JavaScript it is a plain link to the search page. {%- endcomment -%}
+      <a
+        class="icon-button"
+        href="{{ routes.search_url }}"
+        aria-label="{{ 'general.search' | t }}"
+        aria-haspopup="dialog"
+        data-open-search
+      >
+        <svg viewBox="0 0 20 20" width="19" height="19" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path d="M13 13l5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      {%- if show_orders -%}
+        <a class="icon-button site-header__orders" href="{{ routes.account_url }}" aria-label="{{ 'general.orders' | t }}">
+          <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+            <path d="M3 6.5 10 3l7 3.5v7L10 17l-7-3.5z M3 6.5 10 10l7-3.5 M10 10v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+        </a>
+      {%- endif -%}
+
+      <a class="cart-link" href="{{ routes.cart_url }}" data-cart-open>
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <path d="M4 7h12l-1 10H5z M7.5 7V5.5a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+        </svg>
+        <span class="cart-link__label">{{ 'general.cart' | t }}</span>
+        <span class="cart-link__count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<dialog class="drawer" id="search-drawer" aria-labelledby="search-drawer-title" data-search-drawer>
+  <div class="drawer__body">
+    <div class="drawer__head">
+      <h2 id="search-drawer-title">{{ 'search.title' | t }}</h2>
+      <button type="button" class="link" data-close-dialog>{{ 'general.close' | t }}</button>
+    </div>
+
+    {%- comment -%} Results appear under the field while typing; Enter opens the full results page. {%- endcomment -%}
+    <form
+      class="site-search"
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      data-predictive-search
+      data-url="{{ routes.predictive_search_url }}"
+    >
+      <div class="site-search__field">
+        <label class="visually-hidden" for="site-search">{{ 'general.search_label' | t }}</label>
+        <svg class="site-search__icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path d="M13 13l5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <input
+          id="site-search"
+          type="search"
+          name="q"
+          placeholder="{{ 'general.search_placeholder' | t }}"
+          autocomplete="off"
+          aria-controls="site-search-results"
+          autofocus
+        >
+      </div>
+      <input type="hidden" name="type" value="product">
+      <div
+        class="site-search__results"
+        id="site-search-results"
+        role="region"
+        aria-label="{{ 'search.suggestions' | t }}"
+        aria-live="polite"
+        data-results
+        hidden
+      ></div>
+    </form>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Announcement bar"
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "First message",
+      "info": "Short messages shown side by side above the header. Leave all three empty to hide the bar. Phones show only the first.",
+      "default": "Each doll takes about a week to make"
+    },
+    {
+      "type": "text",
+      "id": "announcement_2",
+      "label": "Second message",
+      "default": "Orders ship in the order they arrive"
+    },
+    {
+      "type": "text",
+      "id": "announcement_3",
+      "label": "Third message"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
