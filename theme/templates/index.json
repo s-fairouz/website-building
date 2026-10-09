@@ -73,7 +73,7 @@
       "type": "artist-list",
       "settings": {
         "heading": "Every stitch, a love story.",
-        "kicker": "The hands of Hazelwick",
+        "kicker": "The hands of Kwaii",
         "text": "Isabelle crochets each doll by hand, in her studio in Lyon. Her first name goes with every creation, so you always know who made your child’s companion.",
         "link_label": "Meet Isabelle",
         "link": "shopify://pages/makers",
@@ -152,10 +152,10 @@
       ],
       "settings": {
         "heading": "A doll is not just a toy.",
-        "text": "<p>It is the first friend. The one that stays in the bed through feverish nights, travels in every suitcase, and may still be there in thirty years at the back of a drawer.</p><p>At Hazelwick, every doll is crocheted by hand, stitch after stitch, by a maker who knows its name before it reaches you.</p>",
+        "text": "<p>It is the first friend. The one that stays in the bed through feverish nights, travels in every suitcase, and may still be there in thirty years at the back of a drawer.</p><p>At Kwaii, every doll is crocheted by hand, stitch after stitch, by a maker who knows its name before it reaches you.</p>",
         "link_label": "Born from crochet: read our story",
         "link": "shopify://pages/about",
-        "kicker": "The Hazelwick spirit"
+        "kicker": "The Kwaii spirit"
       }
     },
     "personalize": {
@@ -185,7 +185,7 @@
         "thomas": {
           "type": "review",
           "settings": {
-            "quote": "The adoption certificate melted us. An unforgettable birth present for my niece. Thank you, Hazelwick.",
+            "quote": "The adoption certificate melted us. An unforgettable birth present for my niece. Thank you, Kwaii.",
             "author": "Thomas R.",
             "relation": "Godfather of Léa",
             "stars": 5
@@ -214,9 +214,9 @@
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "heading": "Join the Hazelwick family",
+        "heading": "Join the Kwaii family",
         "text": "Behind the scenes at the studio, new dolls, and advice on choosing a first doll. One gentle, honest letter a month.",
-        "kicker": "The Hazelwick notebook",
+        "kicker": "The Kwaii notebook",
         "background": "none"
       }
     },
@@ -256,7 +256,7 @@
         "wooly"
       ],
       "settings": {
-        "kicker": "The Hazelwick family",
+        "kicker": "The Kwaii family",
         "heading": "The doll workshop",
         "link_label": "See all companions",
         "link": "shopify://pages/adopt",

@@ -5,6 +5,7 @@
   - results: {Object} the collection or search object
   - clear_url: {String} where "All dolls" and "Clear filters" go
   - terms: {String} optional, the search terms to keep when filtering a search
+  - count_label: {String} optional, how many results there are, shown beside the tools
 {%- endcomment -%}
 
 {%- liquid
@@ -27,36 +28,97 @@
   endfor
 -%}
 
+{%- comment -%}
+  Photos for the bubbles come from the whole catalogue, not from the filtered results,
+  so every animal keeps its picture while another one is chosen.
+{%- endcomment -%}
+{%- assign pool = collections.all.products | default: results.products -%}
+
 <div class="catalog-bar">
-  <ul class="catalog-bar__pills" role="list">
+  <ul class="bubbles" role="list">
     <li>
-      <a class="pill" href="{{ clear_url }}"{% if active_count == 0 %} aria-current="true"{% endif %}>
-        {{- 'collections.all' | t -}}
+      <a class="bubble" href="{{ clear_url }}"{% if active_count == 0 %} aria-current="true"{% endif %}>
+        <span class="bubble__photo bubble__photo--all">
+          {%- for product in pool limit: 4 -%}
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" width="60" height="60" loading="lazy">
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+        <span class="bubble__name">{{ 'collections.all' | t }}</span>
       </a>
     </li>
     {%- for filter in results.filters -%}
-      {%- case filter.type -%}
-        {%- when 'list' -%}
-          {%- for value in filter.values -%}
-            {%- comment -%} "Sold out" is not something to browse by, and empty choices lead nowhere. {%- endcomment -%}
-            {%- if filter.param_name contains 'availability' and value.value == '0' -%}
-              {%- continue -%}
-            {%- endif -%}
-            {%- if value.active -%}
-              <li><a class="pill" href="{{ value.url_to_remove }}" aria-current="true">{{ value.label | escape }}</a></li>
-            {%- elsif value.count > 0 -%}
-              <li><a class="pill" href="{{ value.url_to_add }}">{{ value.label | escape }}</a></li>
-            {%- endif -%}
-          {%- endfor -%}
-        {%- when 'boolean' -%}
-          {%- if filter.true_value.active -%}
-            <li><a class="pill" href="{{ filter.true_value.url_to_remove }}" aria-current="true">{{ filter.label | escape }}</a></li>
-          {%- elsif filter.true_value.count > 0 -%}
-            <li><a class="pill" href="{{ filter.true_value.url_to_add }}">{{ filter.label | escape }}</a></li>
-          {%- endif -%}
-      {%- endcase -%}
+      {%- unless filter.type == 'list' and filter.param_name contains 'product_type' -%}
+        {%- continue -%}
+      {%- endunless -%}
+      {%- for value in filter.values -%}
+        {%- unless value.active or value.count > 0 -%}
+          {%- continue -%}
+        {%- endunless -%}
+        {%- liquid
+          assign photo = nil
+          for product in pool
+            if product.type == value.value or product.type == value.label
+              assign photo = product.featured_image
+              break
+            endif
+          endfor
+        -%}
+        <li>
+          <a
+            class="bubble"
+            href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+            {% if value.active %}aria-current="true"{% endif %}
+          >
+            <span class="bubble__photo">
+              {%- if photo -%}
+                <img src="{{ photo | image_url: width: 200 }}" alt="" width="100" height="100" loading="lazy">
+              {%- else -%}
+                {{ value.label | slice: 0 | upcase }}
+              {%- endif -%}
+            </span>
+            <span class="bubble__name">{{ value.label | escape }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
     {%- endfor -%}
   </ul>
+
+  <div class="catalog-bar__status">
+    {%- if count_label != blank -%}
+      <p class="listing__count">{{ count_label }}</p>
+    {%- endif -%}
+
+    {%- comment -%} Conditions, as opposed to animals: small switches beside the count. {%- endcomment -%}
+    <ul class="catalog-bar__switches" role="list">
+      {%- for filter in results.filters -%}
+        {%- case filter.type -%}
+          {%- when 'list' -%}
+            {%- if filter.param_name contains 'product_type' -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- for value in filter.values -%}
+              {%- comment -%} "Sold out" is not something to browse by, and empty choices lead nowhere. {%- endcomment -%}
+              {%- if filter.param_name contains 'availability' and value.value == '0' -%}
+                {%- continue -%}
+              {%- endif -%}
+              {%- if value.active -%}
+                <li><a class="pill pill--switch" href="{{ value.url_to_remove }}" aria-current="true">{{ value.label | escape }}</a></li>
+              {%- elsif value.count > 0 -%}
+                <li><a class="pill pill--switch" href="{{ value.url_to_add }}">{{ value.label | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- when 'boolean' -%}
+            {%- if filter.true_value.active -%}
+              <li><a class="pill pill--switch" href="{{ filter.true_value.url_to_remove }}" aria-current="true">{{ filter.label | escape }}</a></li>
+            {%- elsif filter.true_value.count > 0 -%}
+              <li><a class="pill pill--switch" href="{{ filter.true_value.url_to_add }}">{{ filter.label | escape }}</a></li>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </ul>
+  </div>
 
   <div class="catalog-bar__tools">
     {%- if results.filters.size > 0 -%}
@@ -67,8 +129,11 @@
         command="show-modal"
         data-open-filters
       >
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+          <path d="M3 6h14M6 10h8M8.5 14h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
         {{ 'collections.filters' | t }}
-        {%- if active_count > 0 %} ({{ active_count }}){% endif -%}
+        {%- if active_count > 0 %} <span class="pill__count">{{ active_count }}</span>{% endif -%}
       </button>
     {%- endif -%}
 
@@ -93,7 +158,7 @@
       {%- endfor -%}
 
       <details class="dropdown" data-dropdown>
-        <summary class="pill pill--tool">{{ 'collections.sort_by' | t }}: {{ sort_name | escape }}</summary>
+        <summary class="pill pill--tool"><span class="pill__label">{{ 'collections.sort_by' | t }}</span> {{ sort_name | escape }}</summary>
         <div class="dropdown__panel">
           {%- for option in results.sort_options -%}
             <label class="dropdown__option">
@@ -113,7 +178,11 @@
     <form class="drawer__body facets" method="get">
       <div class="drawer__head">
         <h2 id="filter-drawer-title">{{ 'collections.filters' | t }}</h2>
-        <button type="button" class="link" data-close-dialog>{{ 'general.close' | t }}</button>
+        <button type="button" class="drawer__close" aria-label="{{ 'general.close' | t }}" data-close-dialog>
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
       </div>
 
       {%- if terms -%}

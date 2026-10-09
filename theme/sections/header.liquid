@@ -96,7 +96,11 @@
   <div class="drawer__body">
     <div class="drawer__head">
       <h2 id="search-drawer-title">{{ 'search.title' | t }}</h2>
-      <button type="button" class="link" data-close-dialog>{{ 'general.close' | t }}</button>
+      <button type="button" class="drawer__close" aria-label="{{ 'general.close' | t }}" data-close-dialog>
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
 
     {%- comment -%} Results appear under the field while typing; Enter opens the full results page. {%- endcomment -%}
@@ -134,6 +138,30 @@
         data-results
         hidden
       ></div>
+
+      {%- comment -%} Before anything is typed: a few dolls to open straight away. {%- endcomment -%}
+      {%- assign picks = collections.all.products -%}
+      {%- if picks.size > 0 -%}
+        <div class="site-search__idle">
+          <h3 class="site-search__label">{{ 'search.popular' | t }}</h3>
+          <ul role="list">
+            {%- for product in picks limit: 4 -%}
+              <li>
+                <a class="search-hit" href="{{ product.url }}">
+                  <span class="tile search-hit__media">
+                    {%- if product.featured_image -%}
+                      <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" width="60" height="60" loading="lazy">
+                    {%- endif -%}
+                  </span>
+                  <span class="search-hit__title">{{ product.title }}</span>
+                  <span class="search-hit__price">{{ product.price | money }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <a class="search-all" href="{{ routes.all_products_collection_url }}">{{ 'search.browse_all' | t }}</a>
+        </div>
+      {%- endif -%}
     </form>
   </div>
 </dialog>

@@ -3,11 +3,18 @@
   Both are sent as line item properties, so they show on the order.
   Accepts:
   - product: {Object} the product
+  - charge: {String} optional, what a name costs, already formatted as money
+  - days: {Number} optional, how many working days a name adds
 {%- endcomment -%}
 
 {%- if product.metafields.custom.personalizable.value -%}
-  <div class="field">
-    <label for="engraving">{{ 'products.engraving_label' | t }}</label>
+  <div class="field field--name">
+    <div class="field__head">
+      <label for="engraving">{{ 'products.engraving_label' | t }}</label>
+      {%- if charge != blank -%}
+        <span class="field__extra">+ {{ charge }}</span>
+      {%- endif -%}
+    </div>
     <input
       id="engraving"
       type="text"
@@ -17,10 +24,20 @@
       aria-describedby="engraving-hint"
       data-name
     >
-    <p class="form-note" id="engraving-hint">{{ 'products.engraving_hint' | t }}</p>
+    <div class="field__foot">
+      <p class="form-note" id="engraving-hint">
+        {%- if charge != blank and days != blank -%}
+          {{ 'products.name_charge' | t: price: charge, days: days }}
+        {%- else -%}
+          {{ 'products.engraving_hint' | t }}
+        {%- endif -%}
+      </p>
+      <p class="form-note field__count" aria-hidden="true"><span data-name-count>0</span> / 12</p>
+    </div>
   </div>
 
-  <fieldset class="option">
+  {%- comment -%} The script shows the thread choice once a name is typed. {%- endcomment -%}
+  <fieldset class="option" data-thread-choice>
     <legend>{{ 'products.thread' | t }}</legend>
     <div class="chips">
       <label class="chip">

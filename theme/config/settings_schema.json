@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Hazelwick",
+    "theme_name": "Kwaii",
     "theme_version": "4.0.0",
     "theme_author": "Custom",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
@@ -52,7 +52,7 @@
         "type": "color",
         "id": "color_muted",
         "label": "Secondary text",
-        "default": "#5F4541"
+        "default": "#4A4542"
       },
       {
         "type": "color",

@@ -47,7 +47,11 @@
     "technique": "How it’s made",
     "making_time": "Handwork",
     "stitches": "Stitches",
-    "making_steps": "How this doll was made"
+    "making_steps": "How this doll was made",
+    "about": "About {{ title }}",
+    "made_to_order_days": "Made to order, {{ min }} to {{ max }} days",
+    "decrease": "One fewer",
+    "increase": "One more"
   },
   "collections": {
     "title": "Collections",
@@ -72,6 +76,7 @@
     "submit": "Search",
     "no_results": "Nothing matched “{{ terms }}”. Check the spelling or try a shorter word.",
     "browse_all": "Browse all dolls",
+    "popular": "Popular dolls",
     "results_count": {
       "one": "{{ count }} result",
       "other": "{{ count }} results"

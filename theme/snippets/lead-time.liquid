@@ -10,5 +10,5 @@
 -%}
 
 {%- if min_days and max_days -%}
-  <p class="lead-time">{{ 'products.lead_time' | t: min: min_days, max: max_days }}</p>
+  <p class="lead-time">{{ 'products.made_to_order_days' | t: min: min_days, max: max_days }}</p>
 {%- endif -%}

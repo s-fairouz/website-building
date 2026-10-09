@@ -47,7 +47,11 @@
     "technique": "Fabrication",
     "making_time": "Temps de création",
     "stitches": "Mailles",
-    "making_steps": "Les étapes de fabrication de cette poupée"
+    "making_steps": "Les étapes de fabrication de cette poupée",
+    "about": "À propos de {{ title }}",
+    "made_to_order_days": "Fait à la commande, {{ min }} à {{ max }} jours",
+    "decrease": "Un de moins",
+    "increase": "Un de plus"
   },
   "collections": {
     "title": "Collections",
@@ -72,6 +76,7 @@
     "submit": "Rechercher",
     "no_results": "Aucun résultat pour « {{ terms }} ». Vérifiez l’orthographe ou essayez un mot plus court.",
     "browse_all": "Voir toutes les poupées",
+    "popular": "Poupées préférées",
     "results_count": {
       "one": "{{ count }} résultat",
       "other": "{{ count }} résultats"

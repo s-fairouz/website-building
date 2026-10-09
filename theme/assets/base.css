@@ -1,19 +1,27 @@
 /* Colours and fonts are set as custom properties in layout/theme.liquid. */
 
+/* How the palette is used. Linen (the page) and paper (cards) carry the large areas.
+   Each pastel has one job and is used solid, in small places:
+     blush = choosing (hover, selected)      sage = made and ready (status, done steps)
+     sky   = finding and delivery            brass = the thread (stitch, stars, focus)
+   The older "wash" names are kept so existing rules read the solid colour. */
 :root {
-  --rule: color-mix(in srgb, var(--color-blush) 85%, var(--color-bg));
+  --hairline: color-mix(in srgb, var(--color-brass) 40%, var(--color-bg));
+  --rule: var(--hairline);
   --brass-deep: color-mix(in srgb, var(--color-brass) 30%, var(--color-text));
-  --rose-wash: color-mix(in srgb, var(--color-blush) 50%, var(--color-surface));
-  --wood-wash: color-mix(in srgb, var(--color-brass) 38%, var(--color-surface));
-  --sage-wash: color-mix(in srgb, var(--color-sage) 70%, var(--color-surface));
-  --sky-wash: color-mix(in srgb, var(--color-sky) 70%, var(--color-surface));
-  --radius-card: 18px;
+  --rose-wash: var(--color-blush);
+  --wood-wash: var(--color-bg);
+  --sage-wash: var(--color-sage);
+  --sky-wash: var(--color-sky);
+  --radius-card: 20px;
   --announcement-h: 2rem;
   --header-h: 4.5rem;
   --radius-field: 12px;
-  --shadow: 0 0 0 1px rgb(45 41 38 / 0.06), 0 1px 2px rgb(45 41 38 / 0.04), 0 8px 22px rgb(45 41 38 / 0.06);
+  --shadow: 0 0 0 1px var(--hairline);
+  --shadow-hover: 0 0 0 1px var(--hairline), 0 6px 12px rgb(45 41 38 / 0.05), 0 22px 44px rgb(45 41 38 / 0.11);
   --shadow-lift: 0 2px 4px rgb(45 41 38 / 0.05), 0 14px 28px rgb(45 41 38 / 0.09);
-  --ring: 0 0 0 2px var(--color-bg), 0 0 0 4px color-mix(in srgb, var(--color-text) 55%, var(--color-blush));
+  /* The focus ring is brass, deepened just enough to be seen on linen and on white. */
+  --ring: 0 0 0 2px var(--color-bg), 0 0 0 4px color-mix(in srgb, var(--color-brass) 62%, var(--color-text));
 }
 
 /* Base */
@@ -194,7 +202,7 @@ ol[role='list'] {
 }
 
 .page-head {
-  padding-block: clamp(2.5rem, 6vw, 4.5rem) 1.75rem;
+  padding-block: clamp(2rem, 5vw, 3.5rem) 1rem;
 }
 
 .page-head h1 {
@@ -263,13 +271,13 @@ ol[role='list'] {
   transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
-.button:active {
-  transform: scale(0.97);
+.button:hover {
+  border-color: color-mix(in srgb, var(--color-text) 84%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-text) 84%, var(--color-surface));
 }
 
-.button:hover {
-  background: transparent;
-  color: var(--color-text);
+.button:active {
+  transform: scale(0.98);
 }
 
 .button:disabled {
@@ -279,28 +287,32 @@ ol[role='list'] {
   cursor: not-allowed;
 }
 
+/* The second button: paper with an ink outline; blush when you reach for it. */
 .button--outline {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-text);
 }
 
 .button--outline:hover {
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-color: var(--color-text);
+  background: var(--color-blush);
+  color: var(--color-text);
 }
 
 /* The quiet button on product cards. */
 .button--soft {
   width: 100%;
   padding: 0.7rem 1rem;
-  border-color: var(--rule);
-  background: transparent;
+  border-color: var(--color-text);
+  background: var(--color-surface);
   color: var(--color-text);
   font-size: 0.875rem;
 }
 
 .button--soft:hover {
-  background: var(--rose-wash);
+  border-color: var(--color-text);
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
 .link {
@@ -316,7 +328,7 @@ ol[role='list'] {
 }
 
 .link:hover {
-  text-decoration-color: var(--color-blush);
+  text-decoration-color: var(--color-brass);
   text-decoration-thickness: 2px;
 }
 
@@ -406,7 +418,7 @@ input[type='checkbox'] {
 }
 
 .placeholder-svg {
-  fill: color-mix(in srgb, var(--color-blush) 70%, var(--color-surface));
+  fill: var(--color-blush);
 }
 
 .grid > li:nth-child(4n + 1) .tile {
@@ -521,7 +533,7 @@ input[type='checkbox'] {
 }
 
 .site-nav a:hover {
-  background: var(--sage-wash);
+  background: var(--color-bg);
 }
 
 /* The page you are on: a filled pill, like the chosen filter on the catalogue. */
@@ -576,9 +588,10 @@ input[type='checkbox'] {
   min-width: 1.5rem;
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--color-blush);
+  color: var(--color-text);
   font-size: 0.75rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -653,7 +666,7 @@ input[type='checkbox'] {
 }
 
 .menu__panel a:hover {
-  background: var(--sage-wash);
+  background: var(--color-bg);
 }
 
 /* The page you are on: the same filled pill as in the header row. */
@@ -707,76 +720,131 @@ input[type='checkbox'] {
   }
 }
 
-/* Search panel */
+/* Search panel: a white field, then dolls as white rows. Before anything is typed
+   the rows are a few dolls to open; while typing they are the matches. */
 
 .site-search__field {
   position: relative;
 }
 
 .site-search input[type='search'] {
-  padding: 0.8rem 1.1rem 0.8rem 2.9rem;
-  border-color: var(--color-blush);
+  padding: 0.95rem 2.75rem 0.95rem 3rem;
+  border: 0;
   border-radius: 999px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s ease;
+}
+
+.site-search input[type='search']:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-blush);
+}
+
+/* The browser's own clear cross is bright blue; this one is drawn in the text colour. */
+.site-search input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' fill='none' stroke='%234A4542' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  cursor: pointer;
 }
 
 .site-search__icon {
   position: absolute;
   top: 50%;
-  left: 1.1rem;
+  left: 1.15rem;
   color: var(--color-muted);
   transform: translateY(-50%);
   pointer-events: none;
 }
 
-.site-search__results {
-  margin-top: 1.25rem;
+.site-search__results,
+.site-search__idle {
+  margin-top: 1.5rem;
+}
+
+/* Once there are matches, the starting list steps aside. */
+.site-search__results:not([hidden]) + .site-search__idle {
+  display: none;
+}
+
+.site-search__label {
+  margin: 0 0 0.75rem;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.site-search ul {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .search-hit {
   display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
   gap: 0.9rem;
   align-items: center;
-  padding: 0.45rem 0.6rem 0.45rem 0.45rem;
-  border-radius: var(--radius-field);
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  border-radius: 18px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
   text-decoration: none;
+  transition: box-shadow 0.2s ease, translate 0.2s ease;
 }
 
 .search-hit:hover {
-  background: var(--rose-wash);
+  box-shadow: var(--shadow-hover);
+  translate: 0 -2px;
 }
 
 .search-hit__media {
-  aspect-ratio: 4 / 5;
-  border-radius: 8px;
+  aspect-ratio: 1;
+  border-radius: 12px;
 }
 
 .search-hit__title {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 600;
   line-height: 1.15;
 }
 
 .search-hit__price {
+  color: var(--color-muted);
   font-size: 0.9rem;
   font-variant-numeric: tabular-nums;
 }
 
 .search-all {
-  display: block;
-  margin-top: 0.5rem;
-  padding: 0.9rem 0.6rem 0.4rem;
-  border-top: 1px solid var(--color-line);
+  display: inline-block;
+  margin-top: 1.1rem;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .search-none {
   margin: 0;
-  padding: 0.5rem 0.6rem;
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
   color: var(--color-muted);
   font-size: 0.925rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-hit {
+    transition: none;
+  }
+
+  .search-hit:hover {
+    translate: none;
+  }
 }
 
 /* Footer */
@@ -960,19 +1028,34 @@ input[type='checkbox'] {
 /* Product card */
 
 .card {
-  display: flex;
-  flex-direction: column;
-  padding: 0.75rem;
-  border: 1px solid rgb(0 0 0 / 0.05);
+  display: grid;
+  overflow: hidden;
   border-radius: var(--radius-card);
   background: var(--color-card);
   box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lift);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card:active {
+  transform: scale(0.99);
+}
+
+/* The whole card is the link. */
+.card__open {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+/* Keyboard focus rings the whole card, inside its clipped edge. */
+.card__open:focus-visible {
+  border-radius: var(--radius-card);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--color-brass) 62%, var(--color-text));
 }
 
 .card__link {
@@ -980,10 +1063,10 @@ input[type='checkbox'] {
   text-decoration: none;
 }
 
-.card__media {
+/* The photo runs to the card's edges; the card's corners round it. */
+.card .card__media {
   aspect-ratio: 4 / 5;
-  margin-bottom: 0.9rem;
-  border-radius: var(--radius-field);
+  border-radius: 0;
 }
 
 /* A second photo fades in on hover, for a closer look at the detail. */
@@ -998,11 +1081,53 @@ input[type='checkbox'] {
   opacity: 1;
 }
 
+.card--sold-out .card__media img {
+  opacity: 0.55;
+}
+
 .card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 0.4rem;
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.card__kind {
+  margin: 0.15rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+/* The round arrow: quiet at rest, ink when the card is reached for. */
+.card__go {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--color-bg);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.card:hover .card__go,
+.card__open:focus-visible .card__go {
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+@media (max-width: 34rem) {
+  .card__body {
+    padding: 0.75rem 0.8rem 0.85rem;
+  }
+
+  .card .card__title {
+    font-size: 1.3rem;
+  }
+
+  .card__go {
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 .card__maker {
@@ -1097,10 +1222,17 @@ input[type='checkbox'] {
 
 .card__foot {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.3rem 0.5rem;
+  gap: 0.5rem;
+  min-height: 2.25rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+}
+
+.card__foot .price {
+  margin: 0;
+  font-weight: 600;
 }
 
 .card__action {
@@ -1111,7 +1243,7 @@ input[type='checkbox'] {
 .badge {
   padding: 0.15rem 0.6rem;
   border-radius: 999px;
-  background: var(--wood-wash);
+  background: var(--color-sage);
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
@@ -1122,8 +1254,8 @@ input[type='checkbox'] {
 }
 
 .badge--muted {
-  background: var(--rose-wash);
-  color: color-mix(in srgb, var(--color-muted) 60%, var(--color-text));
+  background: var(--color-bg);
+  box-shadow: var(--shadow);
 }
 
 .flag {
@@ -1137,6 +1269,15 @@ input[type='checkbox'] {
   color: var(--color-text);
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+.flag--ready {
+  background: var(--color-sage);
+  font-weight: 500;
+}
+
+.flag--plain {
+  background: var(--color-surface);
 }
 
 .price {
@@ -1156,37 +1297,225 @@ input[type='checkbox'] {
 
 /* Collection and search listings */
 
-.listing__count {
-  color: var(--color-muted);
-  font-size: 0.925rem;
-}
-
-/* Filter pills on the left, Filters and Sort on the right. */
+/* Catalogue controls. Row one: the animals, each as a round photo with its name.
+   Row two: how many dolls and the on/off conditions on the left, Filters and Sort on the right. */
 .catalog-bar {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1.5rem;
-  margin-bottom: 1rem;
-  padding-block: 0.75rem;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
-/* The padding leaves room for focus rings, which a scrolling box would otherwise clip. */
-.catalog-bar__pills {
+/* The row scrolls sideways when the screen is narrow. The padding leaves room for the
+   chosen bubble's ring, which a scrolling box would otherwise clip. */
+.catalog-bar .bubbles {
+  grid-column: 1 / -1;
   display: flex;
-  gap: 0.5rem;
-  min-width: 0;
-  margin: -0.3rem;
-  padding: 0.3rem;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  margin: -0.5rem;
+  padding: 0.5rem;
   overflow-x: auto;
   scrollbar-width: none;
 }
 
+.bubble {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  width: 5rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+}
+
+.bubble__photo {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: var(--color-blush);
+  box-shadow: 0 0 0 1px var(--hairline);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  transition: box-shadow 0.18s ease, scale 0.18s ease;
+}
+
+.bubble__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+}
+
+/* "All": four dolls in one bubble. */
+.bubble__photo--all {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  place-items: stretch;
+  gap: 2px;
+  background: var(--color-surface);
+}
+
+.bubble__photo--all img {
+  min-height: 0;
+}
+
+.bubble:hover .bubble__photo {
+  box-shadow: 0 0 0 1.5px var(--color-text);
+  scale: 1.05;
+}
+
+/* Chosen: a dark ring with a little air between it and the photo. */
+.bubble[aria-current='true'] .bubble__photo {
+  box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--color-text);
+}
+
+.bubble[aria-current='true'] .bubble__name {
+  font-weight: 600;
+}
+
+.bubble:focus-visible {
+  border-radius: 12px;
+}
+
+@media (max-width: 34rem) {
+  /* On a phone the row scrolls, so the chosen animal moves to the front to stay in sight. */
+  .bubbles li:has([aria-current='true']) {
+    order: -1;
+  }
+
+  .bubble {
+    width: 4.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .bubble__photo {
+    width: 3.75rem;
+    height: 3.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble__photo {
+    transition: none;
+  }
+
+  .bubble:hover .bubble__photo {
+    scale: none;
+  }
+}
+
+.catalog-bar__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.25rem;
+  min-width: 0;
+}
+
+.catalog-bar .listing__count {
+  margin: 0;
+  font-weight: 500;
+}
+
+.catalog-bar__switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* A condition you can switch on: quiet when off, dark with a tick when on. */
+.catalog-bar .pill--switch {
+  padding: 0.4rem 0.9rem;
+  border-color: transparent;
+  box-shadow: var(--shadow);
+  font-size: 0.875rem;
+}
+
+.catalog-bar .pill--switch:hover {
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.catalog-bar .pill--switch[aria-current='true'] {
+  background: var(--color-text);
+  box-shadow: none;
+}
+
+.pill--switch[aria-current='true']::before {
+  content: '';
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.4rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 4.8' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+.pill svg {
+  flex: none;
+}
+
 .catalog-bar__tools {
+  grid-column: 2;
   display: flex;
   gap: 0.5rem;
-  margin-left: auto;
+}
+
+/* Filters and Sort: two matching white pills. */
+.catalog-bar__tools .pill {
+  border-color: transparent;
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+  font-weight: 600;
+}
+
+.catalog-bar__tools .pill:hover {
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-text);
+}
+
+.catalog-bar__tools [open] > .pill {
+  box-shadow: 0 0 0 1.5px var(--color-text);
+}
+
+.pill__label {
+  margin-right: 0.4rem;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+@media (max-width: 34rem) {
+  .catalog-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-bar__status,
+  .catalog-bar__tools {
+    grid-column: 1;
+  }
+
+  .catalog-bar__tools {
+    gap: 0.5rem;
+  }
+
+  .catalog-bar__tools .pill {
+    padding-inline: 0.9rem;
+  }
+}
+
+.listing__count {
+  margin: 0;
+  font-weight: 500;
+}
+
+.listing__count {
+  color: var(--color-muted);
+  font-size: 0.925rem;
 }
 
 .pill {
@@ -1207,7 +1536,7 @@ input[type='checkbox'] {
 }
 
 .pill:hover {
-  background: var(--rose-wash);
+  background: var(--color-sky);
 }
 
 .pill[aria-current='true'] {
@@ -1217,7 +1546,20 @@ input[type='checkbox'] {
 }
 
 .pill--tool {
-  box-shadow: var(--shadow);
+  gap: 0.5rem;
+}
+
+/* How many filters are on, as a blush dot. */
+.pill__count {
+  min-width: 1.35rem;
+  margin-left: 0.4rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--color-blush);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35rem;
+  text-align: center;
 }
 
 /* Sort menu */
@@ -1254,12 +1596,13 @@ input[type='checkbox'] {
   top: calc(100% + 0.5rem);
   right: 0;
   z-index: 6;
-  min-width: 14rem;
-  padding: 0.4rem;
-  border: 1px solid rgb(0 0 0 / 0.05);
+  display: grid;
+  gap: 0.3rem;
+  min-width: 15rem;
+  padding: 0.6rem;
   border-radius: var(--radius-card);
   background: var(--color-surface);
-  box-shadow: var(--shadow-lift);
+  box-shadow: 0 0 0 1px var(--hairline), var(--shadow-lift);
   animation: panel-in 0.18s ease-out;
 }
 
@@ -1283,18 +1626,38 @@ input[type='checkbox'] {
 }
 
 .dropdown__option span {
-  display: block;
-  padding: 0.6rem 0.9rem;
-  border-radius: var(--radius-field);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.7rem 0.75rem 0.7rem 1rem;
+  border-radius: 14px;
+  transition: background-color 0.15s ease;
+}
+
+/* Every choice ends in a ring; the chosen one's ring is filled, with a tick. */
+.dropdown__option span::after {
+  content: '';
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid var(--hairline);
+  border-radius: 50%;
 }
 
 .dropdown__option:hover span {
-  background: var(--color-line);
+  background: var(--color-bg);
 }
 
 .dropdown__option input:checked + span {
-  background: var(--rose-wash);
   font-weight: 600;
+}
+
+.dropdown__option input:checked + span::after {
+  border-color: var(--color-text);
+  background: var(--color-text)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.8rem no-repeat;
 }
 
 .dropdown__option input:focus-visible + span {
@@ -1720,19 +2083,56 @@ input[type='checkbox'] {
   margin-top: 1.75rem;
 }
 
-/* Cart page */
+/* Cart page: each doll on its own white card; beside them, one card with the gift
+   options, the subtotal and the way to the checkout. */
+
+.cart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .cart {
+    grid-template-columns: minmax(0, 1fr) 24rem;
+    gap: 2.5rem;
+  }
+
+  .cart__summary {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+.cart .cart__items {
+  display: grid;
+  gap: 0.75rem;
+}
 
 .cart-item {
   display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr) auto;
+  grid-template-columns: 6rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    'media details total'
+    'media quantity quantity';
   gap: 0.75rem 1.25rem;
-  align-items: center;
-  padding-block: 1.25rem;
-  border-top: 1px solid var(--rule);
+  align-items: start;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
 }
 
 .cart-item__media {
+  grid-area: media;
   aspect-ratio: 4 / 5;
+  border-radius: 14px;
+}
+
+.cart-item__details {
+  grid-area: details;
+  padding-top: 0.35rem;
 }
 
 .cart-item__title,
@@ -1744,6 +2144,12 @@ input[type='checkbox'] {
   text-decoration: none;
 }
 
+.cart-item__title {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.6rem;
+}
+
 .cart-item__details p,
 .drawer-item p {
   margin: 0;
@@ -1752,67 +2158,129 @@ input[type='checkbox'] {
   font-variant-numeric: tabular-nums;
 }
 
-.cart-item__quantity {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  grid-column: 2 / -1;
+.cart-item__total {
+  grid-area: total;
+  margin: 0;
+  padding-top: 0.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
-.cart-item__quantity input,
+.cart-item__quantity {
+  grid-area: quantity;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  align-self: end;
+  padding-bottom: 0.25rem;
+}
+
 .drawer-item__row input {
   width: 4.75rem;
   padding-block: 0.5rem;
 }
 
-.cart-item__total {
-  grid-column: 3;
-  grid-row: 1;
-  margin: 0;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+/* The smaller quantity pill used on a cart line: a fine edge, not an ink one. */
+.cart-item .stepper--small {
+  padding: 0.2rem;
+  box-shadow: inset 0 0 0 1px var(--hairline);
 }
 
-@media (min-width: 48rem) {
+.cart-item .stepper--small .stepper__button {
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1rem;
+}
+
+.cart-item .stepper--small .stepper__button:active {
+  background: var(--color-blush);
+  color: inherit;
+}
+
+.cart-item__remove {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-decoration-color: var(--hairline);
+  text-underline-offset: 0.25em;
+}
+
+.cart-item__remove:hover {
+  color: var(--color-text);
+  text-decoration-color: currentColor;
+}
+
+@media (max-width: 34rem) {
   .cart-item {
-    grid-template-columns: 5.5rem minmax(0, 1fr) auto 6rem;
-  }
-
-  .cart-item__quantity {
-    grid-column: 3;
-  }
-
-  .cart-item__total {
-    grid-column: 4;
-    text-align: right;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    column-gap: 0.9rem;
+    padding-right: 1rem;
   }
 }
 
 .cart__summary {
-  max-width: 26rem;
-  margin-left: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
 }
 
 .cart__subtotal {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
   margin: 0;
   font-size: 1.125rem;
   font-variant-numeric: tabular-nums;
 }
 
+.cart__summary .cart__subtotal {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.cart__summary .cart__subtotal strong {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
 .cart__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0.6rem;
   margin-top: 1.25rem;
 }
 
-.cart__actions .button {
-  flex: 1;
-  white-space: nowrap;
+.cart__actions [hidden] {
+  display: none;
+}
+
+.cart__back {
+  display: block;
+  width: fit-content;
+  margin: 1.1rem auto 0;
+  font-size: 0.9rem;
+}
+
+/* In the cart the gift fields are quiet: a linen box on the white card, no ink edge. */
+.cart__summary textarea {
+  border-color: transparent;
+  background: var(--color-bg);
+  resize: vertical;
+}
+
+.cart__summary textarea:focus {
+  border-color: var(--color-blush);
+  outline: none;
+  box-shadow: none;
+}
+
+.cart__summary .check input {
+  accent-color: var(--color-text);
 }
 
 .gift-options {
@@ -1842,7 +2310,35 @@ input[type='checkbox'] {
 }
 
 .drawer::backdrop {
-  background: rgb(120 78 80 / 0.32);
+  background: color-mix(in srgb, var(--color-bg) 55%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* The drawer and the veil are both light, so a wide soft shadow sets the drawer apart. */
+.drawer[open] {
+  box-shadow: -24px 0 60px -34px color-mix(in srgb, var(--color-brass) 70%, transparent),
+    0 0 0 1px var(--hairline);
+}
+
+/* Close: a round paper button with a cross. */
+.drawer__close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.drawer__close:hover {
+  background: var(--color-blush);
 }
 
 .drawer[open] {
@@ -1865,7 +2361,7 @@ input[type='checkbox'] {
 
 .drawer__head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 1.25rem;
 }
@@ -2064,9 +2560,7 @@ input[type='checkbox'] {
   width: 3rem;
   height: 3rem;
   border-radius: 16px;
-  background: var(--color-bg);
-  outline: 2px dashed color-mix(in srgb, var(--swatch) 80%, var(--color-text));
-  outline-offset: -0.5rem;
+  background: var(--swatch);
 }
 
 .promise p {
@@ -2122,7 +2616,7 @@ input[type='checkbox'] {
 }
 
 .companion {
-  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
   --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 16%, var(--color-surface));
   display: flex;
   flex-direction: column;
@@ -2300,9 +2794,7 @@ input[type='checkbox'] {
   width: 3rem;
   height: 3rem;
   border-radius: 16px;
-  background: var(--color-bg);
-  outline: 2px dashed color-mix(in srgb, var(--swatch) 80%, var(--color-text));
-  outline-offset: -0.5rem;
+  background: var(--swatch);
 }
 
 .story__facts dt {
@@ -2422,7 +2914,7 @@ input[type='checkbox'] {
   max-height: 30rem;
   width: 100%;
   border-radius: 20px;
-  background: color-mix(in srgb, var(--color-sage) 42%, var(--color-surface));
+  background: var(--color-sage);
 }
 
 .maker-feature__portrait img,
@@ -2575,8 +3067,7 @@ input[type='checkbox'] {
 }
 
 .maker-card:hover {
-  border-color: color-mix(in srgb, var(--color-sage) 42%, var(--color-surface));
-  background: color-mix(in srgb, var(--color-sage) 16%, var(--color-surface));
+  border-color: var(--color-text);
 }
 
 .maker-card .maker-card__media {
@@ -2628,7 +3119,7 @@ input[type='checkbox'] {
   place-items: center;
   aspect-ratio: 4 / 3;
   border-radius: 16px;
-  background: color-mix(in srgb, var(--color-brass) 30%, var(--color-surface));
+  background: var(--color-bg);
   outline: 1.5px dashed var(--color-surface);
   outline-offset: -0.6rem;
 }
@@ -2636,7 +3127,7 @@ input[type='checkbox'] {
 .personalize__sample p {
   margin: 0;
   padding: 0 1.5rem;
-  color: color-mix(in srgb, var(--color-brass) 38%, var(--color-text));
+  color: var(--brass-deep);
   font-family: var(--font-display);
   font-size: clamp(3rem, 2rem + 6vw, 5.5rem);
   font-style: italic;
@@ -2979,21 +3470,33 @@ input[type='checkbox'] {
   }
 
   /* The last two stops are about the ticket, so it takes the middle of the page. */
-  .flow__form[data-at='6'],
-  .flow__form[data-at='7'] {
+  .flow__form[data-at='5'],
+  .flow__form[data-at='6'] {
     grid-template-columns: minmax(0, 34rem);
     grid-template-areas: 'steps' 'ticket' 'adopt' 'nav';
     justify-content: center;
     gap: 2rem;
   }
 
-  .flow__form[data-at='6'] .flow__side,
-  .flow__form[data-at='7'] .flow__side {
+  .flow__form[data-at='5'] .flow__side,
+  .flow__form[data-at='6'] .flow__side {
     position: static;
   }
 
-  .flow__form[data-at='7'] .flow__adopt {
+  .flow__form[data-at='6'] .flow__adopt {
     grid-area: adopt;
+  }
+
+  /* One centred column, so the heading is centred over it and sits close to the ticket. */
+  .flow__form[data-at='5'] .step-pane__legend,
+  .flow__form[data-at='6'] .step-pane__legend {
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .flow__form[data-at='5'] .figure,
+  .flow__form[data-at='6'] .figure {
+    margin-bottom: 1.25rem;
   }
 }
 
@@ -3078,7 +3581,7 @@ input[type='checkbox'] {
 
 /* Each companion's colour is thinned with the paper colour, so the set reads as pastels. */
 .roster__row {
-  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
   --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 16%, var(--color-surface));
   display: grid;
   grid-template-columns: auto 1fr auto auto;
@@ -3196,7 +3699,7 @@ input[type='checkbox'] {
 /* The same thinned-colour recipe as the companion list: pink for one, blue for the other. */
 .half {
   --swatch: var(--color-blush);
-  --soft: color-mix(in srgb, var(--swatch) 80%, var(--color-surface));
+  --soft: color-mix(in srgb, var(--swatch) 100%, var(--color-surface));
   --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
   cursor: pointer;
 }
@@ -3304,7 +3807,7 @@ input[type='checkbox'] {
 /* The same thinned-colour recipe as the other choices, in mint. */
 .shape {
   --swatch: var(--color-sage);
-  --soft: color-mix(in srgb, var(--swatch) 80%, var(--color-surface));
+  --soft: color-mix(in srgb, var(--swatch) 100%, var(--color-surface));
   --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
   cursor: pointer;
 }
@@ -3444,7 +3947,7 @@ input[type='checkbox'] {
 
 /* The fabric's colour, thinned with the paper colour so six strong dyes sit together as pastels. */
 .bolt {
-  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
   --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 14%, var(--color-surface));
   cursor: pointer;
 }
@@ -3646,7 +4149,7 @@ input[type='checkbox'] {
   gap: 0.6rem;
   margin: 0;
   padding-block: 1rem;
-  border-top: 1px solid var(--color-text);
+  border-top: 1px solid var(--rule);
 }
 
 .ticket__lines > div {
@@ -3673,7 +4176,7 @@ input[type='checkbox'] {
 .ticket__lines dt::after {
   content: '';
   flex: 1;
-  border-bottom: 1px dotted var(--color-muted);
+  border-bottom: 1px dotted color-mix(in srgb, var(--color-brass) 70%, var(--color-surface));
 }
 
 .ticket__lines dd {
@@ -3694,7 +4197,7 @@ input[type='checkbox'] {
   justify-content: space-between;
   margin: 0;
   padding-top: 1rem;
-  border-top: 1px solid var(--color-text);
+  border-top: 1px solid var(--rule);
   font-weight: 600;
 }
 
@@ -3766,6 +4269,7 @@ input[type='checkbox'] {
 }
 
 .after__list > div:not(:last-child)::after {
+  opacity: 0.6;
   content: '';
   position: absolute;
   top: 1.2rem;
@@ -3783,7 +4287,7 @@ input[type='checkbox'] {
   margin: 0;
   padding: 0.2rem 0.75rem;
   border-radius: 999px;
-  background: var(--sage-wash);
+  background: var(--color-sky);
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -3930,7 +4434,7 @@ input[type='checkbox'] {
   margin: 1.75rem 0 0;
   padding: 1.1rem 1.25rem;
   border-radius: 18px;
-  background: var(--color-bg);
+  background: var(--color-blush);
 }
 
 .record__message p {
@@ -4298,7 +4802,7 @@ input[type='checkbox'] {
   height: 3rem;
   margin-bottom: 1.25rem;
   border-radius: 16px;
-  background: var(--color-bg);
+  background: var(--color-sage);
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-style: italic;
@@ -4342,4 +4846,603 @@ input[type='checkbox'] {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem 1.5rem;
+}
+
+/* ==========================================================================
+   Shared states. The same answer to the same gesture everywhere:
+   a card you can open lifts on a soft shadow; a choice lifts when you reach
+   for it and keeps a blush ring and a sage tick once chosen.
+   ========================================================================== */
+
+/* Cards that open something: they rise on a soft shadow, with no outline. */
+.companion,
+.maker-card {
+  transition: translate 0.25s ease, box-shadow 0.25s ease;
+}
+
+.companion:hover,
+.maker-card:hover {
+  border-color: transparent;
+  background: var(--color-card);
+  box-shadow: var(--shadow-hover);
+  translate: 0 -4px;
+}
+
+.companion:active,
+.maker-card:active {
+  translate: 0;
+  scale: 0.99;
+}
+
+/* Choices: the companion rows, girl or boy, arms, fabric. The card stays white the whole
+   time. Reaching for it lifts it; choosing it gives it a blush ring and a sage tick. */
+.roster__row,
+.half__body,
+.shape__body,
+.bolt__body {
+  transition: box-shadow 0.2s ease, translate 0.2s ease, scale 0.1s ease;
+}
+
+/* Rows keep their own height, so a card stretched to match its neighbour
+   does not stretch its colour tile out of the card. */
+.half__body,
+.shape__body,
+.bolt__body {
+  align-content: start;
+}
+
+.roster__row:hover,
+.half:hover .half__body,
+.shape:hover .shape__body,
+.bolt:hover .bolt__body {
+  border-color: transparent;
+  background: var(--color-card);
+  box-shadow: var(--shadow-hover);
+  translate: 0 -2px;
+}
+
+.roster__row:has(input:checked),
+.half input:checked + .half__body,
+.shape input:checked + .shape__body,
+.bolt input:checked + .bolt__body {
+  border-color: transparent;
+  background: var(--color-card);
+  box-shadow: 0 0 0 2px var(--color-blush),
+    0 14px 28px -16px color-mix(in srgb, var(--color-blush) 90%, var(--color-text));
+  translate: none;
+}
+
+.roster__row:has(input:focus-visible),
+.half input:focus-visible + .half__body,
+.shape input:focus-visible + .shape__body,
+.bolt input:focus-visible + .bolt__body {
+  box-shadow: var(--ring);
+}
+
+.roster__row:active,
+.half:active .half__body,
+.shape:active .shape__body,
+.bolt:active .bolt__body {
+  scale: 0.99;
+}
+
+/* The tick: a plain paper disc until chosen, then sage with a paper edge,
+   so it shows on a pink, blue or green tile alike. */
+.roster__check,
+.half__check,
+.shape__check,
+.bolt__check {
+  border: 0;
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--hairline);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.roster__row:has(input:checked) .roster__check,
+.half input:checked + .half__body .half__check,
+.shape input:checked + .shape__body .shape__check,
+.bolt input:checked + .bolt__body .bolt__check {
+  background: var(--color-sage) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.95rem no-repeat;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+/* Back is the quiet button here: paper with a fine edge, no ink outline. */
+.flow__nav [data-back] {
+  border-color: transparent;
+  box-shadow: var(--shadow);
+}
+
+.flow__nav [data-back]:hover {
+  border-color: transparent;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Option chips (fabric and thread on the product page): blush on hover, ink when chosen. */
+.chip > span {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.chip:hover input:not(:checked):not(:disabled) + span {
+  background: var(--color-blush);
+}
+
+/* Fields: an ink edge while you type. */
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='search']:focus,
+input[type='number']:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion,
+  .maker-card,
+  .roster__row,
+  .half__body,
+  .shape__body,
+  .bolt__body {
+    transition: none;
+  }
+
+  .companion:hover,
+  .maker-card:hover {
+    translate: none;
+  }
+
+  .companion:active,
+  .maker-card:active,
+  .roster__row:active,
+  .half:active .half__body,
+  .shape:active .shape__body,
+  .bolt:active .bolt__body {
+    scale: none;
+  }
+
+  .roster__row:hover,
+  .half:hover .half__body,
+  .shape:hover .shape__body,
+  .bolt:hover .bolt__body {
+    translate: none;
+  }
+}
+
+/* ==========================================================================
+   Doll page: the photo and its thumbnails on the left; on the right the name and
+   price, one card holding every choice and the button, then three reassurances.
+   The doll's story and the practical fold-outs follow across the page.
+   ========================================================================== */
+
+.product {
+  gap: 2rem;
+}
+
+@media (min-width: 56rem) {
+  .product {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 3rem clamp(2.5rem, 5vw, 5rem);
+  }
+}
+
+/* Thumbnails: a row under the photo on a phone, a column beside it on a wide screen. */
+.product .product__gallery {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+}
+
+.product .product__thumbs {
+  display: flex;
+  gap: 0.6rem;
+  padding: 3px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+@media (min-width: 56rem) {
+  .product .product__gallery {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .product .product__thumbs {
+    flex-direction: column;
+    overflow: visible;
+  }
+}
+
+/* Every photo sits in a white frame with a fine edge, so it reads the same whether its
+   own background is cream studio paper or a nursery. */
+.product .product__main {
+  flex: 1;
+  padding: clamp(0.4rem, 1vw, 0.65rem);
+  border-radius: 24px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.product .product__main img,
+.product .product__main .placeholder-svg {
+  border-radius: 16px;
+}
+
+.product .product__thumb {
+  display: block;
+  width: 4.25rem;
+  padding: 3px;
+  border-radius: 14px;
+  background: var(--color-card);
+  box-shadow: 0 0 0 1px var(--hairline);
+  transition: box-shadow 0.15s ease;
+}
+
+.product .product__thumb img {
+  border-radius: 11px;
+}
+
+.product .product__thumb:hover {
+  box-shadow: 0 0 0 1.5px var(--color-text);
+}
+
+.product .product__thumb[aria-current='true'] {
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text);
+}
+
+/* Name, what it is, and the price with its "made to order" tag. */
+.product__info h1 {
+  margin-bottom: 0.1em;
+}
+
+.product .product__maker {
+  margin-bottom: 1.1rem;
+}
+
+.product__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.product__price .price {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.product__price .lead-time {
+  margin: 0;
+  padding: 0.3rem 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-sage);
+  box-shadow: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* The buy card. */
+.product-form.buy {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: 24px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.buy .option,
+.buy .field {
+  margin: 0;
+}
+
+.buy .option legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  width: 100%;
+}
+
+.option__chosen {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+/* Fabrics as round colours. The chosen one wears a dark ring. */
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 4px;
+}
+
+.dot {
+  position: relative;
+  cursor: pointer;
+}
+
+.dot input {
+  position: absolute;
+  opacity: 0;
+}
+
+.dot__fill {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12);
+  transition: box-shadow 0.15s ease;
+}
+
+.dot:hover .dot__fill {
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12), 0 0 0 2px var(--color-surface), 0 0 0 3.5px var(--hairline);
+}
+
+.dot input:checked + .dot__fill {
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12), 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-text);
+}
+
+.dot input:focus-visible + .dot__fill {
+  box-shadow: var(--ring);
+}
+
+/* The name field: its price beside the label, a count under it. */
+.field__head,
+.field__foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.field__extra {
+  font-size: 0.925rem;
+  font-weight: 600;
+}
+
+.field__foot .form-note {
+  margin: 0;
+}
+
+.field__count {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.buy [data-thread-choice][hidden] {
+  display: none;
+}
+
+/* Quantity and the button on one line. */
+.buy .product-form__buy {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.buy .product-form__buy .button {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  padding-inline: 1rem;
+  padding-block: 1.05rem;
+  font-size: 1rem;
+}
+
+.stepper {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--color-text);
+}
+
+/* Each button is a round disc inside the pill, so its hover never covers the pill's edge. */
+.stepper__button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, scale 0.1s ease;
+}
+
+.stepper__button:hover {
+  background: var(--color-blush);
+}
+
+.stepper__button:active {
+  background: var(--color-text);
+  color: var(--color-surface);
+  scale: 0.92;
+}
+
+.stepper input[type='number'] {
+  width: 2.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.stepper input::-webkit-outer-spin-button,
+.stepper input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.buy .form-note:empty {
+  display: none;
+}
+
+/* Three reassurances, each with a small sky disc: delivery is sky's job. */
+.product__info .assure {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+
+.assure li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.assure svg {
+  flex: none;
+  box-sizing: content-box;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-sky);
+}
+
+/* Below: the story on the left, the fold-outs on the right. */
+.product__more {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+  margin-top: clamp(1rem, 4vw, 3rem);
+}
+
+@media (min-width: 56rem) {
+  .product__more {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+}
+
+.product__story,
+.product__folds {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 24px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.product__story h2 {
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+}
+
+/* Inside the story card the making details are plain, not a card of their own. */
+.product__story .making {
+  margin: 1.5rem 0 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.product__story .making__title {
+  font-size: 1.4rem;
+}
+
+/* Done steps wear a sage tick, joined by a fine line. */
+.product__story .making__steps {
+  gap: 0.9rem;
+  font-size: 1rem;
+}
+
+.product__story .making__steps li {
+  padding-left: 2.1rem;
+}
+
+.product__story .making__steps li:not(:last-child)::after {
+  top: 1.5rem;
+  bottom: -0.9rem;
+  left: calc(0.65rem - 1px);
+  border-left: 2px solid var(--color-sage);
+}
+
+.product__story .making__steps li::before {
+  top: 0.15rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: var(--color-sage)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.7rem no-repeat;
+}
+
+/* Fold-outs: a plus that turns into a minus. */
+.product__folds {
+  padding-block: 0.5rem;
+}
+
+.product__folds .detail {
+  padding-block: 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 0;
+}
+
+.product__folds .detail:first-child {
+  border-top: 0;
+}
+
+.product__folds summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.1rem;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.product__folds summary::-webkit-details-marker {
+  display: none;
+}
+
+.product__folds summary::after {
+  content: '+';
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-bg);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.product__folds [open] > summary::after {
+  content: '−';
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+.product__folds .detail .rte {
+  padding: 0 0 1.25rem;
+}
+
+/* The phone's bottom bar. */
+.buy-bar {
+  border-top: 0;
+  box-shadow: 0 -1px 0 var(--hairline), 0 -10px 24px rgb(45 41 38 / 0.08);
 }

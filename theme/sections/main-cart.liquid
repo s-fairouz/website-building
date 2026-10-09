@@ -9,7 +9,7 @@
       <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop' | t }}</a>
     </div>
   {%- else -%}
-    <form class="cart" action="{{ routes.cart_url }}" method="post">
+    <form class="cart" data-cart-page action="{{ routes.cart_url }}" method="post">
       <ul class="cart__items" role="list">
         {%- for item in cart.items -%}
           {%- assign unit_price = item.final_price | money -%}
@@ -35,24 +35,29 @@
               <p>{{ 'cart.each' | t: price: unit_price }}</p>
             </div>
 
+            <p class="cart-item__total">{{ item.final_line_price | money }}</p>
+
+            {%- comment -%} The buttons change the number and save the cart straight away (assets/theme.js). {%- endcomment -%}
             <div class="cart-item__quantity">
-              <label class="visually-hidden" for="quantity-{{ forloop.index }}">
-                {{- 'cart.quantity_for' | t: title: item.product.title -}}
-              </label>
-              <input
-                id="quantity-{{ forloop.index }}"
-                type="number"
-                name="updates[]"
-                value="{{ item.quantity }}"
-                min="0"
-                inputmode="numeric"
-              >
-              <a class="link" href="{{ item.url_to_remove }}" aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}">
+              <div class="stepper stepper--small">
+                <button type="button" class="stepper__button" data-cart-step="-1" aria-label="{{ 'products.decrease' | t }}">−</button>
+                <label class="visually-hidden" for="quantity-{{ forloop.index }}">
+                  {{- 'cart.quantity_for' | t: title: item.product.title -}}
+                </label>
+                <input
+                  id="quantity-{{ forloop.index }}"
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  inputmode="numeric"
+                >
+                <button type="button" class="stepper__button" data-cart-step="1" aria-label="{{ 'products.increase' | t }}">+</button>
+              </div>
+              <a class="cart-item__remove" href="{{ item.url_to_remove }}" aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}">
                 {{- 'cart.remove' | t -}}
               </a>
             </div>
-
-            <p class="cart-item__total">{{ item.final_line_price | money }}</p>
           </li>
         {%- endfor -%}
       </ul>
@@ -66,9 +71,10 @@
         </p>
         <p class="form-note">{{ 'cart.shipping_note' | t }}</p>
         <div class="cart__actions">
-          <button type="submit" name="update" class="button button--outline">{{ 'cart.update' | t }}</button>
           <button type="submit" name="checkout" class="button">{{ 'cart.checkout' | t }}</button>
+          <button type="submit" name="update" class="button button--outline" data-cart-update>{{ 'cart.update' | t }}</button>
         </div>
+        <a class="link cart__back" href="{{ routes.all_products_collection_url }}">{{ 'cart.shop' | t }}</a>
       </div>
     </form>
   {%- endif -%}

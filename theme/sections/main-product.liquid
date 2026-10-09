@@ -2,8 +2,6 @@
   assign current = product.selected_or_first_available_variant
   assign image = current.featured_image | default: product.featured_image
   assign artist = product.metafields.custom.artist.value
-  assign colors = product.metafields.custom.colors.value
-  assign colors_in_picker = false
   assign fabrics = product.metafields.custom.fabrics.value
 
   # A name is charged for by adding this product to the cart alongside the doll.
@@ -24,20 +22,6 @@
   {% if takes_name and addon_variant %}data-addon-id="{{ addon_variant.id }}"{% endif %}
 >
   <div class="product__gallery">
-    <div class="tile product__main">
-      {%- if image -%}
-        <img
-          src="{{ image | image_url: width: 1100 }}"
-          alt="{{ image.alt | escape }}"
-          width="{{ image.width }}"
-          height="{{ image.height }}"
-          data-product-image
-        >
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
-    </div>
-
     {%- if product.images.size > 1 -%}
       <ul class="product__thumbs" role="list">
         {%- for thumb in product.images -%}
@@ -48,6 +32,7 @@
               data-thumb="{{ thumb | image_url: width: 1100 }}"
               data-thumb-alt="{{ thumb.alt | escape }}"
               aria-label="{{ 'products.show_photo' | t: index: forloop.index, total: product.images.size }}"
+              {% if thumb.src == image.src %}aria-current="true"{% endif %}
             >
               <img
                 src="{{ thumb | image_url: width: 200 }}"
@@ -61,38 +46,44 @@
         {%- endfor -%}
       </ul>
     {%- endif -%}
+
+    <div class="tile product__main">
+      {%- if image -%}
+        <img
+          src="{{ image | image_url: width: 1100 }}"
+          alt="{{ image.alt | escape }}"
+          width="{{ image.width }}"
+          height="{{ image.height }}"
+          data-product-image
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
   </div>
 
   <div class="product__info">
     <h1>{{ product.title }}</h1>
-    {%- if artist -%}
-      <p class="product__maker">
-        {{ 'makers.made_by' | t }}
+    <p class="product__maker">
+      {%- if product.type != blank -%}
+        {{ 'companions.kind' | t: kind: product.type | downcase }}
+        {%- if artist %}, {% endif -%}
+      {%- endif -%}
+      {%- if artist -%}
+        {{ 'makers.made_by' | t | downcase }}
         <a href="{{ artist.system.url }}">{{ artist.name.value | escape }}</a>
-      </p>
-    {%- endif -%}
-    <div data-price>{% render 'price', product: product, variant: current %}</div>
-    {%- if current.available -%}
-      {% render 'lead-time', product: product %}
-    {%- endif -%}
+      {%- endif -%}
+    </p>
 
-    <ul class="product__facts" role="list">
-      {%- if takes_name and addon_variant -%}
-        {%- assign addon_text = addon_variant.price | money -%}
-        <li>{{ 'products.name_charge' | t: price: addon_text, days: section.settings.embroidery_days }}</li>
+    <div class="product__price">
+      <div data-price>{% render 'price', product: product, variant: current %}</div>
+      {%- if current.available -%}
+        {% render 'lead-time', product: product %}
       {%- endif -%}
-      {%- if section.settings.delivery_note != blank -%}
-        <li>{{ section.settings.delivery_note | escape }}</li>
-      {%- endif -%}
-      {%- if section.settings.returns_note != blank -%}
-        <li>{{ section.settings.returns_note | escape }}</li>
-      {%- endif -%}
-      {%- if section.settings.included_note != blank -%}
-        <li>{{ section.settings.included_note | escape }}</li>
-      {%- endif -%}
-    </ul>
+    </div>
 
-    {% form 'product', product, class: 'product-form', id: 'product-form' %}
+    {%- comment -%} Everything needed to buy, on one card. {%- endcomment -%}
+    {% form 'product', product, class: 'product-form buy', id: 'product-form' %}
       <input type="hidden" name="id" value="{{ current.id }}">
 
       {%- unless product.has_only_default_variant -%}
@@ -101,16 +92,6 @@
             <legend>{{ option.name | escape }}</legend>
             <div class="chips">
               {%- for value in option.values -%}
-                {%- liquid
-                  # A fabric swatch on the chip when the value is one of the doll's colours.
-                  assign swatch = nil
-                  for color in colors
-                    if color.name.value == value
-                      assign swatch = color.swatch.value
-                      assign colors_in_picker = true
-                    endif
-                  endfor
-                -%}
                 <label class="chip">
                   <input
                     type="radio"
@@ -119,12 +100,7 @@
                     data-option-position="{{ option.position }}"
                     {% if option.selected_value == value %}checked{% endif %}
                   >
-                  <span>
-                    {%- if swatch -%}
-                      <span class="swatch" style="--swatch: {{ swatch }}"></span>
-                    {%- endif -%}
-                    {{ value | escape }}
-                  </span>
+                  <span>{{ value | escape }}</span>
                 </label>
               {%- endfor -%}
             </div>
@@ -133,33 +109,44 @@
       {%- endunless -%}
 
       {%- if fabrics.size > 0 -%}
+        {%- comment -%} Fabrics are picked by colour; the chosen one's name is written beside the label. {%- endcomment -%}
         <fieldset class="option">
-          <legend>{{ 'products.fabric' | t }}</legend>
-          <div class="chips">
+          <legend>
+            {{ 'products.fabric' | t }}
+            <span class="option__chosen" data-fabric-name>{{ fabrics.first.name.value | escape }}</span>
+          </legend>
+          <div class="dots">
             {%- for fabric in fabrics -%}
-              <label class="chip">
+              <label class="dot" title="{{ fabric.name.value | escape }}">
                 <input
                   type="radio"
                   name="properties[{{ 'products.fabric' | t }}]"
                   value="{{ fabric.name.value | escape }}"
+                  data-fabric
                   {% if forloop.first %}checked{% endif %}
                 >
-                <span>
-                  <span class="swatch" style="--swatch: {{ fabric.swatch.value }}"></span>
-                  {{ fabric.name.value | escape }}
-                </span>
+                <span class="dot__fill" style="--swatch: {{ fabric.swatch.value }}"></span>
+                <span class="visually-hidden">{{ fabric.name.value | escape }}</span>
               </label>
             {%- endfor -%}
           </div>
         </fieldset>
       {%- endif -%}
 
-      {% render 'personalization-fields', product: product %}
+      {%- liquid
+        assign charge = ''
+        if takes_name and addon_variant
+          assign charge = addon_variant.price | money
+        endif
+      -%}
+      {% render 'personalization-fields', product: product, charge: charge, days: section.settings.embroidery_days %}
 
       <div class="product-form__buy">
-        <div class="field field--quantity">
-          <label for="quantity">{{ 'products.quantity' | t }}</label>
+        <div class="stepper">
+          <button type="button" class="stepper__button" data-step="-1" aria-label="{{ 'products.decrease' | t }}">−</button>
+          <label class="visually-hidden" for="quantity">{{ 'products.quantity' | t }}</label>
           <input id="quantity" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+          <button type="button" class="stepper__button" data-step="1" aria-label="{{ 'products.increase' | t }}">+</button>
         </div>
         <button type="submit" class="button" data-add{% unless current.available %} disabled{% endunless %}>
           {%- if current.available -%}
@@ -172,19 +159,39 @@
       <p class="form-note" data-add-status role="status"></p>
     {% endform %}
 
-    {%- if product.description != blank -%}
-      <div class="rte">{{ product.description }}</div>
+    <ul class="assure" role="list">
+      {%- if section.settings.delivery_note != blank -%}
+        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5h9v8H2zM11 8.5h3.5l3 3v2H11z"/><circle cx="6" cy="14.5" r="1.6"/><circle cx="14.5" cy="14.5" r="1.6"/></g></svg>{{ section.settings.delivery_note | escape }}</li>
+      {%- endif -%}
+      {%- if section.settings.returns_note != blank -%}
+        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11"/><path d="M3.5 7.5H12a4.5 4.5 0 0 1 0 9H8"/></g></svg>{{ section.settings.returns_note | escape }}</li>
+      {%- endif -%}
+      {%- if section.settings.included_note != blank -%}
+        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7.5" r="4.5"/><path d="M7.5 11.5 6.5 17.5 10 15.5l3.5 2-1-6"/></g></svg>{{ section.settings.included_note | escape }}</li>
+      {%- endif -%}
+    </ul>
+  </div>
+
+  {%- comment -%} Below the fold, across the page: the doll's story, then the practical fold-outs. {%- endcomment -%}
+  <div class="product__more">
+    <section class="product__story">
+      <h2>{{ 'products.about' | t: title: product.title }}</h2>
+      {%- if product.description != blank -%}
+        <div class="rte">{{ product.description }}</div>
+      {%- endif -%}
+      {% render 'product-making', product: product %}
+    </section>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="product__folds">
+        {%- for block in section.blocks -%}
+          <details class="detail" {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.heading | escape }}</summary>
+            <div class="rte">{{ block.settings.content }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
     {%- endif -%}
-
-    {% render 'product-specs', product: product, hide_colors: colors_in_picker %}
-    {% render 'product-making', product: product %}
-
-    {%- for block in section.blocks -%}
-      <details class="detail" {{ block.shopify_attributes }}>
-        <summary>{{ block.settings.heading | escape }}</summary>
-        <div class="rte">{{ block.settings.content }}</div>
-      </details>
-    {%- endfor -%}
   </div>
 
   <div class="buy-bar" data-buy-bar hidden>

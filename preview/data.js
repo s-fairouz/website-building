@@ -172,7 +172,7 @@ function doll({ handle, title, type, price, compare = null, hair, skin, style, d
     handle,
     title,
     type,
-    vendor: 'Hazelwick Dolls',
+    vendor: 'Kwaii Dolls',
     url: `/products/${handle}`,
     description,
     price,
@@ -265,9 +265,9 @@ const pages = {
     content: '',
   },
   about: {
-    title: 'About Hazelwick',
+    title: 'About Kwaii',
     template_suffix: 'about',
-    content: '<p>Hazelwick is a small workshop in Lyon. Every doll is crocheted by hand by Isabelle, one at a time, and made to order.</p><p>We only use materials we would give to our own family: certified cotton yarn, soft muslin and plush that small hands can hold on to.</p>',
+    content: '<p>Kwaii is a small workshop in Lyon. Every doll is crocheted by hand by Isabelle, one at a time, and made to order.</p><p>We only use materials we would give to our own family: certified cotton yarn, soft muslin and plush that small hands can hold on to.</p>',
   },
   makers: {
     title: 'Our maker',
@@ -313,7 +313,7 @@ const linklists = {
   },
 };
 
-const shop = { name: 'Hazelwick Dolls', currency: 'USD', customer_accounts_enabled: true, metaobjects: { artist: { values: makers } } };
+const shop = { name: 'Kwaii Dolls', currency: 'USD', customer_accounts_enabled: true, metaobjects: { artist: { values: makers } } };
 
 const routes = {
   root_url: '/',

@@ -10,7 +10,8 @@
 
 {% paginate collection.products by section.settings.per_page %}
   <div class="wrap stack-end">
-    {% render 'facets', results: collection, clear_url: collection.url %}
+    {%- capture count_label -%}{{ 'collections.count' | t: count: collection.products_count }}{%- endcapture -%}
+    {% render 'facets', results: collection, clear_url: collection.url, count_label: count_label %}
 
     {%- if collection.products.size == 0 -%}
       <div class="empty">
@@ -18,7 +19,6 @@
         <a class="button" href="{{ collection.url }}">{{ 'collections.clear' | t }}</a>
       </div>
     {%- else -%}
-      <p class="listing__count">{{ 'collections.count' | t: count: collection.products_count }}</p>
       <ul class="grid" role="list">
         {%- for product in collection.products -%}
           <li>{% render 'product-card', product: product %}</li>

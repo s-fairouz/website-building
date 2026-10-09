@@ -1,4 +1,4 @@
-# Hazelwick: a Shopify theme for a handmade doll shop
+# Kwaii: a Shopify theme for a handmade doll shop
 
 - `theme/` is the Shopify theme. This is the only folder that goes to Shopify.
 - `preview/` is a local stand-in for Shopify so you can see the theme without a store. It uses made-up dolls from `preview/data.js`.

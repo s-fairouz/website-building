@@ -288,8 +288,41 @@ if (product) {
     showVariant(variants.find((variant) => variant.options.every((value, i) => value === chosen[i])));
   });
 
-  product.querySelectorAll('[data-thumb]').forEach((thumb) => {
-    thumb.addEventListener('click', () => showImage(thumb.dataset.thumb, thumb.dataset.thumbAlt));
+  const thumbs = product.querySelectorAll('[data-thumb]');
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      showImage(thumb.dataset.thumb, thumb.dataset.thumbAlt);
+      // The ring follows the photo being shown.
+      thumbs.forEach((other) => other.removeAttribute('aria-current'));
+      thumb.setAttribute('aria-current', 'true');
+    });
+  });
+
+  // The chosen fabric's name is written beside its label.
+  const fabricName = form.querySelector('[data-fabric-name]');
+  form.addEventListener('change', (event) => {
+    if (fabricName && event.target.matches('[data-fabric]')) fabricName.textContent = event.target.value;
+  });
+
+  // The name: a running count, and the thread choice once there is a name to embroider.
+  const typedName = form.querySelector('[data-name]');
+  const nameCount = form.querySelector('[data-name-count]');
+  const threadChoice = form.querySelector('[data-thread-choice]');
+  if (typedName) {
+    const showName = () => {
+      if (nameCount) nameCount.textContent = typedName.value.length;
+      if (threadChoice) threadChoice.hidden = typedName.value.trim() === '';
+    };
+    typedName.addEventListener('input', showName);
+    showName();
+  }
+
+  // Quantity: the buttons either side of the number.
+  const quantity = form.querySelector('[name="quantity"]');
+  form.querySelectorAll('[data-step]').forEach((step) => {
+    step.addEventListener('click', () => {
+      quantity.value = Math.max(1, (parseInt(quantity.value, 10) || 1) + Number(step.dataset.step));
+    });
   });
 
   // Adds the doll. When a name is typed and the shop charges for one, the charge goes in
@@ -357,6 +390,24 @@ if (product) {
     }).observe(form.querySelector('[data-add]'));
   }
 }
+
+// Cart page: the − and + buttons change a line's quantity and save the cart at once,
+// so the "Update cart" button is only needed when the number is typed by hand.
+document.querySelectorAll('[data-cart-page]').forEach((form) => {
+  const update = form.querySelector('[data-cart-update]');
+  const save = () => (form.requestSubmit ? form.requestSubmit(update) : form.submit());
+  update.hidden = true;
+  form.querySelectorAll('[data-cart-step]').forEach((step) => {
+    step.addEventListener('click', () => {
+      const input = step.parentElement.querySelector('input');
+      input.value = Math.max(0, (parseInt(input.value, 10) || 0) + Number(step.dataset.cartStep));
+      save();
+    });
+  });
+  form.querySelectorAll('input[name="updates[]"]').forEach((input) => {
+    input.addEventListener('change', save);
+  });
+});
 
 // Adopt page: shows one step at a time, keeps the order ticket in step with the choices,
 // and adds the doll (plus the name charge, when the switch is on) to the cart.

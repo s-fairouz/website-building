@@ -20,7 +20,8 @@
     {%- capture clear_url -%}{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product{%- endcapture -%}
 
     <div class="wrap stack-end">
-      {% render 'facets', results: search, clear_url: clear_url, terms: search.terms %}
+      {%- capture count_label -%}{%- if search.results_count > 0 -%}{{ 'search.results_count' | t: count: search.results_count }}{%- endif -%}{%- endcapture -%}
+      {% render 'facets', results: search, clear_url: clear_url, terms: search.terms, count_label: count_label %}
 
         {%- if search.results_count == 0 -%}
           <div class="empty">
@@ -28,7 +29,6 @@
             <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'search.browse_all' | t }}</a>
           </div>
         {%- else -%}
-          <p class="listing__count">{{ 'search.results_count' | t: count: search.results_count }}</p>
           <ul class="grid" role="list">
             {%- for item in search.results -%}
               <li>

@@ -12,7 +12,7 @@ module.exports = {
   'Pocket dolls': 'Poupées de poche',
   'Doll clothes': 'Vêtements de poupée',
   'About': 'À propos',
-  'About Hazelwick': 'À propos de Hazelwick',
+  'About Kwaii': 'À propos de Kwaii',
   'Questions and answers': 'Questions et réponses',
   'Shipping and returns': 'Livraison et retours',
   'Contact us': 'Nous contacter',
@@ -29,8 +29,8 @@ module.exports = {
   '<p>Small 18 cm dolls made to travel.</p>': '<p>De petites poupées de 18 cm, faites pour voyager.</p>',
   '<p>Spare outfits for full-size dolls.</p>': '<p>Des tenues de rechange pour les grandes poupées.</p>',
 
-  '<p>Hazelwick is a small group of makers who sell under one roof. It started with dolls sewn for our own children and kept going when their friends asked for one.</p><p>Everything is made in batches of ten or so, and we only use materials we would give to our own family: cotton, linen, wool felt and carded wool.</p>':
-    '<p>Hazelwick réunit quelques artisans sous un même toit. Tout a commencé par des poupées cousues pour nos propres enfants, puis leurs amis en ont réclamé une.</p><p>Tout est fabriqué par séries d’une dizaine, et nous n’utilisons que des matières que nous donnerions à notre propre famille : coton, lin, feutre de laine et laine cardée.</p>',
+  '<p>Kwaii is a small group of makers who sell under one roof. It started with dolls sewn for our own children and kept going when their friends asked for one.</p><p>Everything is made in batches of ten or so, and we only use materials we would give to our own family: cotton, linen, wool felt and carded wool.</p>':
+    '<p>Kwaii réunit quelques artisans sous un même toit. Tout a commencé par des poupées cousues pour nos propres enfants, puis leurs amis en ont réclamé une.</p><p>Tout est fabriqué par séries d’une dizaine, et nous n’utilisons que des matières que nous donnerions à notre propre famille : coton, lin, feutre de laine et laine cardée.</p>',
 
   // Makers
   'Makers': 'Artisans',
@@ -38,8 +38,8 @@ module.exports = {
   'Our maker': 'Notre artisane',
 
   // About page
-  '<p>Hazelwick is a small workshop in Lyon. Every doll is crocheted by hand by Isabelle, one at a time, and made to order.</p><p>We only use materials we would give to our own family: certified cotton yarn, soft muslin and plush that small hands can hold on to.</p>':
-    '<p>Hazelwick est un petit atelier lyonnais. Chaque poupée est crochetée à la main par Isabelle, une à une, et fabriquée à la commande.</p><p>Nous n’utilisons que des matières que nous donnerions à notre propre famille : du fil de coton certifié, une mousseline douce et une peluche que les petites mains peuvent attraper.</p>',
+  '<p>Kwaii is a small workshop in Lyon. Every doll is crocheted by hand by Isabelle, one at a time, and made to order.</p><p>We only use materials we would give to our own family: certified cotton yarn, soft muslin and plush that small hands can hold on to.</p>':
+    '<p>Kwaii est un petit atelier lyonnais. Chaque poupée est crochetée à la main par Isabelle, une à une, et fabriquée à la commande.</p><p>Nous n’utilisons que des matières que nous donnerions à notre propre famille : du fil de coton certifié, une mousseline douce et une peluche que les petites mains peuvent attraper.</p>',
   'Crochet': 'Crochet',
   'The body is crocheted by hand, one stitch at a time: about 840 stitches and two hours of work.':
     'Le corps est crocheté à la main, maille après maille : environ 840 mailles et deux heures de travail.',
@@ -190,8 +190,8 @@ module.exports = {
   'Adoption certificate': 'Certificat d’adoption',
   'Free with every order': 'Offert avec chaque commande',
   'A doll is not just a toy.': 'Une poupée n’est pas un simple jouet.',
-  '<p>It is the first friend. The one that stays in the bed through feverish nights, travels in every suitcase, and may still be there in thirty years at the back of a drawer.</p><p>At Hazelwick, every doll is crocheted by hand, stitch after stitch, by a maker who knows its name before it reaches you.</p>':
-    '<p>C’est la première amie. Celle qui reste dans le lit pendant les nuits de fièvre, qui voyage dans toutes les valises, qui sera peut-être encore là dans trente ans au fond d’un tiroir.</p><p>Chez Hazelwick, chaque poupée est crochetée à la main, maille après maille, par une artisane qui connaît son prénom avant même qu’elle arrive chez vous.</p>',
+  '<p>It is the first friend. The one that stays in the bed through feverish nights, travels in every suitcase, and may still be there in thirty years at the back of a drawer.</p><p>At Kwaii, every doll is crocheted by hand, stitch after stitch, by a maker who knows its name before it reaches you.</p>':
+    '<p>C’est la première amie. Celle qui reste dans le lit pendant les nuits de fièvre, qui voyage dans toutes les valises, qui sera peut-être encore là dans trente ans au fond d’un tiroir.</p><p>Chez Kwaii, chaque poupée est crochetée à la main, maille après maille, par une artisane qui connaît son prénom avant même qu’elle arrive chez vous.</p>',
   'Read our story': 'Lire notre histoire',
   'Made by hand': 'Fait main',
   'By makers who love the work, in their own studios': 'Par des artisans passionnés, dans leurs ateliers',
@@ -213,7 +213,7 @@ module.exports = {
   'I was looking for something original, not factory-made. It is perfect. You can see every stitch. This is real craft.':
     'Je cherchais quelque chose d’original, pas industriel. Elle est parfaite. On voit chaque maille. C’est du vrai artisanat.',
   'Mother of Noé': 'Maman de Noé',
-  'Join the Hazelwick family': 'Rejoindre la famille Hazelwick',
+  'Join the Kwaii family': 'Rejoindre la famille Kwaii',
   'Behind the scenes at the studio, new dolls, and advice on choosing a first doll. One gentle, honest letter a month.':
     'Coulisses de l’atelier, nouvelles créations, conseils pour choisir la première poupée : une lettre mensuelle douce et sincère.',
 
@@ -241,10 +241,10 @@ module.exports = {
   'Adopt a doll': 'Adopter une poupée',
   'Adopt': 'Adopter',
   'Shopping experience': 'Expérience d’achat',
-  'Hazelwick order journey': 'Parcours de commande Hazelwick',
+  'Kwaii order journey': 'Parcours de commande Kwaii',
   'From the studio to your home: 6 steps designed for mums.': 'De l’atelier à la maison : 6 étapes pensées pour les mamans.',
   'Choose your companion': 'Choisir son compagnon',
-  'Among the dolls of the Hazelwick family': 'Parmi les poupées de la famille Hazelwick',
+  'Among the dolls of the Kwaii family': 'Parmi les poupées de la famille Kwaii',
   'Girl or boy?': 'Fille ou garçon ?',
   'Decides the colours of the doll and the fabric': 'Détermine les couleurs de la poupée et du tissu',
   'Girl': 'Fille',
@@ -306,8 +306,8 @@ module.exports = {
   '11 May 2025, gold thread': '11 mai 2025, fil doré',
   'Quality check and wrapping': 'Contrôle qualité et emballage',
   '13 May 2025, gift box': '13 mai 2025, coffret',
-  'Send us a photo of Léa with her doll. It will join the gallery of Hazelwick families.':
-    'Partagez une photo de Léa avec sa poupée : elle rejoindra la galerie des familles Hazelwick.',
+  'Send us a photo of Léa with her doll. It will join the gallery of Kwaii families.':
+    'Partagez une photo de Léa avec sa poupée : elle rejoindra la galerie des familles Kwaii.',
   'Send a photo': 'Envoyer une photo',
 
   // The eight companions
@@ -320,7 +320,7 @@ module.exports = {
   '<p>Rey the zebra, crocheted by hand.</p>': '<p>Rey le zèbre, crocheté à la main.</p>',
   '<p>Lambi the doe, crocheted by hand.</p>': '<p>Lambi la biche, crochetée à la main.</p>',
   'Certificate': 'Certificat',
-  'Among the 8 animals of the Hazelwick family': 'Parmi les 8 animaux de la famille Hazelwick',
+  'Among the 8 animals of the Kwaii family': 'Parmi les 8 animaux de la famille Kwaii',
   'Rabbit': 'Lapin',
   'Giraffe': 'Girafe',
   'Bear': 'Ours',
@@ -339,17 +339,17 @@ module.exports = {
   'Our story': 'Notre histoire',
   '“From thread to stitch!”': '« De fil en maille ! »',
   'Made with love': 'Fait avec amour',
-  'The Hazelwick family': 'La famille Hazelwick',
+  'The Kwaii family': 'La famille Kwaii',
   'The doll workshop': 'L’atelier des doudous',
   'See all companions': 'Voir tous les compagnons',
   'Favourite of mums': 'Favori des mamans',
-  'The Hazelwick spirit': 'L’esprit Hazelwick',
+  'The Kwaii spirit': 'L’esprit Kwaii',
   'Born from crochet: read our story': 'Nés du crochet : lire notre histoire',
   'Made in France': 'Fait en France',
   'By passionate makers, in their studios': 'Par des artisanes passionnées, dans leurs ateliers',
   'Personalization option': 'Option personnalisation',
   'Buni, name embroidery, gold thread': 'Buni, broderie prénom, coton doré',
-  'The hands of Hazelwick': 'Les mains de Hazelwick',
+  'The hands of Kwaii': 'Les mains de Kwaii',
   'Every stitch, a love story.': 'Chaque point, une histoire d’amour.',
   'Our makers crochet each doll by hand, in their studios in Lyon, Bordeaux and Nantes. Their first name goes with every creation, so you always know who made your child’s companion.':
     'Nos artisanes crochètent chaque doudou à la main, dans leurs ateliers à Lyon, Bordeaux, Nantes. Leur prénom accompagne chaque création, pour que vous sachiez toujours qui a fabriqué le compagnon de votre enfant.',
@@ -367,11 +367,11 @@ module.exports = {
   'What families say': 'Ce que disent les familles',
   'My four-month-old daughter won’t let go of Tenta. The quality is incredible. You can really feel it was made by hand, with love.':
     'Ma fille de 4 mois ne lâche plus Tenta. La qualité est incroyable : on sent vraiment que c’est fait à la main avec amour.',
-  'The adoption certificate melted us. An unforgettable birth present for my niece. Thank you, Hazelwick.':
-    'Le certificat d’adoption nous a fait fondre. Un cadeau de naissance inoubliable pour ma nièce. Merci Hazelwick.',
+  'The adoption certificate melted us. An unforgettable birth present for my niece. Thank you, Kwaii.':
+    'Le certificat d’adoption nous a fait fondre. Un cadeau de naissance inoubliable pour ma nièce. Merci Kwaii.',
   'I was looking for something original, not factory-made. Buni is perfect. You can see every stitch. This is real craft.':
     'Je cherchais quelque chose d’original, pas industriel. Buni est parfait. On voit chaque maille. C’est du vrai artisanat.',
-  'The Hazelwick notebook': 'Le carnet de Hazelwick',
+  'The Kwaii notebook': 'Le carnet de Kwaii',
 
   // Contact page
   'Message sent. We reply within two working days.': 'Message envoyé. Nous répondons sous deux jours ouvrés.',
