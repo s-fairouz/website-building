@@ -25,9 +25,9 @@
     "add_to_cart": "Ajouter au panier",
     "add_error": "L’ajout n’a pas fonctionné. Réessayez.",
     "show_photo": "Afficher la photo {{ index }} sur {{ total }}",
-    "engraving": "Prénom gravé",
-    "engraving_label": "Prénom à graver (facultatif)",
-    "engraving_hint": "20 caractères maximum, gravés tels que saisis.",
+    "engraving": "Prénom brodé",
+    "engraving_label": "Prénom à broder (facultatif)",
+    "engraving_hint": "12 caractères maximum, brodés à la main tels que saisis.",
     "lead_time": "Fabriqué à la commande. Expédition actuelle sous {{ min }} à {{ max }} jours ouvrés.",
     "choose_options": "Choisir les options",
     "made_to_order": "Fait à la commande",
@@ -36,7 +36,18 @@
     "height_value": "{{ cm }} cm ({{ inches }} po)",
     "height_short": "{{ cm }} cm de haut",
     "size": "Taille",
-    "colors": "Couleurs disponibles"
+    "colors": "Couleurs disponibles",
+    "thread": "Fil",
+    "thread_gold": "Fil doré",
+    "thread_natural": "Fil naturel",
+    "fabric": "Tissu du corps",
+    "name_charge": "Un prénom ajoute {{ price }} et {{ days }} jours ouvrés.",
+    "name_days": "et {{ days }} jours ouvrés de plus",
+    "materials": "Matière",
+    "technique": "Fabrication",
+    "making_time": "Temps de création",
+    "stitches": "Mailles",
+    "making_steps": "Les étapes de fabrication de cette poupée"
   },
   "collections": {
     "title": "Collections",
@@ -107,6 +118,50 @@
     "materials": "Matières",
     "instagram": "Suivre {{ name }} sur Instagram",
     "pieces_by": "Créations de {{ name }}",
-    "empty": "Ajoutez vos artisans dans Contenu > Métaobjets de votre interface Shopify."
+    "empty": "Ajoutez vos artisans dans Contenu > Métaobjets de votre interface Shopify.",
+    "pieces": "{{ count }} créations",
+    "see_all": "Tout voir"
+  },
+  "newsletter": {
+    "subscribe": "S’abonner",
+    "success": "C’est noté. La prochaine lettre arrive bientôt."
+  },
+  "journey": {
+    "for": "Pour",
+    "shape": "Silhouette",
+    "selected": "Sélectionné",
+    "fabric_selected": "Tissu sélectionné :",
+    "doll": "Poupée",
+    "version": "Variante",
+    "embroidery": "Broderie",
+    "delivery": "Livraison",
+    "total": "Total",
+    "yes": "Oui",
+    "no": "Non",
+    "adopt": "Adopter",
+    "adopt_button": "Adopter — {{ price }}",
+    "steps": "Étapes",
+    "stop_companion": "Compagnon",
+    "stop_fabric": "Tissu",
+    "stop_name": "Prénom",
+    "stop_summary": "Récapitulatif",
+    "ticket": "Bon de commande",
+    "back": "Retour",
+    "continue": "Continuer"
+  },
+  "record": {
+    "title": "Certificat d’adoption",
+    "number": "N° {{ number }}",
+    "adopted_on": "Adoption officielle le {{ date }}",
+    "made_in": "Fabriquée à",
+    "maker": "La créatrice de {{ doll }}",
+    "done": "Fait"
+  },
+  "companions": {
+    "kind": "{{ kind }}",
+    "by": "par {{ name }}"
+  },
+  "reviews": {
+    "stars": "{{ count }} étoiles sur 5"
   }
 }

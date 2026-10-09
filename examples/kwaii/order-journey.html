@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order journey | Kwaii example</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+/* Preview shell: stands in for the chat widget these examples were written for. */
+:root {
+  --text-primary: #2A1A12;
+  --text-secondary: #6A4A30;
+  --text-muted: #8A6A50;
+  --text-success: #2E6B4A;
+  --text-warning: #8A5A10;
+  --text-accent: #8A4A20;
+  --surface-0: #EFE8E0;
+  --surface-1: #F7F3EF;
+  --surface-2: #FFFFFF;
+  --border: rgba(90, 50, 30, 0.15);
+  --border-strong: rgba(90, 50, 30, 0.3);
+  --border-success: rgba(46, 107, 74, 0.3);
+  --border-warning: rgba(138, 90, 16, 0.3);
+  --border-accent: #C87840;
+  --bg-success: #E6F2EA;
+  --bg-warning: #FBF0D8;
+  --bg-accent: #FBF0E6;
+  --radius: 8px;
+  --font-voice: Georgia, serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+body { margin: 0; padding: 24px 16px 48px; background: #F4EEE4; color: var(--text-primary); font-family: system-ui, sans-serif; }
+.preview-shell { max-width: 880px; margin: 0 auto; }
+.preview-back { display: inline-block; margin-bottom: 16px; color: var(--text-secondary); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+input[type="text"] { padding: 8px 10px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); }
+button { padding: 8px 14px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); cursor: pointer; }
+</style>
+<script>
+// The example buttons ask the chat for another mock-up; here they have nothing to talk to.
+function sendPrompt(text) { alert('This button asked the chat for:\n\n' + text); }
+</script>
+</head>
+<body>
+<div class="preview-shell">
+<a class="preview-back" href="index.html">All Kwaii examples</a>
+<!-- Original example, unchanged, from here down. -->
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.step{display:flex;flex-direction:column;gap:0;}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.step-num{width:32px;height:32px;border-radius:50%;background:#2A1A12;color:#F7F3EF;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Georgia,serif;}
+.step-title{font-size:15px;font-weight:500;color:var(--text-primary);}
+.step-sub{font-size:12px;color:var(--text-secondary);margin-top:1px;}
+.card{background:var(--surface-2);border-radius:12px;border:0.5px solid var(--border);padding:1rem 1.25rem;}
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:var(--radius);border:0.5px solid var(--border);}
+.pill-girl{background:#FBF0F3;color:#8A3A52;border-color:#F0C4D0;}
+.pill-boy{background:#EEF4FB;color:#1A4A7A;border-color:#B8D0EC;}
+.pill-opt{background:var(--bg-warning);color:var(--text-warning);border-color:var(--border-warning);}
+.connector{width:2px;background:var(--border-strong);margin:4px 0 4px 15px;height:24px;}
+.variant-btn{border:0.5px solid var(--border-strong);border-radius:var(--radius);padding:8px 12px;font-size:12px;cursor:pointer;background:var(--surface-1);color:var(--text-primary);transition:background 0.15s;}
+.variant-btn.sel{background:#2A1A12;color:#F7F3EF;border-color:#2A1A12;}
+.variant-btn:hover:not(.sel){background:var(--surface-0);}
+.fabric-swatch{width:36px;height:36px;border-radius:6px;border:0.5px solid var(--border);cursor:pointer;flex-shrink:0;}
+.fabric-swatch.sel{border:2px solid #C87840;}
+.badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:var(--radius);background:var(--bg-success);color:var(--text-success);}
+</style>
+
+<h2 class="sr-only">Parcours de commande Kwaii — de la sélection du doudou jusqu'à la livraison</h2>
+
+<div style="padding:1rem 0;max-width:680px;">
+
+  <!-- TITRE -->
+  <div style="margin-bottom:1.5rem;">
+    <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Expérience d'achat</div>
+    <div style="font-family:var(--font-voice);font-size:20px;color:var(--text-primary);margin-bottom:4px;">Parcours de commande Kwaii</div>
+    <div style="font-size:13px;color:var(--text-secondary);">De l'atelier à la maison — 7 étapes pensées pour les mamans.</div>
+  </div>
+
+  <!-- ÉTAPE 1 — CHOISIR L'ANIMAL -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Choisir son compagnon</div>
+        <div class="step-sub">Parmi les 8 animaux de la famille Kwaii</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div id="animal-buni" onclick="selectAnimal('buni',this)" style="border:2px solid #C87840;border-radius:8px;padding:8px;text-align:center;cursor:pointer;background:#FBF7F3;">
+        <div style="font-size:11px;font-weight:500;color:#2A1A12;">Buni</div>
+        <div style="font-size:10px;color:var(--text-muted);">lapin</div>
+      </div>
+      <div id="animal-zara" onclick="selectAnimal('zara',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Zara</div>
+        <div style="font-size:10px;color:var(--text-muted);">girafe</div>
+      </div>
+      <div id="animal-ted" onclick="selectAnimal('ted',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Ted</div>
+        <div style="font-size:10px;color:var(--text-muted);">ours</div>
+      </div>
+      <div id="animal-pachi" onclick="selectAnimal('pachi',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Pachi</div>
+        <div style="font-size:10px;color:var(--text-muted);">éléphant</div>
+      </div>
+      <div id="animal-tenta" onclick="selectAnimal('tenta',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Tenta</div>
+        <div style="font-size:10px;color:var(--text-muted);">pieuvre</div>
+      </div>
+      <div id="animal-wooly" onclick="selectAnimal('wooly',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Wooly</div>
+        <div style="font-size:10px;color:var(--text-muted);">agneau</div>
+      </div>
+      <div id="animal-rey" onclick="selectAnimal('rey',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Rey</div>
+        <div style="font-size:10px;color:var(--text-muted);">zèbre</div>
+      </div>
+      <div id="animal-lambi" onclick="selectAnimal('lambi',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;">
+        <div style="font-size:11px;font-weight:500;color:var(--text-primary);">Lambi</div>
+        <div style="font-size:10px;color:var(--text-muted);">biche</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 2 — FILLE / GARÇON -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Fille ou garçon ?</div>
+        <div class="step-sub">Détermine les couleurs du doudou et du tissu</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div id="gen-girl" onclick="selectGender('girl',this)" style="border:2px solid #D4527A;border-radius:8px;padding:12px;cursor:pointer;background:#FBF0F3;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#D4527A;flex-shrink:0;"></div>
+          <span style="font-size:13px;font-weight:500;color:#8A3A52;">Fille</span>
+        </div>
+        <div style="font-size:11px;color:#B07090;line-height:1.5;">Tons rose poudré, parme, fleuri · Accessoires roses · Tissu floral ou lunes</div>
+      </div>
+      <div id="gen-boy" onclick="selectGender('boy',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#3A7AC8;flex-shrink:0;"></div>
+          <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Garçon</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Tons bleu ciel, vert sauge, étoiles · Nœud papillon · Tissu étoiles ou renards</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 3 — AVEC / SANS BRAS -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Avec ou sans bras ?</div>
+        <div class="step-sub">Deux silhouettes différentes, même tendresse</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div id="arms-no" onclick="selectArms('no',this)" style="border:2px solid #C87840;border-radius:8px;padding:12px;cursor:pointer;background:#FBF7F3;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:500;color:#5A3010;">Sans bras</span>
+          <span class="badge">Sélectionné</span>
+        </div>
+        <svg width="80" height="70" viewBox="0 0 80 70" style="display:block;margin:0 auto;">
+          <ellipse cx="40" cy="26" rx="18" ry="17" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="30" cy="20" rx="5" ry="6.5" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="50" cy="20" rx="5" ry="6.5" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="32" cy="24" rx="2.5" ry="2.5" fill="#2A1A12"/>
+          <ellipse cx="48" cy="24" rx="2.5" ry="2.5" fill="#2A1A12"/>
+          <path d="M36 30 Q40 34 44 30" stroke="#2A1A12" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <rect x="22" y="40" width="36" height="26" rx="4" fill="#EDE4D6" stroke="#C0A880" stroke-width="1" stroke-dasharray="2,2"/>
+          <ellipse cx="40" cy="40" rx="8" ry="4" fill="#C87840" opacity="0.7"/>
+        </svg>
+        <div style="font-size:11px;color:#8A6040;text-align:center;line-height:1.5;">Tête + tissu plat doux<br>idéal 0–6 mois</div>
+      </div>
+      <div id="arms-yes" onclick="selectArms('yes',this)" style="border:0.5px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Avec bras</span>
+        </div>
+        <svg width="80" height="70" viewBox="0 0 80 70" style="display:block;margin:0 auto;">
+          <ellipse cx="40" cy="22" rx="18" ry="17" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="30" cy="16" rx="5" ry="6.5" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="50" cy="16" rx="5" ry="6.5" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.5"/>
+          <ellipse cx="32" cy="20" rx="2.5" ry="2.5" fill="#2A1A12"/>
+          <ellipse cx="48" cy="20" rx="2.5" ry="2.5" fill="#2A1A12"/>
+          <path d="M36 26 Q40 30 44 26" stroke="#2A1A12" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+          <line x1="24" y1="36" x2="12" y2="50" stroke="#D4C4B0" stroke-width="5" stroke-linecap="round"/>
+          <line x1="56" y1="36" x2="68" y2="50" stroke="#D4C4B0" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="12" cy="51" r="4" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.2"/>
+          <circle cx="68" cy="51" r="4" fill="#D4C4B0" stroke="#2A1A12" stroke-width="1.2"/>
+          <rect x="22" y="36" width="36" height="26" rx="4" fill="#EDE4D6" stroke="#C0A880" stroke-width="1" stroke-dasharray="2,2"/>
+          <ellipse cx="40" cy="36" rx="8" ry="4" fill="#C87840" opacity="0.7"/>
+        </svg>
+        <div style="font-size:11px;color:var(--text-secondary);text-align:center;line-height:1.5;">Tête + bras + tissu plat<br>idéal 6 mois+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 4 — TISSU -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Choisir le tissu du corps</div>
+        <div class="step-sub">Mousseline ou minky — en accord avec la variante choisie</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+      <div onclick="selectFabric(this,'Fleurs terracotta')" class="fabric-swatch sel" style="background:linear-gradient(135deg,#F5EAE0 50%,#C87840 50%);position:relative;" title="Fleurs terracotta"></div>
+      <div onclick="selectFabric(this,'Étoiles bleu ciel')" class="fabric-swatch" style="background:#B8D4E8;" title="Étoiles bleu ciel"></div>
+      <div onclick="selectFabric(this,'Lunes rose poudré')" class="fabric-swatch" style="background:#EDD8D8;" title="Lunes rose poudré"></div>
+      <div onclick="selectFabric(this,'Floral aquarelle')" class="fabric-swatch" style="background:linear-gradient(135deg,#E8F0E0 33%,#D4C0B0 33%,#D4C0B0 66%,#C8D8E0 66%);" title="Floral aquarelle"></div>
+      <div onclick="selectFabric(this,'Renards fleuris')" class="fabric-swatch" style="background:#EAE4D8;" title="Renards fleuris"></div>
+      <div onclick="selectFabric(this,'Minky bleu polaire')" class="fabric-swatch" style="background:#8EC4D8;" title="Minky bleu polaire"></div>
+    </div>
+    <div id="fabric-label" style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;">
+      <i class="ti ti-check" style="color:var(--text-success);" aria-hidden="true"></i>
+      Tissu sélectionné : <strong style="color:var(--text-primary);">Fleurs terracotta</strong>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 5 — PERSONNALISATION -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Personnalisation</div>
+        <div class="step-sub">Option broderie prénom — +4 € · +3 jours</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface-1);border-radius:var(--radius);border:0.5px dashed var(--border-strong);margin-bottom:10px;">
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--text-primary);">Broder un prénom</div>
+        <div style="font-size:11px;color:var(--text-secondary);">Broderie à la main · fil doré ou naturel · 12 caractères max</div>
+      </div>
+      <div id="perso-toggle" onclick="togglePerso()" style="width:40px;height:22px;border-radius:11px;background:#C87840;border:none;cursor:pointer;position:relative;transition:background 0.2s;">
+        <div id="perso-knob" style="width:16px;height:16px;border-radius:50%;background:white;position:absolute;top:3px;right:3px;transition:right 0.2s;"></div>
+      </div>
+    </div>
+    <div id="perso-field" style="display:flex;gap:8px;align-items:center;">
+      <input type="text" id="prenom-input" placeholder="ex : Léa" maxlength="12" style="flex:1;font-size:13px;" oninput="updatePreview()">
+      <div style="display:flex;gap:4px;">
+        <div onclick="setFil('dore',this)" id="fil-dore" style="font-size:11px;padding:5px 10px;border-radius:var(--radius);background:#2A1A12;color:#F7F3EF;cursor:pointer;border:none;">Fil doré</div>
+        <div onclick="setFil('nat',this)" id="fil-nat" style="font-size:11px;padding:5px 10px;border-radius:var(--radius);background:var(--surface-1);color:var(--text-primary);cursor:pointer;border:0.5px solid var(--border);">Fil naturel</div>
+      </div>
+    </div>
+    <div id="prenom-preview" style="margin-top:10px;font-family:var(--font-voice);font-size:18px;font-style:italic;color:#C87840;min-height:26px;"></div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 6 — RÉCAP & PRIX -->
+  <div class="card" style="margin-bottom:8px;">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title">Récapitulatif</div>
+        <div class="step-sub">Vérification avant l'adoption</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Doudou</div>
+        <div id="recap-animal" style="font-size:13px;font-weight:500;color:var(--text-primary);">Buni le lapin</div>
+      </div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Variante</div>
+        <div id="recap-variant" style="font-size:13px;font-weight:500;color:var(--text-primary);">Fille · sans bras</div>
+      </div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Tissu</div>
+        <div id="recap-tissu" style="font-size:13px;font-weight:500;color:var(--text-primary);">Fleurs terracotta</div>
+      </div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Broderie</div>
+        <div id="recap-broderie" style="font-size:13px;font-weight:500;color:var(--text-primary);">Non</div>
+      </div>
+    </div>
+    <div style="border-top:0.5px solid var(--border);padding-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:13px;color:var(--text-secondary);">Doudou</span>
+        <span style="font-size:13px;color:var(--text-primary);">34 €</span>
+      </div>
+      <div id="prix-brode-line" style="display:none;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:13px;color:var(--text-secondary);">Broderie prénom</span>
+        <span style="font-size:13px;color:var(--text-primary);">+ 4 €</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:13px;color:var(--text-secondary);">Livraison</span>
+        <span style="font-size:13px;color:var(--text-success);font-weight:500;">Offerte dès 50 €</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:0.5px solid var(--border);">
+        <span style="font-size:15px;font-weight:500;color:var(--text-primary);">Total</span>
+        <span id="total-price" style="font-size:20px;font-weight:500;font-family:var(--font-voice);color:#2A1A12;">34 €</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <!-- ÉTAPE 7 — ADOPTION -->
+  <div class="card" style="background:#2A1A12;border-color:#2A1A12;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-family:var(--font-voice);font-size:16px;color:#F7F3EF;margin-bottom:3px;">Adopter <span id="adopt-name" style="color:#C87840;">Buni</span></div>
+        <div style="font-size:12px;color:#8A6A50;">Certificat d'adoption offert · Livraison 5–7 jours ouvrés</div>
+      </div>
+      <div style="background:#C87840;color:#FBF7F3;font-size:13px;font-weight:500;padding:11px 22px;border-radius:var(--radius);cursor:pointer;letter-spacing:0.05em;">
+        Adopter — <span id="btn-price">34 €</span>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-shield-check" style="font-size:14px;color:#8A6A50;" aria-hidden="true"></i>
+        <span style="font-size:11px;color:#8A6A50;">Paiement sécurisé</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-certificate" style="font-size:14px;color:#8A6A50;" aria-hidden="true"></i>
+        <span style="font-size:11px;color:#8A6A50;">Certificat d'adoption inclus</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-refresh" style="font-size:14px;color:#8A6A50;" aria-hidden="true"></i>
+        <span style="font-size:11px;color:#8A6A50;">Retours 30 jours</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER ORDER -->
+  <div style="margin-top:20px;padding:14px 16px;background:var(--bg-success);border-radius:12px;border:0.5px solid var(--border-success);">
+    <div style="font-size:12px;font-weight:500;color:var(--text-success);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+      <i class="ti ti-check" aria-hidden="true"></i>
+      Après la commande
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div style="font-size:11px;color:var(--text-success);text-align:center;padding:8px;background:var(--surface-2);border-radius:var(--radius);">
+        <div style="font-weight:500;margin-bottom:2px;">Email de confirmation</div>
+        <div style="color:var(--text-secondary);">immédiat</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-success);text-align:center;padding:8px;background:var(--surface-2);border-radius:var(--radius);">
+        <div style="font-weight:500;margin-bottom:2px;">Artisane prévenue</div>
+        <div style="color:var(--text-secondary);">sous 24h</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-success);text-align:center;padding:8px;background:var(--surface-2);border-radius:var(--radius);">
+        <div style="font-weight:500;margin-bottom:2px;">Livraison + certificat</div>
+        <div style="color:var(--text-secondary);">5–7 jours</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let state = {animal:'buni',gender:'girl',arms:'no',fabric:'Fleurs terracotta',perso:true,prenom:'',fil:'dore'};
+const prices = {buni:34,zara:36,ted:34,pachi:36,tenta:36,wooly:35,rey:36,lambi:36};
+
+function selectAnimal(name,el){
+  state.animal=name;
+  document.querySelectorAll('[id^="animal-"]').forEach(e=>{
+    e.style.border='0.5px solid var(--border)';e.style.background='';
+  });
+  el.style.border='2px solid #C87840';el.style.background='#FBF7F3';
+  updateRecap();
+}
+
+function selectGender(g,el){
+  state.gender=g;
+  document.getElementById('gen-girl').style.border='0.5px solid var(--border)';
+  document.getElementById('gen-girl').style.background='';
+  document.getElementById('gen-boy').style.border='0.5px solid var(--border)';
+  document.getElementById('gen-boy').style.background='';
+  if(g==='girl'){el.style.border='2px solid #D4527A';el.style.background='#FBF0F3';}
+  else{el.style.border='2px solid #3A7AC8';el.style.background='#EEF4FB';}
+  updateRecap();
+}
+
+function selectArms(a,el){
+  state.arms=a;
+  document.getElementById('arms-no').style.border='0.5px solid var(--border)';
+  document.getElementById('arms-no').style.background='';
+  document.getElementById('arms-no').querySelector('.badge').style.display='none';
+  document.getElementById('arms-yes').style.border='0.5px solid var(--border)';
+  document.getElementById('arms-yes').style.background='';
+  const yb=document.getElementById('arms-yes').querySelector('.badge');
+  if(yb) yb.style.display='none';
+  el.style.border='2px solid #C87840';el.style.background='#FBF7F3';
+  let badge=el.querySelector('.badge');
+  if(!badge){badge=document.createElement('span');badge.className='badge';badge.textContent='Sélectionné';el.querySelector('div').appendChild(badge);}
+  else badge.style.display='inline';
+  updateRecap();
+}
+
+function selectFabric(el,name){
+  state.fabric=name;
+  document.querySelectorAll('.fabric-swatch').forEach(s=>s.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('fabric-label').innerHTML=`<i class="ti ti-check" style="color:var(--text-success);" aria-hidden="true"></i> Tissu sélectionné : <strong style="color:var(--text-primary);">${name}</strong>`;
+  document.getElementById('recap-tissu').textContent=name;
+}
+
+function togglePerso(){
+  state.perso=!state.perso;
+  const t=document.getElementById('perso-toggle');
+  const k=document.getElementById('perso-knob');
+  const f=document.getElementById('perso-field');
+  const l=document.getElementById('prix-brode-line');
+  if(state.perso){t.style.background='#C87840';k.style.right='3px';f.style.display='flex';l.style.display='flex';}
+  else{t.style.background='var(--border-strong)';k.style.right='21px';f.style.display='none';l.style.display='none';}
+  updateRecap();
+}
+
+function setFil(f,el){
+  state.fil=f;
+  document.getElementById('fil-dore').style.background='var(--surface-1)';
+  document.getElementById('fil-dore').style.color='var(--text-primary)';
+  document.getElementById('fil-dore').style.border='0.5px solid var(--border)';
+  document.getElementById('fil-nat').style.background='var(--surface-1)';
+  document.getElementById('fil-nat').style.color='var(--text-primary)';
+  document.getElementById('fil-nat').style.border='0.5px solid var(--border)';
+  el.style.background='#2A1A12';el.style.color='#F7F3EF';el.style.border='none';
+}
+
+function updatePreview(){
+  state.prenom=document.getElementById('prenom-input').value;
+  document.getElementById('prenom-preview').textContent=state.prenom?`"${state.prenom}"`:'';
+  updateRecap();
+}
+
+function updateRecap(){
+  const base=prices[state.animal]||34;
+  const extra=state.perso?4:0;
+  const total=base+extra;
+  const aname=state.animal.charAt(0).toUpperCase()+state.animal.slice(1);
+  const animals={buni:'Buni le lapin',zara:'Zara la girafe',ted:'Ted l\'ours',pachi:'Pachi l\'éléphant',tenta:'Tenta la pieuvre',wooly:'Wooly l\'agneau',rey:'Rey le zèbre',lambi:'Lambi la biche'};
+  document.getElementById('recap-animal').textContent=animals[state.animal]||aname;
+  document.getElementById('recap-variant').textContent=(state.gender==='girl'?'Fille':'Garçon')+' · '+(state.arms==='no'?'sans bras':'avec bras');
+  document.getElementById('recap-broderie').textContent=state.perso?(state.prenom||'Oui'):'Non';
+  document.getElementById('total-price').textContent=total+' €';
+  document.getElementById('btn-price').textContent=total+' €';
+  document.getElementById('adopt-name').textContent=aname;
+}
+
+updateRecap();
+</script>
+
+</div>
+</body>
+</html>

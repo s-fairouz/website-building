@@ -1,0 +1,110 @@
+{%- comment -%}
+  The About page in one section: the page's title and text beside a photo, how a doll is
+  made as a row of numbered cards, and a closing invitation to meet the maker.
+  The title and text come from the page itself; the photo is a doll's second photo.
+{%- endcomment -%}
+
+{%- liquid
+  assign doll = section.settings.product
+  assign photo = doll.images[1] | default: doll.featured_image
+-%}
+
+<section class="band about">
+  <div class="wrap about__page">
+    <header class="about__hero{% if photo %} about__hero--photo{% endif %}">
+      <div class="about__intro">
+        <h1>{{ page.title }}</h1>
+        {%- if page.content != blank -%}
+          <div class="rte">{{ page.content }}</div>
+        {%- endif -%}
+      </div>
+      {%- if photo -%}
+        <div class="about__photo">
+          <img
+            src="{{ photo | image_url: width: 900 }}"
+            alt="{{ photo.alt | escape }}"
+            width="{{ photo.width }}"
+            height="{{ photo.height }}"
+          >
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="about__making">
+        {%- if section.settings.steps_heading != blank -%}
+          <h2>{{ section.settings.steps_heading | escape }}</h2>
+        {%- endif -%}
+        <ol class="about__steps" role="list">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title | escape }}</h3>
+              <p>{{ block.settings.text | escape }}</p>
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.closing_heading != blank -%}
+      <div class="about__close">
+        <div>
+          <h2>{{ section.settings.closing_heading | escape }}</h2>
+          {%- if section.settings.closing_text != blank -%}
+            <p>{{ section.settings.closing_text | escape }}</p>
+          {%- endif -%}
+        </div>
+        <div class="about__actions">
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+            <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+          {%- endif -%}
+          {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+            <a class="link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The title and text come from the page itself (Online Store > Pages)."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Doll in the photo",
+      "info": "Shows this doll's second photo, or its first if it has only one."
+    },
+    { "type": "text", "id": "steps_heading", "label": "Heading above the steps", "default": "How a doll is made" },
+    { "type": "header", "content": "Closing band" },
+    { "type": "text", "id": "closing_heading", "label": "Heading" },
+    { "type": "textarea", "id": "closing_text", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "link_label", "label": "Second link label" },
+    { "type": "url", "id": "link", "label": "Second link" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Crochet" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About"
+    }
+  ]
+}
+{% endschema %}

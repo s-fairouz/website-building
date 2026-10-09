@@ -1,0 +1,438 @@
+{%- comment -%}
+  Adopt a doll, one question at a time, beside an order ticket that fills in as you go.
+  The choices travel with the order as line item properties.
+  Without JavaScript every step shows one after another and the form still posts.
+{%- endcomment -%}
+
+{%- liquid
+  assign fabrics = section.settings.fabrics | newline_to_br | split: '<br />'
+  assign for_label = 'journey.for' | t
+  assign shape_label = 'journey.shape' | t
+  assign fabric_label = 'products.fabric' | t
+  assign has_model = false
+-%}
+
+<section
+  class="band flow"
+  data-journey
+  data-add-url="{{ routes.cart_add_url }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-text-error="{{ 'products.add_error' | t }}"
+>
+  <div class="wrap">
+    <header class="flow__head">
+      {%- comment -%} On a page of its own this is the page's title. {%- endcomment -%}
+      {%- if template.name == 'page' -%}
+        <h1>{{ section.settings.heading | escape }}</h1>
+      {%- else -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      <p>
+        {%- if section.settings.kicker != blank -%}
+          <span>{{ section.settings.kicker | escape }}.</span>
+        {% endif %}
+        {{ section.settings.text | escape }}
+      </p>
+    </header>
+
+    {%- comment -%} The six stops. Shown once the script has taken over the stepping. {%- endcomment -%}
+    <nav class="rail" aria-label="{{ 'journey.steps' | t }}" data-rail hidden>
+      <ol role="list">
+        <li><button type="button" data-goto="0">{{ 'journey.stop_companion' | t }}</button></li>
+        <li><button type="button" data-goto="1">{{ for_label }}</button></li>
+        <li><button type="button" data-goto="2">{{ shape_label }}</button></li>
+        <li><button type="button" data-goto="3">{{ 'journey.stop_fabric' | t }}</button></li>
+        <li><button type="button" data-goto="4">{{ 'journey.stop_summary' | t }}</button></li>
+        <li><button type="button" data-goto="5">{{ 'journey.adopt' | t }}</button></li>
+      </ol>
+    </nav>
+
+    <form class="flow__form" action="{{ routes.cart_add_url }}" method="post" accept-charset="UTF-8" data-at="1">
+      <input type="hidden" name="form_type" value="product">
+      <input type="hidden" name="quantity" value="1">
+
+      <div class="flow__steps">
+        {%- comment -%} 1. The companion: a price list {%- endcomment -%}
+        <fieldset class="step-pane" data-step>
+          <legend>
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.model_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.model_text | escape }}</span>
+          </legend>
+          <div class="roster">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                if block.type != 'model'
+                  continue
+                endif
+                assign model = block.settings.product
+                if model == blank
+                  continue
+                endif
+                assign variant = model.selected_or_first_available_variant
+                assign price_text = variant.price | money
+                assign tone = model.metafields.custom.colors.value.first
+              -%}
+              <label class="roster__row" {% if tone %}style="--swatch: {{ tone.swatch.value }}"{% endif %} {{ block.shopify_attributes }}>
+                <input
+                  type="radio"
+                  name="id"
+                  value="{{ variant.id }}"
+                  data-model
+                  data-title="{{ model.title | escape }}"
+                  data-kind="{{ model.type | escape }}"
+                  data-price-text="{{ price_text | escape }}"
+                  data-tone="{{ tone.swatch.value }}"
+                  {% unless variant.available %}disabled{% endunless %}
+                  {% if variant.available and has_model == false %}checked{% endif %}
+                >
+                {%- comment -%} The doll's own colour, from the first of its colour metaobjects. {%- endcomment -%}
+                <span class="roster__tone" {% if tone %}title="{{ tone.name.value | escape }}"{% endif %}>
+                  {%- if model.featured_image -%}
+                    <img src="{{ model.featured_image | image_url: width: 160 }}" alt="" width="160" height="200" loading="lazy">
+                  {%- endif -%}
+                </span>
+                <span class="roster__name">{{ model.title }}</span>
+                <span class="roster__kind">{{ model.type | downcase }}</span>
+                <span class="roster__price">
+                  {%- if variant.available -%}
+                    {{ price_text }}
+                  {%- else -%}
+                    {{ 'products.sold_out' | t }}
+                  {%- endif -%}
+                </span>
+                <span class="roster__check"></span>
+              </label>
+              {%- if variant.available -%}
+                {%- assign has_model = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        {%- comment -%} 2. Girl or boy: two halves {%- endcomment -%}
+        <fieldset class="step-pane" data-step data-recap-part="for">
+          <legend>
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.for_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.for_text | escape }}</span>
+          </legend>
+          <div class="halves">
+            <label class="half half--girl">
+              <input type="radio" name="properties[{{ for_label }}]" value="{{ section.settings.girl_title | escape }}" checked>
+              <span class="half__body">
+                <span class="half__tone">
+                  <svg viewBox="0 0 40 24" aria-hidden="true">
+                    <path d="M20 12 L4 3 V21 Z M20 12 L36 3 V21 Z"/>
+                  </svg>
+                </span>
+                <span class="half__name">{{ section.settings.girl_title | escape }}</span>
+                <span class="half__text">{{ section.settings.girl_text | escape }}</span>
+                <span class="half__check"></span>
+              </span>
+            </label>
+            <label class="half half--boy">
+              <input type="radio" name="properties[{{ for_label }}]" value="{{ section.settings.boy_title | escape }}">
+              <span class="half__body">
+                <span class="half__tone">
+                  <svg viewBox="0 0 40 24" aria-hidden="true">
+                    <path d="M20 12 L4 3 V21 Z M20 12 L36 3 V21 Z"/>
+                  </svg>
+                </span>
+                <span class="half__name">{{ section.settings.boy_title | escape }}</span>
+                <span class="half__text">{{ section.settings.boy_text | escape }}</span>
+                <span class="half__check"></span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        {%- comment -%} 3. With or without arms: two sketches {%- endcomment -%}
+        <fieldset class="step-pane" data-step data-recap-part="shape">
+          <legend>
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.shape_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.shape_text | escape }}</span>
+          </legend>
+          <div class="shapes">
+            <label class="shape">
+              <input type="radio" name="properties[{{ shape_label }}]" value="{{ section.settings.no_arms_title | escape }}" checked>
+              <span class="shape__body">
+                <span class="shape__tone">
+                  <svg class="shape__sketch" viewBox="0 0 80 70" aria-hidden="true">
+                    <rect class="shape__cloth" x="22" y="40" width="36" height="26" rx="4"/>
+                    <circle cx="40" cy="26" r="17"/>
+                  </svg>
+                </span>
+                <span class="shape__name">{{ section.settings.no_arms_title | escape }}</span>
+                <span class="shape__selected">{{ 'journey.selected' | t }}</span>
+                <span class="shape__text">{{ section.settings.no_arms_text | escape }}</span>
+                <span class="shape__check"></span>
+              </span>
+            </label>
+            <label class="shape">
+              <input type="radio" name="properties[{{ shape_label }}]" value="{{ section.settings.arms_title | escape }}">
+              <span class="shape__body">
+                <span class="shape__tone">
+                  <svg class="shape__sketch" viewBox="0 0 80 70" aria-hidden="true">
+                    <path class="shape__arm" d="M24 40 L12 54"/>
+                    <path class="shape__arm" d="M56 40 L68 54"/>
+                    <rect class="shape__cloth" x="22" y="40" width="36" height="26" rx="4"/>
+                    <circle cx="40" cy="26" r="17"/>
+                  </svg>
+                </span>
+                <span class="shape__name">{{ section.settings.arms_title | escape }}</span>
+                <span class="shape__selected">{{ 'journey.selected' | t }}</span>
+                <span class="shape__text">{{ section.settings.arms_text | escape }}</span>
+                <span class="shape__check"></span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        {%- comment -%} 4. Body fabric: a strip of offcuts {%- endcomment -%}
+        <fieldset class="step-pane" data-step data-recap-part="fabric">
+          <legend>
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.fabric_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.fabric_text | escape }}</span>
+          </legend>
+          <div class="bolts">
+            {%- assign first_fabric = '' -%}
+            {%- for fabric in fabrics -%}
+              {%- liquid
+                assign parts = fabric | split: '|'
+                assign label = parts[0] | strip
+                assign hex = parts[1] | strip
+                if label == blank
+                  continue
+                endif
+                if first_fabric == ''
+                  assign first_fabric = label
+                endif
+              -%}
+              <label class="bolt" style="--swatch: {{ hex | escape }}">
+                <input
+                  type="radio"
+                  name="properties[{{ fabric_label }}]"
+                  value="{{ label | escape }}"
+                  data-hex="{{ hex | escape }}"
+                  {% if first_fabric == label %}checked{% endif %}
+                >
+                <span class="bolt__body">
+                  <span class="bolt__cloth"></span>
+                  <span class="bolt__name">{{ label | escape }}</span>
+                  <span class="bolt__check"></span>
+                </span>
+              </label>
+            {%- endfor -%}
+          </div>
+          <p class="step-pane__chosen">
+            {{ 'journey.fabric_selected' | t }}
+            <strong data-fabric-name>{{ first_fabric | escape }}</strong>
+          </p>
+        </fieldset>
+
+        {%- comment -%} 5. Summary: the ticket itself is the summary, so this step only introduces it {%- endcomment -%}
+        <div class="step-pane step-pane--plain" data-step>
+          <p class="step-pane__legend">
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.summary_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.summary_text | escape }}</span>
+          </p>
+        </div>
+
+        {%- comment -%} 6. Adopt {%- endcomment -%}
+        <div class="step-pane step-pane--plain" data-step>
+          <p class="step-pane__legend">
+            <span class="step-pane__title" tabindex="-1">{{ 'journey.adopt' | t }} <span data-adopt-name></span></span>
+            {%- if section.settings.adopt_text != blank -%}
+              <span class="step-pane__sub">{{ section.settings.adopt_text | escape }}</span>
+            {%- endif -%}
+          </p>
+        </div>
+      </div>
+
+      <div class="flow__side">
+        {%- comment -%}
+          A sketch of the companion being made. The script colours the head and cloth,
+          shows or hides the arms and tints the bow.
+        {%- endcomment -%}
+        <svg class="figure" viewBox="0 0 160 150" aria-hidden="true" data-figure data-arms="false" data-for="first">
+          <path class="figure__arm" d="M50 88 L26 116"/>
+          <path class="figure__arm" d="M110 88 L134 116"/>
+          <rect class="figure__cloth" x="42" y="80" width="76" height="60" rx="10"/>
+          <circle class="figure__head" cx="80" cy="48" r="36"/>
+          <circle class="figure__eye" cx="67" cy="46" r="3"/>
+          <circle class="figure__eye" cx="93" cy="46" r="3"/>
+          <path class="figure__bow" d="M80 84 L66 76 V92 Z M80 84 L94 76 V92 Z"/>
+        </svg>
+
+      <details class="ticket" data-ticket open>
+        <summary>
+          <span class="ticket__title">{{ 'journey.ticket' | t }}</span>
+          <span class="ticket__peek" data-total></span>
+        </summary>
+
+        <div class="ticket__body" aria-live="polite">
+          <dl class="ticket__lines">
+            <div>
+              <dt>{{ 'journey.doll' | t }}</dt>
+              <dd data-recap="doll"></dd>
+            </div>
+            <div>
+              <dt>{{ 'journey.version' | t }}</dt>
+              <dd data-recap="version"></dd>
+            </div>
+            <div>
+              <dt>{{ fabric_label }}</dt>
+              <dd data-recap="fabric"></dd>
+            </div>
+          </dl>
+
+          <dl class="ticket__lines ticket__prices">
+            <div>
+              <dt>{{ 'journey.doll' | t }}</dt>
+              <dd data-price-doll></dd>
+            </div>
+            {%- if section.settings.delivery_text != blank -%}
+              <div>
+                <dt>{{ 'journey.delivery' | t }}</dt>
+                <dd>{{ section.settings.delivery_text | escape }}</dd>
+              </div>
+            {%- endif -%}
+          </dl>
+
+          <p class="ticket__total">
+            <span>{{ 'journey.total' | t }}</span>
+            <strong data-total></strong>
+          </p>
+        </div>
+      </details>
+      </div>
+
+      <div class="flow__adopt" data-adopt-pane>
+        <button type="submit" class="button" data-journey-add data-label="{{ 'journey.adopt_button' | t: price: '[price]' }}"{% unless has_model %} disabled{% endunless %}>
+          {{ 'journey.adopt' | t }}
+        </button>
+        <p class="form-note" data-journey-status role="status"></p>
+
+        <div class="after">
+          {%- if section.settings.after_title != blank -%}
+            <h2>{{ section.settings.after_title | escape }}</h2>
+          {%- endif -%}
+          <dl class="after__list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'after' -%}
+                <div {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.title | escape }}</dt>
+                  <dd>{{ block.settings.text | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+          <ul class="flow__promises" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'promise' -%}
+                <li {{ block.shopify_attributes }}>
+                  <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                    <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {{ block.settings.text | escape }}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow__nav" data-flow-nav hidden>
+        <button type="button" class="button button--outline" data-back>{{ 'journey.back' | t }}</button>
+        <button type="button" class="button" data-next>{{ 'journey.continue' | t }}</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Order journey",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Line above the heading", "default": "Shopping experience" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Order journey" },
+    { "type": "text", "id": "text", "label": "Text", "default": "From the studio to your home: 6 steps designed for mums." },
+
+    { "type": "header", "content": "Step 1: the doll" },
+    { "type": "text", "id": "model_title", "label": "Title", "default": "Choose your companion" },
+    { "type": "text", "id": "model_text", "label": "Text", "default": "Among the dolls of the family" },
+
+    { "type": "header", "content": "Step 2: girl or boy" },
+    { "type": "text", "id": "for_title", "label": "Title", "default": "Girl or boy?" },
+    { "type": "text", "id": "for_text", "label": "Text", "default": "Decides the colours of the doll and the fabric" },
+    { "type": "text", "id": "girl_title", "label": "First choice", "default": "Girl" },
+    { "type": "textarea", "id": "girl_text", "label": "First choice, description", "default": "Powder pink, mauve and floral tones. Pink accessories. Floral or moon fabric." },
+    { "type": "text", "id": "boy_title", "label": "Second choice", "default": "Boy" },
+    { "type": "textarea", "id": "boy_text", "label": "Second choice, description", "default": "Sky blue, sage green and star tones. Bow tie. Star or fox fabric." },
+
+    { "type": "header", "content": "Step 3: arms" },
+    { "type": "text", "id": "shape_title", "label": "Title", "default": "With or without arms?" },
+    { "type": "text", "id": "shape_text", "label": "Text", "default": "Two different shapes, the same tenderness" },
+    { "type": "text", "id": "no_arms_title", "label": "First choice", "default": "Without arms" },
+    { "type": "text", "id": "no_arms_text", "label": "First choice, description", "default": "Head and soft flat fabric, ideal from 0 to 6 months" },
+    { "type": "text", "id": "arms_title", "label": "Second choice", "default": "With arms" },
+    { "type": "text", "id": "arms_text", "label": "Second choice, description", "default": "Head, arms and flat fabric, ideal from 6 months" },
+
+    { "type": "header", "content": "Step 4: fabric" },
+    { "type": "text", "id": "fabric_title", "label": "Title", "default": "Choose the body fabric" },
+    { "type": "text", "id": "fabric_text", "label": "Text", "default": "Muslin or minky, to go with the version you chose" },
+    {
+      "type": "textarea",
+      "id": "fabrics",
+      "label": "Fabrics",
+      "info": "One per line, with its colour after a bar: Sky-blue stars | #B8D4E8",
+      "default": "Terracotta flowers | #C87840\nSky-blue stars | #B8D4E8\nPowder-pink moons | #EDD8D8\nWatercolour floral | #D4C0B0\nFlowering foxes | #EAE4D8\nPolar-blue minky | #8EC4D8"
+    },
+
+    { "type": "header", "content": "Step 5: summary" },
+    { "type": "text", "id": "summary_title", "label": "Title", "default": "Summary" },
+    { "type": "text", "id": "summary_text", "label": "Text", "default": "A last check before the adoption" },
+    { "type": "text", "id": "delivery_text", "label": "Delivery line", "info": "Keep this in step with the free-shipping amount on the Cart drawer section.", "default": "Free from $50" },
+
+    { "type": "header", "content": "Step 6: adopt" },
+    { "type": "text", "id": "adopt_text", "label": "Text", "default": "Adoption certificate included. Delivery in 5 to 7 working days." },
+
+    { "type": "header", "content": "After the order" },
+    { "type": "text", "id": "after_title", "label": "Title", "default": "After the order" }
+  ],
+  "blocks": [
+    {
+      "type": "model",
+      "name": "Doll",
+      "settings": [{ "type": "product", "id": "product", "label": "Doll" }]
+    },
+    {
+      "type": "promise",
+      "name": "Reassurance",
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Secure payment" }]
+    },
+    {
+      "type": "after",
+      "name": "After the order",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Confirmation email" },
+        { "type": "text", "id": "text", "label": "When", "default": "immediately" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Order journey",
+      "blocks": [
+        { "type": "model" },
+        { "type": "model" },
+        { "type": "promise", "settings": { "text": "Secure payment" } },
+        { "type": "promise", "settings": { "text": "Adoption certificate included" } },
+        { "type": "promise", "settings": { "text": "30-day returns" } },
+        { "type": "after", "settings": { "title": "Confirmation email", "text": "immediately" } },
+        { "type": "after", "settings": { "title": "Maker notified", "text": "within 24 hours" } },
+        { "type": "after", "settings": { "title": "Delivery and certificate", "text": "5 to 7 days" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

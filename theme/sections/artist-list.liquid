@@ -1,45 +1,218 @@
 {%- assign artists = shop.metaobjects.artist.values -%}
 
-<section class="band">
-  <div class="wrap">
-    {%- if section.settings.heading != blank -%}
-      <div class="band__head">
-        <h2>{{ section.settings.heading | escape }}</h2>
-      </div>
-    {%- endif -%}
+{%- capture intro -%}
+  {%- if section.settings.kicker != blank -%}
+    <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
+  {%- endif -%}
+  <h2>{{ section.settings.heading | escape }}</h2>
+  {%- if section.settings.text != blank -%}
+    <p>{{ section.settings.text | escape }}</p>
+  {%- endif -%}
+{%- endcapture -%}
 
-    {%- if artists.size > 0 -%}
-      <ul class="grid" role="list">
-        {%- for artist in artists -%}
-          {%- assign portrait = artist.portrait.value -%}
-          <li>
-            <article class="maker-card">
-              <a class="card__link" href="{{ artist.system.url }}">
-                <div class="tile maker-card__media">
-                  {%- if portrait -%}
-                    <img
-                      src="{{ portrait | image_url: width: 720 }}"
-                      alt=""
-                      width="{{ portrait.width }}"
-                      height="{{ portrait.height }}"
-                      loading="lazy"
-                    >
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </div>
-                <h3 class="card__title">{{ artist.name.value | escape }}</h3>
-              </a>
+{%- comment -%}
+  On a page of its own (no section heading) a single maker gets the whole page: the page's
+  title and text, her card, what she works with, and the dolls she makes.
+{%- endcomment -%}
+{%- liquid
+  assign own_page = false
+  if artists.size == 1 and section.settings.heading == blank
+    assign own_page = true
+  endif
+-%}
+
+<section class="band{% if own_page %} maker-page{% endif %}{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %}">
+  <div class="wrap">
+    {%- if artists.size == 1 -%}
+      {%- comment -%} One maker: a wide card of her own, with her portrait and the dolls she makes. {%- endcomment -%}
+      {%- for artist in artists limit: 1 -%}
+        {%- liquid
+          assign portrait = artist.portrait.value
+          assign works = artist.collection.value.products
+        -%}
+        {%- if own_page and page -%}
+          <header class="maker-page__head">
+            <h1>{{ page.title }}</h1>
+            {%- if page.content != blank -%}
+              <div class="maker-page__lede">{{ page.content }}</div>
+            {%- endif -%}
+          </header>
+        {%- endif -%}
+
+        <article class="maker-feature">
+          <div class="maker-feature__portrait">
+            {%- if portrait -%}
+              <img
+                src="{{ portrait | image_url: width: 900 }}"
+                alt=""
+                width="{{ portrait.width }}"
+                height="{{ portrait.height }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+
+          <div class="maker-feature__body">
+            {%- if section.settings.heading != blank -%}
+              <div class="maker-feature__intro">{{ intro }}</div>
+            {%- endif -%}
+
+            <div class="maker-feature__who">
+              <h2 class="maker-feature__name">
+                <a href="{{ artist.system.url }}">{{ artist.name.value | escape }}</a>
+              </h2>
               {%- if artist.location.value != blank -%}
-                <p class="maker-card__place">{{ artist.location.value | escape }}</p>
+                <p class="maker-feature__place">{{ artist.location.value | escape }}</p>
+              {%- endif -%}
+            </div>
+
+            {%- if own_page and artist.bio.value != blank -%}
+              <p class="maker-feature__bio">{{ artist.bio.value | escape }}</p>
+            {%- endif -%}
+
+            <ul class="maker-feature__facts" role="list">
+              {%- if artist.pieces_made.value -%}
+                <li>{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</li>
+              {%- endif -%}
+              {%- if artist.specialty.value != blank -%}
+                <li>{{ artist.specialty.value | escape }}</li>
+              {%- endif -%}
+            </ul>
+
+            {%- if works.size > 0 and own_page == false -%}
+              <ul class="maker-feature__works" role="list" aria-label="{{ 'makers.pieces_by' | t: name: artist.name.value | escape }}">
+                {%- for doll in works limit: 8 -%}
+                  {%- if doll.featured_image -%}
+                    <li>
+                      <a href="{{ doll.url }}" title="{{ doll.title | escape }}">
+                        <img
+                          src="{{ doll.featured_image | image_url: width: 160 }}"
+                          alt="{{ doll.title | escape }}"
+                          width="160"
+                          height="200"
+                          loading="lazy"
+                        >
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- elsif works.size == 0 and artist.makes.value != blank -%}
+              <p class="maker-feature__makes">{{ artist.makes.value | escape }}</p>
+            {%- endif -%}
+
+            <div class="maker-feature__foot">
+              {%- if section.settings.link_label != blank -%}
+                <a class="button" href="{{ artist.system.url }}">{{ section.settings.link_label | escape }}</a>
               {%- endif -%}
               {% render 'commission-status', artist: artist %}
-            </article>
-          </li>
-        {%- endfor -%}
-      </ul>
+            </div>
+          </div>
+        </article>
+
+        {%- if own_page -%}
+          {%- if artist.philosophy.value != blank -%}
+            <div class="maker-note">
+              <h2>{{ 'makers.materials' | t }}</h2>
+              <div>
+                <p>{{ artist.philosophy.value | escape }}</p>
+                {%- if artist.instagram.value != blank -%}
+                  <a class="link" href="{{ artist.instagram.value }}" rel="noopener">
+                    {{- 'makers.instagram' | t: name: artist.name.value -}}
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if works.size > 0 -%}
+            <div class="band__head maker-page__works">
+              <h2>{{ 'makers.pieces_by' | t: name: artist.name.value }}</h2>
+              <a class="link" href="{{ artist.collection.value.url }}">{{ 'makers.see_all' | t }}</a>
+            </div>
+            <ul class="companions__list" role="list">
+              {%- for doll in works limit: 8 -%}
+                {%- assign tone = doll.metafields.custom.colors.value.first -%}
+                <li>
+                  <a class="companion" href="{{ doll.url }}" {% if tone %}style="--swatch: {{ tone.swatch.value }}"{% endif %}>
+                    {%- if doll.featured_image -%}
+                      <span class="companion__tone companion__tone--photo">
+                        <img
+                          class="companion__photo"
+                          src="{{ doll.featured_image | image_url: width: 600 }}"
+                          alt="{{ doll.featured_image.alt | escape }}"
+                          width="600"
+                          height="750"
+                          loading="lazy"
+                        >
+                      </span>
+                    {%- endif -%}
+                    <span class="companion__name">{{ doll.title }}</span>
+                    <span class="companion__kind">{{ 'companions.kind' | t: kind: doll.type | downcase }}</span>
+                    <span class="companion__foot">
+                      <span class="companion__price">{{ doll.price | money }}</span>
+                    </span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
     {%- else -%}
-      <p class="lede">{{ 'makers.empty' | t }}</p>
+      {%- if section.settings.heading != blank -%}
+        <div class="makers__intro">
+          {{ intro }}
+          {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+            <a class="link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if artists.size > 0 -%}
+        <ul class="grid" role="list">
+          {%- for artist in artists -%}
+            {%- assign portrait = artist.portrait.value -%}
+            <li>
+              <article class="maker-card">
+                <a class="card__link" href="{{ artist.system.url }}">
+                  <div class="tile maker-card__media">
+                    {%- if portrait -%}
+                      <img
+                        src="{{ portrait | image_url: width: 720 }}"
+                        alt=""
+                        width="{{ portrait.width }}"
+                        height="{{ portrait.height }}"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </div>
+                  <h3 class="card__title">{{ artist.name.value | escape }}</h3>
+                </a>
+                {%- if artist.location.value != blank -%}
+                  <p class="maker-card__place">{{ artist.location.value | escape }}</p>
+                {%- endif -%}
+                {%- if artist.pieces_made.value -%}
+                  <p class="maker-card__place">{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</p>
+                {%- endif -%}
+                {%- if artist.specialty.value != blank -%}
+                  <p class="maker-card__place">{{ artist.specialty.value | escape }}</p>
+                {%- endif -%}
+                {%- if artist.makes.value != blank -%}
+                  <p class="maker-card__makes">{{ artist.makes.value | escape }}</p>
+                {%- endif -%}
+                {% render 'commission-status', artist: artist %}
+              </article>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="lede">{{ 'makers.empty' | t }}</p>
+      {%- endif -%}
     {%- endif -%}
   </div>
 </section>
@@ -49,10 +222,43 @@
   "name": "Makers",
   "settings": [
     {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "Same as the page" },
+        { "value": "blush", "label": "Pink" },
+        { "value": "sage", "label": "Sage" },
+        { "value": "sky", "label": "Sky" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Line above the heading"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
       "default": "Our makers"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "info": "With a single maker this is the button to her page."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
     }
   ],
   "presets": [

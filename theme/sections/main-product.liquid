@@ -4,6 +4,12 @@
   assign artist = product.metafields.custom.artist.value
   assign colors = product.metafields.custom.colors.value
   assign colors_in_picker = false
+  assign fabrics = product.metafields.custom.fabrics.value
+
+  # A name is charged for by adding this product to the cart alongside the doll.
+  assign addon = section.settings.embroidery_product
+  assign addon_variant = addon.selected_or_first_available_variant
+  assign takes_name = product.metafields.custom.personalizable.value
 -%}
 
 <div
@@ -15,6 +21,7 @@
   data-text-sold-out="{{ 'products.sold_out' | t }}"
   data-text-error="{{ 'products.add_error' | t }}"
   data-text-was="{{ 'products.was' | t }}"
+  {% if takes_name and addon_variant %}data-addon-id="{{ addon_variant.id }}"{% endif %}
 >
   <div class="product__gallery">
     <div class="tile product__main">
@@ -69,6 +76,22 @@
       {% render 'lead-time', product: product %}
     {%- endif -%}
 
+    <ul class="product__facts" role="list">
+      {%- if takes_name and addon_variant -%}
+        {%- assign addon_text = addon_variant.price | money -%}
+        <li>{{ 'products.name_charge' | t: price: addon_text, days: section.settings.embroidery_days }}</li>
+      {%- endif -%}
+      {%- if section.settings.delivery_note != blank -%}
+        <li>{{ section.settings.delivery_note | escape }}</li>
+      {%- endif -%}
+      {%- if section.settings.returns_note != blank -%}
+        <li>{{ section.settings.returns_note | escape }}</li>
+      {%- endif -%}
+      {%- if section.settings.included_note != blank -%}
+        <li>{{ section.settings.included_note | escape }}</li>
+      {%- endif -%}
+    </ul>
+
     {% form 'product', product, class: 'product-form', id: 'product-form' %}
       <input type="hidden" name="id" value="{{ current.id }}">
 
@@ -109,6 +132,28 @@
         {%- endfor -%}
       {%- endunless -%}
 
+      {%- if fabrics.size > 0 -%}
+        <fieldset class="option">
+          <legend>{{ 'products.fabric' | t }}</legend>
+          <div class="chips">
+            {%- for fabric in fabrics -%}
+              <label class="chip">
+                <input
+                  type="radio"
+                  name="properties[{{ 'products.fabric' | t }}]"
+                  value="{{ fabric.name.value | escape }}"
+                  {% if forloop.first %}checked{% endif %}
+                >
+                <span>
+                  <span class="swatch" style="--swatch: {{ fabric.swatch.value }}"></span>
+                  {{ fabric.name.value | escape }}
+                </span>
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endif -%}
+
       {% render 'personalization-fields', product: product %}
 
       <div class="product-form__buy">
@@ -132,6 +177,7 @@
     {%- endif -%}
 
     {% render 'product-specs', product: product, hide_colors: colors_in_picker %}
+    {% render 'product-making', product: product %}
 
     {%- for block in section.blocks -%}
       <details class="detail" {{ block.shopify_attributes }}>
@@ -175,6 +221,49 @@
 {% schema %}
 {
   "name": "Product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Under the price"
+    },
+    {
+      "type": "text",
+      "id": "delivery_note",
+      "label": "Delivery",
+      "default": "Delivered in 5 to 7 working days."
+    },
+    {
+      "type": "text",
+      "id": "returns_note",
+      "label": "Returns",
+      "default": "Returns within 30 days."
+    },
+    {
+      "type": "text",
+      "id": "included_note",
+      "label": "Comes with",
+      "info": "For example \"Comes with its adoption certificate.\" Leave empty to hide."
+    },
+    {
+      "type": "header",
+      "content": "Embroidered name"
+    },
+    {
+      "type": "product",
+      "id": "embroidery_product",
+      "label": "Embroidery charge",
+      "info": "A product priced at what a name costs. It is added to the cart when a name is typed. Leave empty to embroider for free."
+    },
+    {
+      "type": "range",
+      "id": "embroidery_days",
+      "label": "Extra working days for a name",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    }
+  ],
   "blocks": [
     {
       "type": "detail",

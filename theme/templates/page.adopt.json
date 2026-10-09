@@ -1,0 +1,119 @@
+{
+  "sections": {
+    "journey": {
+      "type": "order-journey",
+      "blocks": {
+        "buni": {
+          "type": "model",
+          "settings": {
+            "product": "buni"
+          }
+        },
+        "zara": {
+          "type": "model",
+          "settings": {
+            "product": "zara"
+          }
+        },
+        "ted": {
+          "type": "model",
+          "settings": {
+            "product": "ted"
+          }
+        },
+        "pachi": {
+          "type": "model",
+          "settings": {
+            "product": "pachi"
+          }
+        },
+        "tenta": {
+          "type": "model",
+          "settings": {
+            "product": "tenta"
+          }
+        },
+        "wooly": {
+          "type": "model",
+          "settings": {
+            "product": "wooly"
+          }
+        },
+        "rey": {
+          "type": "model",
+          "settings": {
+            "product": "rey"
+          }
+        },
+        "lambi": {
+          "type": "model",
+          "settings": {
+            "product": "lambi"
+          }
+        },
+        "secure": {
+          "type": "promise",
+          "settings": {
+            "text": "Secure payment"
+          }
+        },
+        "certificate": {
+          "type": "promise",
+          "settings": {
+            "text": "Adoption certificate included"
+          }
+        },
+        "returns": {
+          "type": "promise",
+          "settings": {
+            "text": "30-day returns"
+          }
+        },
+        "email": {
+          "type": "after",
+          "settings": {
+            "title": "Confirmation email",
+            "text": "immediately"
+          }
+        },
+        "maker": {
+          "type": "after",
+          "settings": {
+            "title": "Maker notified",
+            "text": "within 24 hours"
+          }
+        },
+        "delivery": {
+          "type": "after",
+          "settings": {
+            "title": "Delivery and certificate",
+            "text": "5 to 7 days"
+          }
+        }
+      },
+      "block_order": [
+        "buni",
+        "zara",
+        "ted",
+        "pachi",
+        "tenta",
+        "wooly",
+        "rey",
+        "lambi",
+        "secure",
+        "certificate",
+        "returns",
+        "email",
+        "maker",
+        "delivery"
+      ],
+      "settings": {
+        "heading": "Hazelwick order journey",
+        "model_text": "Among the 8 animals of the Hazelwick family"
+      }
+    }
+  },
+  "order": [
+    "journey"
+  ]
+}

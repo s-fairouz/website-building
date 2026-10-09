@@ -8,6 +8,25 @@ document.querySelectorAll('.language-form').forEach((form) => {
   form.addEventListener('change', () => form.submit());
 });
 
+// Header menu: when the links do not fit beside the icons, fold them behind the menu button.
+const siteHeader = document.querySelector('.site-header');
+const siteNav = siteHeader && siteHeader.querySelector('.site-nav');
+
+if (siteNav) {
+  const overflows = () => siteNav.scrollWidth > siteNav.clientWidth + 1;
+  const fitMenu = () => {
+    // Measure with the links showing. Make room first; fold the menu only if that is not enough.
+    siteHeader.classList.remove('is-tight', 'is-compact');
+    if (!overflows()) return;
+    siteHeader.classList.add('is-tight');
+    if (!overflows()) return;
+    siteHeader.classList.replace('is-tight', 'is-compact');
+  };
+  new ResizeObserver(fitMenu).observe(siteHeader);
+  // Web fonts change the links' widths once they load.
+  if (document.fonts) document.fonts.ready.then(fitMenu);
+}
+
 // Search panel: the header's search button opens it in place.
 const searchDrawer = document.querySelector('[data-search-drawer]');
 
@@ -273,6 +292,42 @@ if (product) {
     thumb.addEventListener('click', () => showImage(thumb.dataset.thumb, thumb.dataset.thumbAlt));
   });
 
+  // Adds the doll. When a name is typed and the shop charges for one, the charge goes in
+  // the same request as its own cart line, carrying the name so the two stay together.
+  const addDoll = async () => {
+    const fields = new FormData(form);
+    const nameField = form.querySelector('[data-name]');
+    const name = nameField ? nameField.value.trim() : '';
+    const thread = form.querySelector('[data-thread]');
+    // The thread only matters when there is a name to embroider.
+    if (thread && !name) fields.delete(thread.name);
+
+    if (!name || !text.addonId) return updateCart(text.addUrl, new URLSearchParams(fields));
+
+    const properties = {};
+    for (const [key, value] of fields) {
+      const match = key.match(/^properties\[(.+)\]$/);
+      if (match && String(value).trim() !== '') properties[match[1]] = String(value).trim();
+    }
+    const nameLabel = nameField.name.match(/^properties\[(.+)\]$/)[1];
+    const quantity = Math.max(1, parseInt(fields.get('quantity'), 10) || 1);
+    const response = await fetch(`${text.addUrl}.js`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        items: [
+          { id: Number(fields.get('id')), quantity, properties },
+          { id: Number(text.addonId), quantity, properties: { [nameLabel]: name } },
+        ],
+        sections: 'cart-drawer',
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.description || result.message);
+    if (drawer && result.sections && result.sections['cart-drawer']) renderCart(result.sections['cart-drawer']);
+    return result;
+  };
+
   // Add to cart without leaving the page, then open the drawer.
   // Without JavaScript the form posts normally and Shopify shows the cart page.
   form.addEventListener('submit', async (event) => {
@@ -283,7 +338,7 @@ if (product) {
     status.textContent = '';
 
     try {
-      await updateCart(text.addUrl, new URLSearchParams(new FormData(form)));
+      await addDoll();
       if (drawer) drawer.showModal();
       else window.location.href = text.cartUrl;
     } catch (error) {
@@ -302,3 +357,131 @@ if (product) {
     }).observe(form.querySelector('[data-add]'));
   }
 }
+
+// Adopt page: shows one step at a time, keeps the order ticket in step with the choices,
+// and adds the doll (plus the name charge, when the switch is on) to the cart.
+document.querySelectorAll('[data-journey]').forEach((journey) => {
+  const form = journey.querySelector('form');
+  const text = journey.dataset;
+  const find = (selector) => journey.querySelector(selector);
+  const steps = [...journey.querySelectorAll('[data-step]')];
+  const stops = [...journey.querySelectorAll('[data-goto]')];
+  const rail = find('[data-rail]');
+  const nav = find('[data-flow-nav]');
+  const back = find('[data-back]');
+  const next = find('[data-next]');
+  const adoptPane = find('[data-adopt-pane]');
+  const ticket = find('[data-ticket]');
+  const button = find('[data-journey-add]');
+  const status = find('[data-journey-status]');
+  const figure = find('[data-figure]');
+  const wide = window.matchMedia('(min-width: 60rem)');
+  let at = 0;
+  let reached = 0;
+
+  const chosen = (part) => {
+    const input = journey.querySelector(`[data-recap-part="${part}"] input:checked`);
+    return input ? input.value : '';
+  };
+
+  const update = () => {
+    // The sketch: cloth in the fabric's colour, arms and bow from the choices.
+    const part = (name) => [...journey.querySelectorAll(`[data-recap-part="${name}"] input`)];
+    const fabric = part('fabric').find((input) => input.checked);
+    if (fabric && fabric.dataset.hex) figure.style.setProperty('--cloth', fabric.dataset.hex);
+    figure.dataset.arms = String(part('shape').findIndex((input) => input.checked) > 0);
+    figure.dataset.for = part('for').findIndex((input) => input.checked) > 0 ? 'second' : 'first';
+
+    find('[data-fabric-name]').textContent = chosen('fabric');
+    find('[data-recap="version"]').textContent = [chosen('for'), chosen('shape').toLowerCase()].filter(Boolean).join(', ');
+    find('[data-recap="fabric"]').textContent = chosen('fabric');
+
+    const model = journey.querySelector('[data-model]:checked');
+    if (!model) return;
+    const price = model.dataset.priceText;
+    if (model.dataset.tone) figure.style.setProperty('--tone', model.dataset.tone);
+    find('[data-recap="doll"]').textContent = [model.dataset.title, model.dataset.kind.toLowerCase()].filter(Boolean).join(', ');
+    find('[data-price-doll]').textContent = model.dataset.priceText;
+    journey.querySelectorAll('[data-total]').forEach((total) => {
+      total.textContent = price;
+    });
+    find('[data-adopt-name]').textContent = model.dataset.title;
+    button.textContent = button.dataset.label.replace('[price]', price);
+  };
+
+  // The ticket is always open beside the questions on a wide screen and on the last two
+  // stops; on a phone it stays folded under the question until tapped.
+  const settleTicket = () => {
+    ticket.open = wide.matches || at >= steps.length - 2;
+  };
+
+  const show = (index, focus = true) => {
+    at = Math.max(0, Math.min(index, steps.length - 1));
+    reached = Math.max(reached, at);
+    steps.forEach((step, i) => {
+      step.hidden = i !== at;
+    });
+    stops.forEach((stop, i) => {
+      stop.disabled = i > reached;
+      if (i === at) stop.setAttribute('aria-current', 'step');
+      else stop.removeAttribute('aria-current');
+    });
+    form.dataset.at = at + 1;
+    back.hidden = at === 0;
+    next.hidden = at === steps.length - 1;
+    adoptPane.hidden = at !== steps.length - 1;
+    settleTicket();
+    if (focus) {
+      steps[at].querySelector('.step-pane__title').focus({ preventScroll: true });
+      journey.scrollIntoView({ block: 'start' });
+    }
+  };
+
+  back.addEventListener('click', () => show(at - 1));
+  next.addEventListener('click', () => show(at + 1));
+  stops.forEach((stop, i) => {
+    stop.addEventListener('click', () => show(i));
+  });
+  wide.addEventListener('change', settleTicket);
+
+  form.addEventListener('input', update);
+  update();
+  rail.hidden = false;
+  nav.hidden = false;
+  show(0, false);
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const model = journey.querySelector('[data-model]:checked');
+    if (!model) return;
+    button.disabled = true;
+    status.textContent = '';
+
+    const properties = {};
+    for (const [key, value] of new FormData(form)) {
+      const match = key.match(/^properties\[(.+)\]$/);
+      if (match && String(value).trim() !== '') properties[match[1]] = String(value).trim();
+    }
+    const items = [{ id: Number(model.value), quantity: 1, properties }];
+
+    try {
+      const response = await fetch(`${text.addUrl}.js`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items, sections: 'cart-drawer' }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.description || result.message);
+      if (drawer && result.sections && result.sections['cart-drawer']) {
+        renderCart(result.sections['cart-drawer']);
+        drawer.showModal();
+      } else {
+        window.location.href = text.cartUrl;
+      }
+    } catch (error) {
+      status.textContent = error.message || text.textError;
+    } finally {
+      button.disabled = false;
+    }
+  });
+});

@@ -21,19 +21,26 @@
         "id": "color_band",
         "label": "Alternate background",
         "info": "Used for the footer and for bands that break up a page.",
-        "default": "#F4EEE5"
+        "default": "#FAF7F2"
+      },
+      {
+        "type": "color",
+        "id": "color_card",
+        "label": "Cards and panels",
+        "info": "The fill of every card. Keep it clearly different from the page background.",
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
         "id": "color_surface",
         "label": "Form fields and panels",
-        "default": "#FFFEFB"
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
         "id": "color_line",
         "label": "Hairlines and image backdrop",
-        "default": "#EDE8DF"
+        "default": "#ECE7E3"
       },
       {
         "type": "color",
@@ -45,7 +52,7 @@
         "type": "color",
         "id": "color_muted",
         "label": "Secondary text",
-        "default": "#8A6A66"
+        "default": "#5F4541"
       },
       {
         "type": "color",

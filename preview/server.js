@@ -86,10 +86,26 @@ for (const product of data.products) {
     .map((suffix) => photoFiles.find((name) => path.parse(name).name === product.handle + suffix))
     .filter(Boolean)
     .map((name) => ({ src: `/photos/${name}`, alt: product.title, width: 1200, height: 1500, aspect_ratio: 0.8 }));
-  if (photos.length === 0) continue;
+  if (photos.length === 0) {
+    // A companion without a photo has no picture at all, as on a real store, so the theme
+    // shows its own sketch in the companion's colour instead of the stand-in doll drawing.
+    if (!data.HIDDEN_TYPES.includes(product.type)) {
+      product.images = [];
+      product.featured_image = null;
+      for (const variant of product.variants) variant.featured_image = null;
+    }
+    continue;
+  }
   product.images = photos;
   product.featured_image = photos[0];
   for (const variant of product.variants) variant.featured_image = photos[0];
+}
+
+// A maker's photo is named maker-<handle>, for example maker-isabelle.jpg. Without one the
+// preview draws a plain stand-in figure.
+for (const maker of data.makers) {
+  const name = photoFiles.find((file) => path.parse(file).name === `maker-${maker.system.handle}`);
+  if (name) maker.portrait.value = { src: `/photos/${name}`, alt: maker.name.value, width: 1200, height: 1500, aspect_ratio: 0.8 };
 }
 
 // Shopify filters
@@ -161,8 +177,9 @@ blockTag('form', function* (ctx, emitter) {
   const { locale, path: currentPath } = ctx.globals.request;
   const action =
     locale.root_url +
-    ({ product: '/cart/add', contact: '/contact', cart: '/cart', localization: '/localization' }[type] || '/');
-  const posted = type === 'contact' && Boolean(ctx.getAll().contact_posted);
+    ({ product: '/cart/add', contact: '/contact', customer: '/contact', cart: '/cart', localization: '/localization' }[type] || '/');
+  // Shopify reloads the page with ?contact_posted=true (or customer_posted for sign-ups) after a form is sent.
+  const posted = Boolean(ctx.getAll()[`${type}_posted`]);
 
   emitter.write(
     `<form method="post" action="${action}"${id ? ` id="${id}"` : ''}${className ? ` class="${className}"` : ''} accept-charset="UTF-8">` +
@@ -413,7 +430,7 @@ function applyFacets(products, query, basePath) {
 
   // A yes/no filter built on the "personalizable" product metafield.
   const engraveChoice = choice(
-    'Can be engraved',
+    'Can be embroidered',
     ENGRAVABLE,
     '1',
     products.filter((product) => matches(product, 'engravable') && canEngrave(product)).length
@@ -423,7 +440,7 @@ function applyFacets(products, query, basePath) {
     list('Availability', 'availability', 'filter.v.availability', [['In stock', '1'], ['Sold out', '0']], (product) => (product.available ? '1' : '0')),
     list('Type', 'type', 'filter.p.product_type', [...new Set(products.map((product) => product.type))].map((type) => [type, type]), (product) => product.type),
     {
-      label: 'Can be engraved',
+      label: 'Can be embroidered',
       type: 'boolean',
       param_name: ENGRAVABLE,
       true_value: engraveChoice,
@@ -473,7 +490,12 @@ function readBody(req) {
   return new Promise((resolve) => {
     let body = '';
     req.on('data', (chunk) => { body += chunk; });
-    req.on('end', () => resolve(new URLSearchParams(body)));
+    req.on('end', () => {
+      // A doll with a name is sent as JSON; every other form sends ordinary form fields.
+      const form = new URLSearchParams(body);
+      form.json = /json/.test(req.headers['content-type'] || '') ? JSON.parse(body) : null;
+      resolve(form);
+    });
   });
 }
 
@@ -501,7 +523,7 @@ async function handle(req, res) {
     res.end();
   };
   const page = async (template, globals, status = 200) =>
-    send(status, await renderPage(template, requestPath, locale, globals));
+    send(status, await renderPage(template, requestPath, locale, { customer_posted: query.get('customer_posted') === 'true', ...globals }));
   const notFound = () => page('404', { page_title: 'Page not found' }, 404);
 
   let match;
@@ -540,6 +562,15 @@ async function handle(req, res) {
   if (req.method === 'POST') {
     const form = await readBody(req);
 
+    // Several items at once: a doll and the charge for its embroidered name.
+    if (requestPath === '/cart/add.js' && form.json) {
+      for (const item of form.json.items || []) {
+        const error = addToCart(item.id, Math.max(1, parseInt(item.quantity, 10) || 1), item.properties || {});
+        if (error) return json(422, { status: 422, message: 'Cart Error', description: error });
+      }
+      return cartJson(new URLSearchParams({ sections: form.json.sections || '' }));
+    }
+
     if (requestPath === '/cart/add.js' || requestPath === '/cart/add') {
       const properties = Object.fromEntries(
         Object.entries(bracketFields(form, 'properties')).filter(([, value]) => value.trim() !== '')
@@ -575,6 +606,13 @@ async function handle(req, res) {
       const target = LOCALES.find((item) => item.iso_code === form.get('locale_code')) || LOCALES[0];
       const location = (target.root_url + (form.get('return_to') || '/')).replace(/(.)\/$/, '$1');
       res.writeHead(303, { Location: location });
+      return res.end();
+    }
+
+    // A newsletter sign-up goes back to the page it was sent from.
+    if (requestPath === '/contact' && form.get('form_type') === 'customer') {
+      const from = new URL(req.headers.referer || '/', `http://${req.headers.host}`);
+      res.writeHead(303, { Location: `${from.pathname}?customer_posted=true#newsletter` });
       return res.end();
     }
 

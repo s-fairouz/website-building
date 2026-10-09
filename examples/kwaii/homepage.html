@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homepage | Kwaii example</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+/* Preview shell: stands in for the chat widget these examples were written for. */
+:root {
+  --text-primary: #2A1A12;
+  --text-secondary: #6A4A30;
+  --text-muted: #8A6A50;
+  --text-success: #2E6B4A;
+  --text-warning: #8A5A10;
+  --text-accent: #8A4A20;
+  --surface-0: #EFE8E0;
+  --surface-1: #F7F3EF;
+  --surface-2: #FFFFFF;
+  --border: rgba(90, 50, 30, 0.15);
+  --border-strong: rgba(90, 50, 30, 0.3);
+  --border-success: rgba(46, 107, 74, 0.3);
+  --border-warning: rgba(138, 90, 16, 0.3);
+  --border-accent: #C87840;
+  --bg-success: #E6F2EA;
+  --bg-warning: #FBF0D8;
+  --bg-accent: #FBF0E6;
+  --radius: 8px;
+  --font-voice: Georgia, serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+body { margin: 0; padding: 24px 16px 48px; background: #F4EEE4; color: var(--text-primary); font-family: system-ui, sans-serif; }
+.preview-shell { max-width: 880px; margin: 0 auto; }
+.preview-back { display: inline-block; margin-bottom: 16px; color: var(--text-secondary); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+input[type="text"] { padding: 8px 10px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); }
+button { padding: 8px 14px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); cursor: pointer; }
+</style>
+<script>
+// The example buttons ask the chat for another mock-up; here they have nothing to talk to.
+function sendPrompt(text) { alert('This button asked the chat for:\n\n' + text); }
+</script>
+</head>
+<body>
+<div class="preview-shell">
+<a class="preview-back" href="index.html">All Kwaii examples</a>
+<!-- Original example, unchanged, from here down. -->
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.ks{font-family:Georgia,serif;}
+.kb{font-family:sans-serif;font-weight:300;}
+.kup{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:#A8896C;}
+</style>
+
+<div style="font-family:sans-serif;background:#F7F2ED;border-radius:16px;overflow:hidden;border:0.5px solid rgba(90,60,40,0.12);">
+
+  <!-- ═══ NAVBAR ═══ -->
+  <div style="background:#F7F2ED;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(90,60,40,0.15);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="30" height="30" viewBox="0 0 36 36">
+        <ellipse cx="18" cy="23" rx="13" ry="12" fill="#D4C4B0"/>
+        <ellipse cx="12" cy="18" rx="3.2" ry="3.5" fill="#3A2E28"/>
+        <ellipse cx="24" cy="18" rx="3.2" ry="3.5" fill="#3A2E28"/>
+        <ellipse cx="11" cy="16.5" rx="1.2" ry="1.2" fill="white" opacity="0.9"/>
+        <ellipse cx="23" cy="16.5" rx="1.2" ry="1.2" fill="white" opacity="0.9"/>
+        <ellipse cx="8" cy="25" rx="4" ry="2.8" fill="#C8B5A4" opacity="0.65"/>
+        <ellipse cx="28" cy="25" rx="4" ry="2.8" fill="#C8B5A4" opacity="0.65"/>
+        <path d="M15 27.5 Q18 30 21 27.5" stroke="#3A2E28" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="12" cy="9" rx="4" ry="6" fill="#E8D8C4"/>
+        <ellipse cx="24" cy="9" rx="4" ry="6" fill="#E8D8C4"/>
+      </svg>
+      <span style="font-family:Georgia,serif;font-size:20px;color:#3A2E28;letter-spacing:0.02em;">Kwaii</span>
+    </div>
+    <div style="display:flex;gap:24px;font-size:12px;font-weight:400;color:#6A5A4A;letter-spacing:0.05em;">
+      <span>L'atelier</span>
+      <span>Les artisanes</span>
+      <span>Notre histoire</span>
+      <span>Le carnet</span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <span style="font-size:12px;color:#6A5A4A;letter-spacing:0.05em;">Panier (0)</span>
+      <div style="background:#3A2E28;color:#F7F2ED;font-size:11px;font-weight:400;padding:8px 16px;border-radius:3px;letter-spacing:0.08em;">Commander</div>
+    </div>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <div style="background:#EDE4DA;padding:52px 40px 48px;display:grid;grid-template-columns:1fr 210px;gap:32px;align-items:center;">
+    <div>
+      <div class="kup" style="margin-bottom:14px;">Amigurumi · Fait main · France</div>
+      <h1 style="font-family:Georgia,serif;font-size:44px;font-weight:400;color:#3A2E28;line-height:1.15;margin-bottom:14px;">Des doudous qui<br><em style="font-style:italic;color:#A8896C;">naissent à la main</em></h1>
+      <p style="font-size:14px;color:#6A5A4A;line-height:1.85;max-width:380px;margin-bottom:24px;font-weight:300;">Chaque Buni, Tenta ou Wooly est crocheté par une artisane passionnée. Un compagnon unique, doux, fait pour durer toute une vie.</p>
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px;">
+        <div style="background:#3A2E28;color:#F7F2ED;font-size:12px;padding:12px 24px;border-radius:3px;letter-spacing:0.08em;font-weight:400;">Découvrir l'atelier</div>
+        <div style="background:transparent;color:#3A2E28;font-size:12px;padding:12px 24px;border-radius:3px;border:1px solid rgba(90,60,40,0.4);letter-spacing:0.08em;">Notre histoire</div>
+      </div>
+      <div style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:#A8896C;border-left:2px solid #D4C4B0;padding-left:12px;">"De fil en maille !"</div>
+    </div>
+    <!-- Yuki cocooning -->
+    <div style="text-align:center;">
+      <svg width="190" height="210" viewBox="0 0 190 210">
+        <ellipse cx="95" cy="90" rx="58" ry="56" fill="#D4C4B0"/>
+        <ellipse cx="73" cy="74" rx="13" ry="14" fill="#3A2E28"/>
+        <ellipse cx="117" cy="74" rx="13" ry="14" fill="#3A2E28"/>
+        <ellipse cx="68" cy="69" rx="5" ry="5" fill="white" opacity="0.85"/>
+        <ellipse cx="112" cy="69" rx="5" ry="5" fill="white" opacity="0.85"/>
+        <ellipse cx="56" cy="100" rx="15" ry="10" fill="#C8B5A4" opacity="0.6"/>
+        <ellipse cx="134" cy="100" rx="15" ry="10" fill="#C8B5A4" opacity="0.6"/>
+        <path d="M83 106 Q95 115 107 106" stroke="#3A2E28" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="65" cy="26" rx="18" ry="32" fill="#E8D8C4"/>
+        <ellipse cx="125" cy="26" rx="18" ry="32" fill="#E8D8C4"/>
+        <ellipse cx="65" cy="26" rx="10" ry="22" fill="#D4C4B0" opacity="0.5"/>
+        <ellipse cx="125" cy="26" rx="10" ry="22" fill="#D4C4B0" opacity="0.5"/>
+        <ellipse cx="95" cy="60" rx="58" ry="56" fill="#D4C4B0"/>
+        <ellipse cx="73" cy="46" rx="13" ry="14" fill="#3A2E28"/>
+        <ellipse cx="117" cy="46" rx="13" ry="14" fill="#3A2E28"/>
+        <ellipse cx="68" cy="41" rx="5" ry="5" fill="white" opacity="0.85"/>
+        <ellipse cx="112" cy="41" rx="5" ry="5" fill="white" opacity="0.85"/>
+        <ellipse cx="56" cy="70" rx="15" ry="10" fill="#C8B5A4" opacity="0.6"/>
+        <ellipse cx="134" cy="70" rx="15" ry="10" fill="#C8B5A4" opacity="0.6"/>
+        <path d="M83 76 Q95 85 107 76" stroke="#3A2E28" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <text x="95" y="132" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-style="italic" fill="#6A5A4A">Yuki</text>
+        <text x="95" y="147" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#A8896C">mascotte Kwaii</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ═══ BANDEAU VALEURS ═══ -->
+  <div style="background:#3A2E28;padding:13px 28px;display:flex;justify-content:space-around;align-items:center;">
+    <div style="text-align:center;">
+      <div style="font-size:11px;font-weight:400;color:#E8D8C4;letter-spacing:0.06em;">100% fait main</div>
+      <div style="font-size:10px;color:#8C7B6E;letter-spacing:0.04em;margin-top:2px;">crochet artisanal</div>
+    </div>
+    <div style="width:0.5px;background:rgba(255,255,255,0.1);height:28px;"></div>
+    <div style="text-align:center;">
+      <div style="font-size:11px;font-weight:400;color:#E8D8C4;letter-spacing:0.06em;">Matières douces</div>
+      <div style="font-size:10px;color:#8C7B6E;letter-spacing:0.04em;margin-top:2px;">certifiées 0–3 ans</div>
+    </div>
+    <div style="width:0.5px;background:rgba(255,255,255,0.1);height:28px;"></div>
+    <div style="text-align:center;">
+      <div style="font-size:11px;font-weight:400;color:#D4C4B0;letter-spacing:0.06em;">Prénom brodé</div>
+      <div style="font-size:10px;color:#8C7B6E;letter-spacing:0.04em;margin-top:2px;">personnalisation à la main</div>
+    </div>
+    <div style="width:0.5px;background:rgba(255,255,255,0.1);height:28px;"></div>
+    <div style="text-align:center;">
+      <div style="font-size:11px;font-weight:400;color:#E8D8C4;letter-spacing:0.06em;">Certificat d'adoption</div>
+      <div style="font-size:10px;color:#8C7B6E;letter-spacing:0.04em;margin-top:2px;">offert avec chaque commande</div>
+    </div>
+  </div>
+
+  <!-- ═══ INTRO ÉDITORIALE ═══ -->
+  <div style="padding:52px 40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;border-bottom:0.5px solid rgba(90,60,40,0.1);">
+    <div>
+      <div class="kup" style="margin-bottom:12px;">L'esprit Kwaii</div>
+      <h2 style="font-family:Georgia,serif;font-size:28px;font-weight:400;color:#3A2E28;line-height:1.3;margin-bottom:16px;">Un doudou n'est pas<br><em>un simple jouet.</em></h2>
+      <p style="font-size:13px;color:#6A5A4A;line-height:1.9;margin-bottom:16px;font-weight:300;">C'est le premier ami. Celui qui reste dans le lit pendant les nuits de fièvre, qui voyage dans toutes les valises, qui sera peut-être encore là dans trente ans au fond d'un tiroir.</p>
+      <p style="font-size:13px;color:#6A5A4A;line-height:1.9;margin-bottom:22px;font-weight:300;">Chez Kwaii, chaque doudou est crocheté à la main, maille après maille, par une artisane qui connaît son prénom avant même qu'il arrive chez vous.</p>
+      <div style="font-size:12px;color:#A8896C;letter-spacing:0.06em;font-weight:500;">Nés du crochet — lire notre histoire →</div>
+    </div>
+    <div style="background:#EDE4DA;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:center;gap:14px;padding-bottom:16px;border-bottom:0.5px solid rgba(90,60,40,0.12);">
+        <div style="width:40px;height:40px;border-radius:50%;background:#D4C4B0;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A2E28" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C8 2 5 5 5 9c0 6 7 11 7 11s7-5 7-11c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#3A2E28;">Fait en France</div>
+          <div style="font-size:11px;color:#8C7B6E;">par des artisanes passionnées, dans leurs ateliers</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;padding-bottom:16px;border-bottom:0.5px solid rgba(90,60,40,0.12);">
+        <div style="width:40px;height:40px;border-radius:50%;background:#D4C4B0;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A2E28" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#3A2E28;">Certifié Oeko-Tex</div>
+          <div style="font-size:11px;color:#8C7B6E;">coton doux et sécurisé dès la naissance</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#D4C4B0;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A2E28" stroke-width="1.5" stroke-linecap="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#3A2E28;">Livré avec son certificat</div>
+          <div style="font-size:11px;color:#8C7B6E;">un souvenir pour toute une vie</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COLLECTION ═══ -->
+  <div style="padding:52px 40px;border-bottom:0.5px solid rgba(90,60,40,0.1);">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;">
+      <div>
+        <div class="kup" style="margin-bottom:8px;">La famille Kwaii</div>
+        <h2 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#3A2E28;">L'atelier des doudous</h2>
+      </div>
+      <span style="font-size:12px;color:#A8896C;letter-spacing:0.06em;font-weight:500;">Voir tous les compagnons →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+
+      <!-- Buni -->
+      <div style="background:#FFF;border-radius:10px;overflow:hidden;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="background:#EDE4DA;padding:22px 0 14px;text-align:center;">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <ellipse cx="36" cy="46" rx="20" ry="19" fill="#D4C4B0"/>
+            <ellipse cx="27" cy="38" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="45" cy="38" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="25" cy="35.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="43" cy="35.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="20" cy="50" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <ellipse cx="52" cy="50" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <path d="M31 54 Q36 58 41 54" stroke="#3A2E28" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="24" cy="17" rx="6" ry="14" fill="#E8D8C4"/>
+            <ellipse cx="48" cy="17" rx="6" ry="14" fill="#E8D8C4"/>
+            <ellipse cx="24" cy="17" rx="3" ry="9" fill="#D4C4B0" opacity="0.5"/>
+            <ellipse cx="48" cy="17" rx="3" ry="9" fill="#D4C4B0" opacity="0.5"/>
+          </svg>
+        </div>
+        <div style="padding:12px 14px 16px;">
+          <div style="font-family:Georgia,serif;font-size:15px;color:#3A2E28;margin-bottom:2px;">Buni</div>
+          <div style="font-size:11px;color:#8C7B6E;margin-bottom:10px;">le lapin · par Isabelle</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:14px;color:#3A2E28;font-weight:500;">34 €</span>
+            <div style="background:#3A2E28;color:#F7F2ED;font-size:10px;padding:5px 12px;border-radius:3px;letter-spacing:0.06em;">Adopter</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tenta — mis en avant -->
+      <div style="background:#FFF;border-radius:10px;overflow:hidden;border:1px solid #A8896C;">
+        <div style="background:#3A2E28;padding:4px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:9px;color:#E8D8C4;letter-spacing:0.1em;font-weight:500;">FAVORI DES MAMANS</span>
+        </div>
+        <div style="background:#EDE4DA;padding:22px 0 14px;text-align:center;">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <ellipse cx="36" cy="30" rx="20" ry="19" fill="#D4C4B0"/>
+            <ellipse cx="27" cy="23" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="45" cy="23" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="25" cy="20.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="43" cy="20.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="20" cy="34" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <ellipse cx="52" cy="34" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <path d="M31 38 Q36 42 41 38" stroke="#3A2E28" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M18 46 Q13 56 15 65" stroke="#3A2E28" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M26 50 Q23 60 25 67" stroke="#3A2E28" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M36 52 Q36 62 36 69" stroke="#3A2E28" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M46 50 Q49 60 47 67" stroke="#3A2E28" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M54 46 Q59 56 57 65" stroke="#3A2E28" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="padding:12px 14px 16px;">
+          <div style="font-family:Georgia,serif;font-size:15px;color:#3A2E28;margin-bottom:2px;">Tenta</div>
+          <div style="font-size:11px;color:#8C7B6E;margin-bottom:10px;">la pieuvre · par Marine</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:14px;color:#3A2E28;font-weight:500;">36 €</span>
+            <div style="background:#3A2E28;color:#F7F2ED;font-size:10px;padding:5px 12px;border-radius:3px;letter-spacing:0.06em;">Adopter</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ted -->
+      <div style="background:#FFF;border-radius:10px;overflow:hidden;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="background:#EDE4DA;padding:22px 0 14px;text-align:center;">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="20" fill="#D4C4B0"/>
+            <circle cx="20" cy="24" r="10" fill="#D4C4B0"/>
+            <circle cx="52" cy="24" r="10" fill="#D4C4B0"/>
+            <ellipse cx="27" cy="29" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="45" cy="29" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="25" cy="26.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="43" cy="26.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="36" cy="37" rx="6" ry="4" fill="#C8B5A4" opacity="0.5"/>
+            <ellipse cx="20" cy="42" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <ellipse cx="52" cy="42" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <path d="M31 44 Q36 48 41 44" stroke="#3A2E28" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="padding:12px 14px 16px;">
+          <div style="font-family:Georgia,serif;font-size:15px;color:#3A2E28;margin-bottom:2px;">Ted</div>
+          <div style="font-size:11px;color:#8C7B6E;margin-bottom:10px;">l'ours · par Camille</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:14px;color:#3A2E28;font-weight:500;">34 €</span>
+            <div style="background:#3A2E28;color:#F7F2ED;font-size:10px;padding:5px 12px;border-radius:3px;letter-spacing:0.06em;">Adopter</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wooly -->
+      <div style="background:#FFF;border-radius:10px;overflow:hidden;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="background:#EDE4DA;padding:22px 0 14px;text-align:center;">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="44" r="18" fill="#E8DDD5"/>
+            <circle cx="24" cy="28" r="9" fill="#E8DDD5"/>
+            <circle cx="36" cy="24" r="10" fill="#E8DDD5"/>
+            <circle cx="48" cy="28" r="9" fill="#E8DDD5"/>
+            <circle cx="18" cy="36" r="7" fill="#E8DDD5"/>
+            <circle cx="54" cy="36" r="7" fill="#E8DDD5"/>
+            <ellipse cx="28" cy="40" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="44" cy="40" rx="5" ry="5.5" fill="#3A2E28"/>
+            <ellipse cx="26" cy="37.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="42" cy="37.5" rx="2" ry="2" fill="white" opacity="0.85"/>
+            <ellipse cx="20" cy="48" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <ellipse cx="52" cy="48" rx="7" ry="5" fill="#C8B5A4" opacity="0.6"/>
+            <path d="M31 52 Q36 56 41 52" stroke="#3A2E28" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="padding:12px 14px 16px;">
+          <div style="font-family:Georgia,serif;font-size:15px;color:#3A2E28;margin-bottom:2px;">Wooly</div>
+          <div style="font-size:11px;color:#8C7B6E;margin-bottom:10px;">l'agneau · par Lucie</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:14px;color:#3A2E28;font-weight:500;">35 €</span>
+            <div style="background:#3A2E28;color:#F7F2ED;font-size:10px;padding:5px 12px;border-radius:3px;letter-spacing:0.06em;">Adopter</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ ARTISANES ═══ -->
+  <div style="padding:52px 40px;background:#EDE4DA;border-bottom:0.5px solid rgba(90,60,40,0.1);">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+      <div>
+        <div class="kup" style="margin-bottom:12px;">Les mains de Kwaii</div>
+        <h2 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#3A2E28;margin-bottom:14px;">Chaque point,<br><em>une histoire d'amour.</em></h2>
+        <p style="font-size:13px;color:#6A5A4A;line-height:1.9;font-weight:300;margin-bottom:20px;">Nos artisanes crochètent chaque doudou à la main, dans leurs ateliers à Lyon, Bordeaux, Nantes. Leur prénom accompagne chaque création — pour que tu saches toujours qui a fabriqué le compagnon de ton enfant.</p>
+        <div style="font-size:12px;color:#A8896C;letter-spacing:0.06em;font-weight:500;">Rencontrer nos artisanes →</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#F7F2ED;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:0.5px solid rgba(90,60,40,0.12);">
+          <div style="width:44px;height:44px;border-radius:50%;background:#D4C4B0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#3A2E28;flex-shrink:0;">IS</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:#3A2E28;">Isabelle</div>
+            <div style="font-size:11px;color:#8C7B6E;">Lyon · 47 créations · lapins & biches</div>
+          </div>
+          <div style="background:#EDE4DA;color:#6A5A4A;font-size:10px;padding:3px 10px;border-radius:3px;font-weight:500;">Buni · Lambi</div>
+        </div>
+        <div style="background:#F7F2ED;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:0.5px solid rgba(90,60,40,0.12);">
+          <div style="width:44px;height:44px;border-radius:50%;background:#D4C4B0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#3A2E28;flex-shrink:0;">MA</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:#3A2E28;">Marine</div>
+            <div style="font-size:11px;color:#8C7B6E;">Bordeaux · 31 créations · pieuvres & ours</div>
+          </div>
+          <div style="background:#EDE4DA;color:#6A5A4A;font-size:10px;padding:3px 10px;border-radius:3px;font-weight:500;">Tenta · Ted</div>
+        </div>
+        <div style="background:#F7F2ED;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:0.5px solid rgba(90,60,40,0.12);">
+          <div style="width:44px;height:44px;border-radius:50%;background:#D4C4B0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:#3A2E28;flex-shrink:0;">CA</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:500;color:#3A2E28;">Camille</div>
+            <div style="font-size:11px;color:#8C7B6E;">Nantes · 28 créations · agneaux & zèbres</div>
+          </div>
+          <div style="background:#EDE4DA;color:#6A5A4A;font-size:10px;padding:3px 10px;border-radius:3px;font-weight:500;">Wooly · Rey</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BLOC PERSONNALISATION ═══ -->
+  <div style="padding:52px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;border-bottom:0.5px solid rgba(90,60,40,0.1);">
+    <div style="background:#3A2E28;border-radius:10px;padding:32px;text-align:center;">
+      <div style="font-family:Georgia,serif;font-size:36px;color:#E8D8C4;font-style:italic;margin-bottom:6px;">Léa</div>
+      <div style="height:0.5px;background:rgba(255,255,255,0.15);margin:12px 0;"></div>
+      <svg width="80" height="80" viewBox="0 0 80 80" style="display:block;margin:12px auto;">
+        <ellipse cx="40" cy="44" rx="28" ry="27" fill="#C8B8A8"/>
+        <ellipse cx="28" cy="35" rx="7" ry="7.5" fill="#3A2E28"/>
+        <ellipse cx="52" cy="35" rx="7" ry="7.5" fill="#3A2E28"/>
+        <ellipse cx="25.5" cy="32.5" rx="2.5" ry="2.5" fill="white" opacity="0.8"/>
+        <ellipse cx="49.5" cy="32.5" rx="2.5" ry="2.5" fill="white" opacity="0.8"/>
+        <ellipse cx="20" cy="48" rx="9" ry="6.5" fill="#B8A898" opacity="0.6"/>
+        <ellipse cx="60" cy="48" rx="9" ry="6.5" fill="#B8A898" opacity="0.6"/>
+        <path d="M34 52 Q40 58 46 52" stroke="#3A2E28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="28" cy="14" rx="9" ry="16" fill="#D8CCC0"/>
+        <ellipse cx="52" cy="14" rx="9" ry="16" fill="#D8CCC0"/>
+        <ellipse cx="40" cy="18" rx="28" ry="27" fill="#C8B8A8"/>
+        <ellipse cx="28" cy="10" rx="7" ry="7.5" fill="#3A2E28"/>
+        <ellipse cx="52" cy="10" rx="7" ry="7.5" fill="#3A2E28"/>
+        <ellipse cx="25.5" cy="7.5" rx="2.5" ry="2.5" fill="white" opacity="0.8"/>
+        <ellipse cx="49.5" cy="7.5" rx="2.5" ry="2.5" fill="white" opacity="0.8"/>
+        <ellipse cx="20" cy="22" rx="9" ry="6.5" fill="#B8A898" opacity="0.6"/>
+        <ellipse cx="60" cy="22" rx="9" ry="6.5" fill="#B8A898" opacity="0.6"/>
+        <path d="M34 26 Q40 32 46 26" stroke="#3A2E28" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div style="font-size:11px;color:#8C7B6E;letter-spacing:0.06em;">Buni · broderie prénom · coton doré</div>
+    </div>
+    <div>
+      <div class="kup" style="margin-bottom:12px;">Option personnalisation</div>
+      <h2 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#3A2E28;margin-bottom:14px;">Lui donner<br><em>un prénom.</em></h2>
+      <p style="font-size:13px;color:#6A5A4A;line-height:1.9;font-weight:300;margin-bottom:20px;">Fais broder le prénom de ton enfant sur son doudou — à la main, au fil doré. Un cadeau de naissance dont on se souvient toute sa vie, livré dans un coffret Kwaii avec son certificat d'adoption.</p>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:#3A2E28;">+ 4 €</div>
+        <div style="font-size:12px;color:#8C7B6E;line-height:1.6;">délai supplémentaire<br>de 3 jours ouvrés</div>
+      </div>
+      <div style="background:#3A2E28;color:#F7F2ED;font-size:12px;padding:12px 24px;border-radius:3px;letter-spacing:0.08em;display:inline-block;">Personnaliser mon doudou</div>
+    </div>
+  </div>
+
+  <!-- ═══ AVIS ═══ -->
+  <div style="padding:52px 40px;border-bottom:0.5px solid rgba(90,60,40,0.1);">
+    <div class="kup" style="margin-bottom:12px;text-align:center;">Ce que disent les familles</div>
+    <h2 style="font-family:Georgia,serif;font-size:26px;font-weight:400;color:#3A2E28;text-align:center;margin-bottom:32px;">La famille Kwaii <em>grandit</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="background:#FFF;border-radius:10px;padding:20px;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="display:flex;gap:2px;margin-bottom:12px;">
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+        </div>
+        <p style="font-family:Georgia,serif;font-size:13px;color:#3A2E28;line-height:1.75;font-style:italic;margin-bottom:12px;">"Ma fille de 4 mois ne lâche plus Tenta. La qualité est incroyable — on sent vraiment que c'est fait à la main avec amour."</p>
+        <div style="font-size:11px;color:#8C7B6E;font-weight:500;">Céline M. · maman de Zoé</div>
+      </div>
+      <div style="background:#FFF;border-radius:10px;padding:20px;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="display:flex;gap:2px;margin-bottom:12px;">
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+        </div>
+        <p style="font-family:Georgia,serif;font-size:13px;color:#3A2E28;line-height:1.75;font-style:italic;margin-bottom:12px;">"Le certificat d'adoption nous a fait fondre. Un cadeau de naissance inoubliable pour ma nièce — merci Kwaii."</p>
+        <div style="font-size:11px;color:#8C7B6E;font-weight:500;">Thomas R. · parrain de Léa</div>
+      </div>
+      <div style="background:#FFF;border-radius:10px;padding:20px;border:0.5px solid rgba(90,60,40,0.1);">
+        <div style="display:flex;gap:2px;margin-bottom:12px;">
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+          <svg width="12" height="12" viewBox="0 0 14 14"><polygon points="7,1 8.8,5.5 13.5,5.5 9.8,8.5 11.2,13 7,10.2 2.8,13 4.2,8.5 0.5,5.5 5.2,5.5" fill="#A8896C"/></svg>
+        </div>
+        <p style="font-family:Georgia,serif;font-size:13px;color:#3A2E28;line-height:1.75;font-style:italic;margin-bottom:12px;">"Je cherchais quelque chose d'original, pas industriel. Buni est parfait. On voit chaque maille. C'est du vrai artisanat."</p>
+        <div style="font-size:11px;color:#8C7B6E;font-weight:500;">Sophie L. · maman de Noé</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NEWSLETTER ═══ -->
+  <div style="padding:48px 40px;text-align:center;background:#EDE4DA;">
+    <div class="kup" style="margin-bottom:12px;text-align:center;">Le carnet de Yuki</div>
+    <h2 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#3A2E28;margin-bottom:10px;">Rejoindre la famille Kwaii</h2>
+    <p style="font-size:13px;color:#6A5A4A;font-weight:300;margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;line-height:1.8;">Coulisses de l'atelier, nouvelles créations, conseils pour choisir le premier doudou — une lettre mensuelle douce et sincère.</p>
+    <div style="display:flex;gap:8px;max-width:380px;margin:0 auto;">
+      <input type="email" placeholder="votre@email.fr" style="flex:1;background:#F7F2ED;border:0.5px solid rgba(90,60,40,0.25);border-radius:3px;padding:11px 14px;font-size:13px;color:#3A2E28;outline:none;">
+      <div style="background:#3A2E28;color:#F7F2ED;font-size:12px;padding:11px 20px;border-radius:3px;letter-spacing:0.06em;white-space:nowrap;">S'abonner</div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div style="background:#3A2E28;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <div style="font-family:Georgia,serif;font-size:18px;color:#E8D8C4;margin-bottom:4px;">Kwaii</div>
+      <div style="font-family:Georgia,serif;font-style:italic;font-size:11px;color:#6A5A4A;">"De fil en maille !"</div>
+    </div>
+    <div style="display:flex;gap:20px;font-size:11px;color:#6A5A4A;letter-spacing:0.05em;">
+      <span>L'atelier</span>
+      <span>Artisanes</span>
+      <span>Livraison</span>
+      <span>Contact</span>
+      <span>Instagram</span>
+    </div>
+    <div style="font-size:10px;color:#4A3A34;">© 2025 Kwaii · Fait avec amour</div>
+  </div>
+
+</div>
+
+<div style="margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+  <button onclick="sendPrompt('Montre-moi la fiche produit Tenta en version cocooning')" style="background:#3A2E28;color:#F7F2ED;border:none;border-radius:3px;padding:9px 18px;font-size:12px;letter-spacing:0.06em;cursor:pointer;">Fiche produit Tenta ↗</button>
+  <button onclick="sendPrompt('Montre-moi la version mobile cocooning de Kwaii')" style="background:white;color:#3A2E28;border:1px solid #3A2E28;border-radius:3px;padding:9px 18px;font-size:12px;letter-spacing:0.06em;cursor:pointer;">Version mobile ↗</button>
+  <button onclick="sendPrompt('On passe à la prochaine étape de construction du projet Kwaii : le choix de la plateforme et l installation de Shopify')" style="background:#A8896C;color:#F7F2ED;border:none;border-radius:3px;padding:9px 18px;font-size:12px;letter-spacing:0.06em;cursor:pointer;">Étape suivante : Shopify ↗</button>
+</div>
+
+</div>
+</body>
+</html>

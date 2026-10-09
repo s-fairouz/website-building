@@ -16,9 +16,34 @@ The `-2` and `-3` files here are close-ups cut from each main photo (face and ou
 
 `.jpg`, `.png` and `.webp` all work. Portrait photos at a 4:5 ratio (for example 1200 × 1500) fit the cards without cropping. Restart the preview (`npm run preview`) after adding files.
 
-Handles in the preview: `wren`, `odile`, `pim`, `marguerite`, `tansy`, `bram`, `juno`, `spare-smock`.
+Handles in the preview: `buni`, `zara`, `ted`, `pachi`, `tenta`, `wooly`, `rey`, `lambi`.
 
 On a real Shopify store none of this applies: upload photos to each product in the admin, and the second photo becomes the hover shot automatically.
+
+## Maker photo
+
+The maker's portrait is `maker-isabelle.jpg` (`maker-` followed by her handle). It shows on the home page, the makers page, her own page, the certificate and the small round picture on each doll card. Portrait shape, 4:5, with the face in the upper half so the round crops catch it.
+
+## Companion photos
+
+The catalogue is the eight companions. Each has at least a main photo, named after its handle:
+
+| Companion | Files |
+| --- | --- |
+| Buni, rabbit | `buni.jpg`, `buni-2.jpg` |
+| Zara, giraffe | `zara.jpg` |
+| Ted, bear | `ted.jpg`, `ted-2.jpg`, `ted-3.jpg`, `ted-4.jpg` |
+| Pachi, elephant | `pachi.jpg`, `pachi-2.jpg` |
+| Tenta, octopus | `tenta.jpg`, `tenta-2.jpg` |
+| Wooly, lamb | `wooly.jpg`, `wooly-2.jpg` |
+| Rey, zebra | `rey.jpg` |
+| Lambi, doe | `lambi.jpg`, `lambi-2.jpg` |
+
+The `-2` file is the nursery shot, shown when hovering a card. Zara and Rey have no second photo yet.
+
+Ted's first three photos carry a sewn-in "Kwaii" label. Replace them with photos showing your own label (or none) before the store goes live.
+
+The photos of the earlier dolls (`wren`, `odile`, `pim`, `marguerite`, `tansy`, `bram`, `juno`, `spare-smock`) are still in this folder but no longer used; delete them when you are sure you do not want them. The prompts below were written for those dolls.
 
 ## Prompts for generating photos like yours
 

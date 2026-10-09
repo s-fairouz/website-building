@@ -4,8 +4,14 @@
       "type": "hero",
       "settings": {
         "button_link": "shopify://collections/all",
-        "secondary_label": "How they're made",
-        "secondary_link": "#how-they-are-made"
+        "secondary_label": "Our story",
+        "secondary_link": "shopify://pages/about",
+        "kicker": "Amigurumi · Handmade · France",
+        "heading": "Dolls that are born by hand",
+        "text": "Every Buni, Tenta or Wooly is crocheted by a passionate maker. A unique, soft companion, made to last a lifetime.",
+        "button_label": "Discover the workshop",
+        "tagline": "“From thread to stitch!”",
+        "background": "none"
       }
     },
     "featured": {
@@ -51,7 +57,13 @@
           }
         }
       },
-      "block_order": ["cut", "sew", "stuff", "embroider", "dress"],
+      "block_order": [
+        "cut",
+        "sew",
+        "stuff",
+        "embroider",
+        "dress"
+      ],
       "settings": {
         "heading": "How a doll is made",
         "text": "One doll takes about a week from first cut to last stitch."
@@ -60,9 +72,206 @@
     "makers": {
       "type": "artist-list",
       "settings": {
-        "heading": "Our makers"
+        "heading": "Every stitch, a love story.",
+        "kicker": "The hands of Hazelwick",
+        "text": "Isabelle crochets each doll by hand, in her studio in Lyon. Her first name goes with every creation, so you always know who made your child’s companion.",
+        "link_label": "Meet Isabelle",
+        "link": "shopify://pages/makers",
+        "background": "none"
+      }
+    },
+    "promises": {
+      "type": "promises",
+      "blocks": {
+        "handmade": {
+          "type": "promise",
+          "settings": {
+            "title": "100% handmade",
+            "text": "Crocheted by a maker"
+          }
+        },
+        "materials": {
+          "type": "promise",
+          "settings": {
+            "title": "Soft materials",
+            "text": "Certified for ages 0 to 3"
+          }
+        },
+        "name": {
+          "type": "promise",
+          "settings": {
+            "title": "Name embroidered",
+            "text": "Personalized by hand"
+          }
+        },
+        "certificate": {
+          "type": "promise",
+          "settings": {
+            "title": "Adoption certificate",
+            "text": "Free with every order"
+          }
+        }
+      },
+      "block_order": [
+        "handmade",
+        "materials",
+        "name",
+        "certificate"
+      ],
+      "settings": {}
+    },
+    "story": {
+      "type": "story",
+      "blocks": {
+        "made": {
+          "type": "fact",
+          "settings": {
+            "title": "Made in France",
+            "text": "By passionate makers, in their studios"
+          }
+        },
+        "cotton": {
+          "type": "fact",
+          "settings": {
+            "title": "Oeko-Tex certified",
+            "text": "Soft cotton, safe from birth"
+          }
+        },
+        "certificate": {
+          "type": "fact",
+          "settings": {
+            "title": "Delivered with its certificate",
+            "text": "A keepsake for a lifetime"
+          }
+        }
+      },
+      "block_order": [
+        "made",
+        "cotton",
+        "certificate"
+      ],
+      "settings": {
+        "heading": "A doll is not just a toy.",
+        "text": "<p>It is the first friend. The one that stays in the bed through feverish nights, travels in every suitcase, and may still be there in thirty years at the back of a drawer.</p><p>At Hazelwick, every doll is crocheted by hand, stitch after stitch, by a maker who knows its name before it reaches you.</p>",
+        "link_label": "Born from crochet: read our story",
+        "link": "shopify://pages/about",
+        "kicker": "The Hazelwick spirit"
+      }
+    },
+    "personalize": {
+      "type": "personalize",
+      "settings": {
+        "heading": "Give it a name.",
+        "text": "Have your child’s name embroidered on their doll, by hand, in gold thread. A birth present remembered for a lifetime, delivered in a gift box with its adoption certificate.",
+        "embroidery_product": "name-embroidery",
+        "button_link": "shopify://collections/all",
+        "kicker": "Personalization option",
+        "caption": "Buni, name embroidery, gold thread",
+        "background": "none"
+      }
+    },
+    "reviews": {
+      "type": "reviews",
+      "blocks": {
+        "celine": {
+          "type": "review",
+          "settings": {
+            "quote": "My four-month-old daughter won’t let go of Tenta. The quality is incredible. You can really feel it was made by hand, with love.",
+            "author": "Céline M.",
+            "relation": "Mother of Zoé",
+            "stars": 5
+          }
+        },
+        "thomas": {
+          "type": "review",
+          "settings": {
+            "quote": "The adoption certificate melted us. An unforgettable birth present for my niece. Thank you, Hazelwick.",
+            "author": "Thomas R.",
+            "relation": "Godfather of Léa",
+            "stars": 5
+          }
+        },
+        "sophie": {
+          "type": "review",
+          "settings": {
+            "quote": "I was looking for something original, not factory-made. Buni is perfect. You can see every stitch. This is real craft.",
+            "author": "Sophie L.",
+            "relation": "Mother of Noé",
+            "stars": 5
+          }
+        }
+      },
+      "block_order": [
+        "celine",
+        "thomas",
+        "sophie"
+      ],
+      "settings": {
+        "heading": "The family is growing",
+        "kicker": "What families say"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join the Hazelwick family",
+        "text": "Behind the scenes at the studio, new dolls, and advice on choosing a first doll. One gentle, honest letter a month.",
+        "kicker": "The Hazelwick notebook",
+        "background": "none"
+      }
+    },
+    "companions": {
+      "type": "companions",
+      "blocks": {
+        "buni": {
+          "type": "companion",
+          "settings": {
+            "product": "buni"
+          }
+        },
+        "tenta": {
+          "type": "companion",
+          "settings": {
+            "product": "tenta",
+            "badge": "Favourite of mums"
+          }
+        },
+        "ted": {
+          "type": "companion",
+          "settings": {
+            "product": "ted"
+          }
+        },
+        "wooly": {
+          "type": "companion",
+          "settings": {
+            "product": "wooly"
+          }
+        }
+      },
+      "block_order": [
+        "buni",
+        "tenta",
+        "ted",
+        "wooly"
+      ],
+      "settings": {
+        "kicker": "The Hazelwick family",
+        "heading": "The doll workshop",
+        "link_label": "See all companions",
+        "link": "shopify://pages/adopt",
+        "adopt_link": "shopify://pages/adopt"
       }
     }
   },
-  "order": ["hero", "featured", "steps", "makers"]
+  "order": [
+    "hero",
+    "promises",
+    "story",
+    "companions",
+    "makers",
+    "personalize",
+    "reviews",
+    "newsletter"
+  ]
 }

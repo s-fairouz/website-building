@@ -1,0 +1,53 @@
+{%- if section.blocks.size > 0 -%}
+  <section class="promises">
+    <div class="wrap">
+      <ul class="promises__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="promise" {{ block.shopify_attributes }}>
+          <p class="promise__title">{{ block.settings.title | escape }}</p>
+          {%- if block.settings.text != blank -%}
+            <p class="promise__text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Promises",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Promise",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Made by hand"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promises",
+      "blocks": [
+        { "type": "promise", "settings": { "title": "100% handmade", "text": "Crocheted by a maker, one at a time" } },
+        { "type": "promise", "settings": { "title": "Soft materials", "text": "Chosen for small hands" } },
+        { "type": "promise", "settings": { "title": "Name embroidered", "text": "Added by hand on request" } },
+        { "type": "promise", "settings": { "title": "Made to last", "text": "Repairs whenever it needs them" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

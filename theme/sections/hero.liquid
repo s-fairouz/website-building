@@ -3,9 +3,12 @@
   assign image = section.settings.image | default: doll.featured_image
 -%}
 
-<section class="hero">
+<section class="hero{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %}">
   <div class="wrap hero__inner">
     <div class="hero__copy">
+      {%- if section.settings.kicker != blank -%}
+        <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
       <h1>{{ section.settings.heading | escape }}</h1>
       {%- if section.settings.text != blank -%}
         <p class="lede">{{ section.settings.text | escape }}</p>
@@ -20,6 +23,9 @@
           <a class="link" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
         {%- endif -%}
       </div>
+      {%- if section.settings.tagline != blank -%}
+        <p class="hero__tagline">{{ section.settings.tagline | escape }}</p>
+      {%- endif -%}
     </div>
 
     <div class="hero__figure">
@@ -50,6 +56,23 @@
 {
   "name": "Hero",
   "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "Same as the page" },
+        { "value": "blush", "label": "Pink" },
+        { "value": "sage", "label": "Sage" },
+        { "value": "sky", "label": "Sky" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Line above the heading"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -82,6 +105,11 @@
       "type": "url",
       "id": "secondary_link",
       "label": "Second link"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline under the buttons"
     },
     {
       "type": "product",

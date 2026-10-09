@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "record": {
+      "type": "adoption-record",
+      "blocks": {
+        "body": { "type": "step", "settings": { "title": "Body crocheted", "text": "7 May 2025, 2 hours of work" } },
+        "parts": { "type": "step", "settings": { "title": "Parts assembled", "text": "9 May 2025, 1½ hours of work" } },
+        "name": { "type": "step", "settings": { "title": "Name “Léa” embroidered", "text": "11 May 2025, gold thread" } },
+        "checked": { "type": "step", "settings": { "title": "Quality check and wrapping", "text": "13 May 2025, gift box" } }
+      },
+      "block_order": ["body", "parts", "name", "checked"],
+      "settings": {
+        "product": "tenta",
+        "maker_story": "I learned amigurumi crochet in Japan, during a stay in Kyoto. Each stitch is placed with the intention that this doll becomes a true companion for life.",
+        "maker_message": "I hope this doll brings Léa a great deal of gentleness. I placed every stitch thinking of this first companion for life. Take good care of her!",
+        "share_text": "Send us a photo of Léa with her doll. It will join the gallery of Hazelwick families.",
+        "share_label": "Send a photo",
+        "share_link": "shopify://pages/contact"
+      }
+    }
+  },
+  "order": ["record"]
+}

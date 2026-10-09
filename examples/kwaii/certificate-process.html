@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate process | Kwaii example</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+/* Preview shell: stands in for the chat widget these examples were written for. */
+:root {
+  --text-primary: #2A1A12;
+  --text-secondary: #6A4A30;
+  --text-muted: #8A6A50;
+  --text-success: #2E6B4A;
+  --text-warning: #8A5A10;
+  --text-accent: #8A4A20;
+  --surface-0: #EFE8E0;
+  --surface-1: #F7F3EF;
+  --surface-2: #FFFFFF;
+  --border: rgba(90, 50, 30, 0.15);
+  --border-strong: rgba(90, 50, 30, 0.3);
+  --border-success: rgba(46, 107, 74, 0.3);
+  --border-warning: rgba(138, 90, 16, 0.3);
+  --border-accent: #C87840;
+  --bg-success: #E6F2EA;
+  --bg-warning: #FBF0D8;
+  --bg-accent: #FBF0E6;
+  --radius: 8px;
+  --font-voice: Georgia, serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+body { margin: 0; padding: 24px 16px 48px; background: #F4EEE4; color: var(--text-primary); font-family: system-ui, sans-serif; }
+.preview-shell { max-width: 880px; margin: 0 auto; }
+.preview-back { display: inline-block; margin-bottom: 16px; color: var(--text-secondary); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+input[type="text"] { padding: 8px 10px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); }
+button { padding: 8px 14px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); cursor: pointer; }
+</style>
+<script>
+// The example buttons ask the chat for another mock-up; here they have nothing to talk to.
+function sendPrompt(text) { alert('This button asked the chat for:\n\n' + text); }
+</script>
+</head>
+<body>
+<div class="preview-shell">
+<a class="preview-back" href="index.html">All Kwaii examples</a>
+<!-- Original example, unchanged, from here down. -->
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.lane-label{font-size:11px;font-weight:500;color:var(--text-secondary);letter-spacing:0.08em;text-transform:uppercase;writing-mode:horizontal-tb;}
+.step-card{background:var(--surface-2);border-radius:10px;border:0.5px solid var(--border);padding:12px 14px;}
+.step-card.active{border-color:var(--border-accent);background:var(--bg-accent);}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:var(--radius);background:var(--bg-success);color:var(--text-success);}
+.badge-w{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:var(--radius);background:var(--bg-warning);color:var(--text-warning);}
+.badge-a{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:var(--radius);background:var(--bg-accent);color:var(--text-accent);}
+.arrow-v{display:flex;justify-content:center;margin:4px 0;}
+.code{font-family:var(--font-mono);font-size:11px;background:var(--surface-1);border-radius:var(--radius);padding:2px 6px;color:var(--text-secondary);}
+.pill{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--surface-1);border:0.5px solid var(--border-strong);color:var(--text-secondary);display:inline-block;}
+.h3{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px;}
+.sub{font-size:11px;color:var(--text-secondary);line-height:1.5;}
+</style>
+
+<h2 class="sr-only">Process complet de génération automatique du certificat d'adoption Kwaii — de la commande Shopify jusqu'à la livraison du PDF et de la page souvenir.</h2>
+
+<div style="padding:1rem 0;">
+
+  <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Architecture technique</div>
+  <div style="font-size:18px;font-weight:500;color:var(--text-primary);margin-bottom:4px;">Génération automatique du certificat</div>
+  <div style="font-size:13px;color:var(--text-secondary);margin-bottom:1.5rem;">5 acteurs · 7 étapes · 0 action manuelle requise</div>
+
+  <!-- LÉGENDE ACTEURS -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.5rem;">
+    <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#378ADD;"></div><span style="font-size:12px;color:var(--text-secondary);">Shopify</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#1D9E75;"></div><span style="font-size:12px;color:var(--text-secondary);">Webhook / backend</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#7F77DD;"></div><span style="font-size:12px;color:var(--text-secondary);">Générateur PDF</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#D85A30;"></div><span style="font-size:12px;color:var(--text-secondary);">Base de données</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#888780;"></div><span style="font-size:12px;color:var(--text-secondary);">Client / famille</span></div>
+  </div>
+
+  <!-- FLOW PRINCIPAL -->
+  <div style="display:grid;grid-template-columns:1fr;gap:0;">
+
+    <!-- ÉTAPE 1 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#378ADD;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">1</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #378ADD;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Commande validée sur Shopify</div>
+          <span class="pill"><i class="ti ti-brand-shopify" style="font-size:12px;vertical-align:-1px;" aria-hidden="true"></i> Shopify</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">Le client finalise sa commande. Shopify collecte toutes les données nécessaires au certificat.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:2px;">Données collectées</div>
+            <div style="font-size:11px;color:var(--text-primary);">Prénom enfant, animal, variante, tissu, broderie, artisane</div>
+          </div>
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:2px;">N° de commande généré</div>
+            <div class="code">KW-2025-00142</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">2</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #1D9E75;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Webhook déclenché automatiquement</div>
+          <span class="pill">Webhook POST</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">Shopify envoie un webhook <span class="code">orders/paid</span> vers ton serveur dès que le paiement est confirmé. Aucune action manuelle.</div>
+        <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px;font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);line-height:1.7;">
+          POST https://api.kwaii.fr/webhook/order-paid<br>
+          {<br>
+          &nbsp;&nbsp;"order_id": "KW-2025-00142",<br>
+          &nbsp;&nbsp;"customer": { "first_name": "Léa" },<br>
+          &nbsp;&nbsp;"line_items": [{ "name": "Buni · Fille · Sans bras" }],<br>
+          &nbsp;&nbsp;"note_attributes": [<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;{ "name": "broderie", "value": "Léa" },<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;{ "name": "artisan_id", "value": "isabelle" }<br>
+          &nbsp;&nbsp;]<br>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">3</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #1D9E75;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Génération du QR code unique</div>
+          <span class="pill"><i class="ti ti-qrcode" style="font-size:12px;vertical-align:-1px;" aria-hidden="true"></i> Backend</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">Le backend génère un identifiant unique et crée le QR code pointant vers la page souvenir de l'adoption.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">URL encodée dans le QR</div>
+            <div class="code" style="word-break:break-all;">kwaii.fr/adoption/KW-2025-00142</div>
+          </div>
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Librairie recommandée</div>
+            <div class="code">qrcode (npm) ou qrcode.js</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Format PNG 300×300px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 4 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#7F77DD;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">4</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #7F77DD;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Génération du PDF certificat</div>
+          <span class="pill" style="color:#534AB7;border-color:#7F77DD;">PDF engine</span>
+        </div>
+        <div class="sub" style="margin-bottom:10px;">Le moteur PDF injecte toutes les données dans un template HTML/CSS aux couleurs Kwaii, puis le convertit en PDF haute résolution (A5, impression qualité).</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;text-align:center;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Option 1</div>
+            <div class="code">Puppeteer</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">HTML → PDF<br>Node.js</div>
+          </div>
+          <div style="background:var(--bg-accent);border-radius:var(--radius);padding:8px 10px;text-align:center;border:0.5px solid var(--border-accent);">
+            <div style="font-size:10px;color:var(--text-accent);margin-bottom:3px;">Recommandé</div>
+            <div class="code">WeasyPrint</div>
+            <div style="font-size:10px;color:var(--text-accent);margin-top:3px;">Python · léger<br>qualité impression</div>
+          </div>
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;text-align:center;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Option 3</div>
+            <div class="code">PDFKit</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">Node.js natif<br>plus basique</div>
+          </div>
+        </div>
+        <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Données injectées dans le template</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill">Prénom enfant</span>
+            <span class="pill">Nom doudou</span>
+            <span class="pill">Date adoption</span>
+            <span class="pill">Artisane + ville</span>
+            <span class="pill">QR code PNG</span>
+            <span class="pill">N° certificat</span>
+            <span class="pill">Illustration doudou</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 5 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#D85A30;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">5</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #D85A30;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Stockage et création de la page souvenir</div>
+          <span class="pill">Base de données</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">Le PDF est stocké en cloud (S3 ou Cloudinary). La page souvenir est créée en base de données et devient accessible via le QR code.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Stockage PDF</div>
+            <div style="font-size:11px;color:var(--text-primary);">AWS S3 · Cloudinary · Supabase Storage</div>
+          </div>
+          <div style="background:var(--surface-1);border-radius:var(--radius);padding:8px 10px;">
+            <div style="font-size:10px;color:var(--text-muted);margin-bottom:3px;">Page souvenir créée</div>
+            <div class="code">/adoption/KW-2025-00142</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">Profil artisane + galerie photos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 6 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;margin-bottom:6px;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">6</div>
+        <div style="width:2px;flex:1;background:var(--border);margin-top:4px;min-height:24px;"></div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #1D9E75;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Email de confirmation envoyé</div>
+          <span class="pill"><i class="ti ti-mail" style="font-size:12px;vertical-align:-1px;" aria-hidden="true"></i> Klaviyo / Mailchimp</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">Un email automatique est envoyé à la famille avec le lien de téléchargement du certificat PDF et la page souvenir.</div>
+        <div style="background:var(--surface-1);border-radius:var(--radius);padding:10px 12px;border-left:2px solid #1D9E75;border-radius:0 var(--radius) var(--radius) 0;">
+          <div style="font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:4px;">Objet : "Le certificat d'adoption de Léa est prêt ! ✨"</div>
+          <div class="sub">Contenu : photo du certificat en aperçu · lien de téléchargement PDF · lien page souvenir · message de l'artisane</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 7 -->
+    <div style="display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:12px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#888780;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:white;flex-shrink:0;">7</div>
+      </div>
+      <div class="step-card" style="border-left:2px solid #888780;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="h3">Certificat imprimé dans le coffret</div>
+          <span class="badge">Livraison physique</span>
+        </div>
+        <div class="sub" style="margin-bottom:8px;">L'artisane imprime le PDF sur papier vergé A5 et l'insère dans le coffret Kwaii avec le doudou. Le QR code sur le certificat renvoie vers la page souvenir en ligne.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div style="background:var(--bg-success);border-radius:var(--radius);padding:8px 10px;text-align:center;">
+            <i class="ti ti-file-certificate" style="font-size:18px;color:var(--text-success);" aria-hidden="true"></i>
+            <div style="font-size:11px;font-weight:500;color:var(--text-success);margin-top:3px;">Certificat PDF</div>
+            <div style="font-size:10px;color:var(--text-success);">imprimé A5</div>
+          </div>
+          <div style="background:var(--bg-success);border-radius:var(--radius);padding:8px 10px;text-align:center;">
+            <i class="ti ti-qrcode" style="font-size:18px;color:var(--text-success);" aria-hidden="true"></i>
+            <div style="font-size:11px;font-weight:500;color:var(--text-success);margin-top:3px;">QR code scannable</div>
+            <div style="font-size:10px;color:var(--text-success);">→ page souvenir</div>
+          </div>
+          <div style="background:var(--bg-success);border-radius:var(--radius);padding:8px 10px;text-align:center;">
+            <i class="ti ti-heart" style="font-size:18px;color:var(--text-success);" aria-hidden="true"></i>
+            <div style="font-size:11px;font-weight:500;color:var(--text-success);margin-top:3px;">Coffret Kwaii</div>
+            <div style="font-size:10px;color:var(--text-success);">doudou + certif</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECAP TECHNIQUE -->
+  <div style="margin-top:1.5rem;background:var(--surface-1);border-radius:12px;padding:1rem 1.25rem;">
+    <div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:10px;">Stack technique recommandée</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">E-commerce</div>
+        <div class="code">Shopify</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Backend / API</div>
+        <div class="code">Node.js + Express</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">PDF engine</div>
+        <div class="code">Puppeteer</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">QR code</div>
+        <div class="code">qrcode (npm)</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Stockage</div>
+        <div class="code">Cloudinary / S3</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Base de données</div>
+        <div class="code">Supabase / PG</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Emails</div>
+        <div class="code">Klaviyo</div>
+      </div>
+      <div style="text-align:center;padding:8px;">
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">Hébergement API</div>
+        <div class="code">Railway / Render</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMING -->
+  <div style="margin-top:1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+    <div style="background:var(--surface-2);border-radius:var(--radius);border:0.5px solid var(--border);padding:10px 12px;text-align:center;">
+      <div style="font-size:20px;font-weight:500;color:var(--text-primary);">&lt; 30s</div>
+      <div style="font-size:11px;color:var(--text-muted);">Commande → PDF généré</div>
+    </div>
+    <div style="background:var(--surface-2);border-radius:var(--radius);border:0.5px solid var(--border);padding:10px 12px;text-align:center;">
+      <div style="font-size:20px;font-weight:500;color:var(--text-primary);">0</div>
+      <div style="font-size:11px;color:var(--text-muted);">Actions manuelles requises</div>
+    </div>
+    <div style="background:var(--surface-2);border-radius:var(--radius);border:0.5px solid var(--border);padding:10px 12px;text-align:center;">
+      <div style="font-size:20px;font-weight:500;color:var(--text-primary);">∞</div>
+      <div style="font-size:11px;color:var(--text-muted);">Page souvenir accessible</div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+    <button onclick="sendPrompt('Comment installer et configurer le webhook Shopify pour Kwaii ?')" style="font-size:12px;">Configurer le webhook Shopify ↗</button>
+    <button onclick="sendPrompt('Montre-moi le code Node.js pour générer le certificat PDF Kwaii avec Puppeteer')" style="font-size:12px;">Code PDF avec Puppeteer ↗</button>
+    <button onclick="sendPrompt('On passe à l étape suivante : installation de Shopify pour Kwaii')" style="font-size:12px;">Étape suivante : Shopify ↗</button>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>

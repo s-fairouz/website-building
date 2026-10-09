@@ -2,7 +2,7 @@
 
 :root {
   --rule: color-mix(in srgb, var(--color-blush) 85%, var(--color-bg));
-  --brass-deep: color-mix(in srgb, var(--color-brass) 60%, var(--color-text));
+  --brass-deep: color-mix(in srgb, var(--color-brass) 30%, var(--color-text));
   --rose-wash: color-mix(in srgb, var(--color-blush) 50%, var(--color-surface));
   --wood-wash: color-mix(in srgb, var(--color-brass) 38%, var(--color-surface));
   --sage-wash: color-mix(in srgb, var(--color-sage) 70%, var(--color-surface));
@@ -11,7 +11,7 @@
   --announcement-h: 2rem;
   --header-h: 4.5rem;
   --radius-field: 12px;
-  --shadow: 0 1px 2px rgb(45 41 38 / 0.04), 0 4px 14px rgb(45 41 38 / 0.05);
+  --shadow: 0 0 0 1px rgb(45 41 38 / 0.06), 0 1px 2px rgb(45 41 38 / 0.04), 0 8px 22px rgb(45 41 38 / 0.06);
   --shadow-lift: 0 2px 4px rgb(45 41 38 / 0.05), 0 14px 28px rgb(45 41 38 / 0.09);
   --ring: 0 0 0 2px var(--color-bg), 0 0 0 4px color-mix(in srgb, var(--color-text) 55%, var(--color-blush));
 }
@@ -27,8 +27,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Keeps in-page links from landing underneath the sticky header. */
-  scroll-padding-top: var(--header-h);
+  /* A little air above the target of an in-page link. */
+  scroll-padding-top: 1.5rem;
 }
 
 @media (max-width: 62rem) {
@@ -153,11 +153,31 @@ ol[role='list'] {
 }
 
 .band {
-  padding-block: clamp(3.5rem, 8vw, 7rem);
+  padding-block: clamp(1.25rem, 2.75vw, 2.25rem);
 }
 
 .band--color {
   background: var(--color-band);
+}
+
+/* Colour blocks: a whole section filled with one palette colour at full strength.
+   Quiet text turns dark inside a block so it stays easy to read. */
+.band--blush,
+.band--sage,
+.band--sky {
+  --color-muted: var(--color-text);
+}
+
+.band--blush {
+  background: var(--color-blush);
+}
+
+.band--sage {
+  background: var(--color-sage);
+}
+
+.band--sky {
+  background: var(--color-sky);
 }
 
 .band__head {
@@ -344,7 +364,8 @@ input[type='checkbox'] {
   padding: 0.9rem 1.1rem;
   border-left: 3px solid var(--color-sage);
   border-radius: 0 var(--radius-field) var(--radius-field) 0;
-  background: var(--color-surface);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
   font-weight: 500;
 }
 
@@ -406,57 +427,53 @@ input[type='checkbox'] {
 
 /* Header */
 
-/* Shopify wraps the announcement and the header in this element. It sticks to the top,
-   pulled up by the announcement's height so only the header itself stays in view. */
+/* The announcement and the header sit straight on the page ground: no band of their own,
+   no line under them, and they scroll away with the page. */
 #shopify-section-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 40;
 }
 
-#shopify-section-header:has(.announcement) {
-  top: calc(-1 * var(--announcement-h));
-}
-
-.announcement {
-  height: var(--announcement-h);
-  overflow: hidden;
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-bg);
-  font-size: 0.6875rem;
-  line-height: calc(var(--announcement-h) - 1px);
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-}
-
+/* Making and delivery notices: a row of white pills under the header, each with an icon,
+   large enough to read at a glance. */
 .announcement ul {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 0.5rem 0.75rem;
+  padding-top: 0.5rem;
 }
 
-.announcement li + li::before {
-  content: '·';
-  margin-inline: 0.9rem;
+.announcement li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1.1rem 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
-@media (max-width: 40rem) {
-  .announcement li + li {
-    display: none;
-  }
+.announcement svg {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .site-header {
   position: relative;
-  border-bottom: 1px solid var(--color-line);
-  background: color-mix(in srgb, var(--color-bg) 95%, transparent);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
 }
 
 .site-header__inner {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 1.75rem;
   min-height: var(--header-h);
 }
 
@@ -469,30 +486,48 @@ input[type='checkbox'] {
   white-space: nowrap;
 }
 
+/* If the links ever run out of room they are clipped, never drawn over the icons. */
+/* The whole menu shifts left by a link's padding, so the first word lines up with the gap
+   and the first link's pill stays inside the clipped box. */
 .site-nav {
   flex: 1;
+  display: flex;
+  justify-content: center;
   min-width: 0;
+  padding-block: 0.5rem;
+  overflow: clip;
+  overflow-clip-margin: 10px;
 }
 
+/* The links share one white pill; the page you are on is the dark segment inside it. */
 .site-nav ul {
   display: flex;
-  gap: 1.75rem;
+  gap: 0.15rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
 }
 
 .site-nav a {
+  display: block;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .site-nav a:hover {
-  color: var(--brass-deep);
+  background: var(--sage-wash);
 }
 
+/* The page you are on: a filled pill, like the chosen filter on the catalogue. */
 .site-nav a[aria-current='page'] {
-  color: var(--brass-deep);
+  background: var(--color-text);
+  color: var(--color-bg);
   font-weight: 600;
 }
 
@@ -523,10 +558,10 @@ input[type='checkbox'] {
   align-items: center;
   gap: 0.5rem;
   margin-left: 0.5rem;
-  padding: 0.45rem 0.5rem 0.45rem 0.9rem;
-  border: 1px solid var(--color-line);
+  padding: 0.5rem 0.55rem 0.5rem 0.95rem;
   border-radius: 999px;
-  background: var(--color-surface);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
@@ -561,29 +596,91 @@ input[type='checkbox'] {
   display: none;
 }
 
+/* The button shows a cross while the menu is open, and stays tinted. */
+.menu .menu__icon-close,
+.menu[open] .menu__icon-open {
+  display: none;
+}
+
+.menu[open] .menu__icon-close {
+  display: block;
+}
+
+.menu[open] summary {
+  background: var(--rose-wash);
+}
+
+/* The menu opens as a small card under its button, only as wide as its links need. */
+.menu {
+  position: relative;
+}
+
 .menu__panel {
   position: absolute;
-  top: 100%;
-  right: 0;
+  top: calc(100% + 0.6rem);
   left: 0;
-  padding: 0.25rem 1.25rem 1rem;
-  border-bottom: 1px solid var(--color-line);
-  background: var(--color-bg);
+  z-index: 5;
+  width: max-content;
+  min-width: 14rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.5rem;
+  border-radius: 22px;
+  background: var(--color-surface);
   box-shadow: var(--shadow-lift);
-  animation: panel-in 0.18s ease-out;
+  transform-origin: top left;
+  animation: menu-in 0.16s ease-out;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem) scale(0.97);
+  }
+}
+
+.menu__panel .menu__list {
+  display: grid;
+  gap: 0.15rem;
 }
 
 .menu__panel a {
   display: block;
-  padding-block: 0.85rem;
-  border-bottom: 1px solid var(--color-line);
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
   font-weight: 500;
   text-decoration: none;
+  transition: background-color 0.15s ease;
 }
 
+.menu__panel a:hover {
+  background: var(--sage-wash);
+}
+
+/* The page you are on: the same filled pill as in the header row. */
 .menu__panel a[aria-current='page'] {
-  color: var(--brass-deep);
+  background: var(--color-text);
+  color: var(--color-bg);
   font-weight: 600;
+}
+
+/* When the links are a little too wide, the header first makes room: the cart keeps its
+   icon and count but drops its word, and the links sit a touch closer. */
+.site-header.is-tight .cart-link__label {
+  display: none;
+}
+
+.site-header.is-tight .site-nav a {
+  padding-inline: 0.6rem;
+}
+
+/* When they still do not fit (a long menu, or a wordier language), the header folds
+   them behind the menu button, as it does on a phone. */
+.site-header.is-compact .site-nav {
+  display: none;
+}
+
+.site-header.is-compact .menu {
+  display: block;
 }
 
 @media (max-width: 62rem) {
@@ -685,8 +782,9 @@ input[type='checkbox'] {
 /* Footer */
 
 .site-footer {
-  padding-block: 3.5rem 2rem;
-  background: var(--color-band);
+  margin-top: clamp(2rem, 4.5vw, 3.75rem);
+  padding-block: 3rem 2rem;
+  border-top: 1px solid var(--rule);
   font-size: 0.925rem;
 }
 
@@ -742,7 +840,7 @@ input[type='checkbox'] {
 /* Hero */
 
 .hero {
-  padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(3.5rem, 8vw, 7rem);
+  padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(1.25rem, 2.75vw, 2.25rem);
 }
 
 .hero__inner {
@@ -867,7 +965,7 @@ input[type='checkbox'] {
   padding: 0.75rem;
   border: 1px solid rgb(0 0 0 / 0.05);
   border-radius: var(--radius-card);
-  background: var(--color-surface);
+  background: var(--color-card);
   box-shadow: var(--shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -928,6 +1026,8 @@ input[type='checkbox'] {
   border-radius: 50%;
   background: var(--sage-wash);
   object-fit: cover;
+  object-position: 50% 20%;
+  object-view-box: inset(16% 25% 44% 25%);
 }
 
 .card__title {
@@ -1023,7 +1123,7 @@ input[type='checkbox'] {
 
 .badge--muted {
   background: var(--rose-wash);
-  color: var(--color-muted);
+  color: color-mix(in srgb, var(--color-muted) 60%, var(--color-text));
 }
 
 .flag {
@@ -1061,11 +1161,8 @@ input[type='checkbox'] {
   font-size: 0.925rem;
 }
 
-/* Filter pills on the left, Filters and Sort on the right; stays in view while scrolling. */
+/* Filter pills on the left, Filters and Sort on the right. */
 .catalog-bar {
-  position: sticky;
-  top: var(--header-h);
-  z-index: 4;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1073,7 +1170,6 @@ input[type='checkbox'] {
   gap: 0.75rem 1.5rem;
   margin-bottom: 1rem;
   padding-block: 0.75rem;
-  background: var(--color-bg);
 }
 
 /* The padding leaves room for focus rings, which a scrolling box would otherwise clip. */
@@ -1412,7 +1508,8 @@ input[type='checkbox'] {
   margin-bottom: 2rem;
   padding: 1.25rem 1.5rem 1.25rem 1.25rem;
   border-radius: var(--radius-card);
-  background: var(--color-surface);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
 }
 
 .specs__figure {
@@ -1900,4 +1997,2349 @@ input[type='checkbox'] {
   .button:active {
     transform: none;
   }
+}
+
+/* Home page sections. They share one soft recipe: white rounded cards on the cream page,
+   with each palette colour thinned to a pastel for the tile inside. */
+
+.hero__tagline {
+  margin: 2rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-brass);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+/* Promises: four short guarantees under the hero, on one ribbon the width of the page.
+   One surface, because they belong together and none of them is a button. */
+
+/* Two classes, so the padding outranks the theme's list reset. */
+.promises {
+  padding-block: clamp(1.25rem, 2.75vw, 2.25rem);
+}
+
+.promises .promises__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 1rem;
+  padding: 1.25rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 56rem) {
+  .promises .promises__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.promise {
+  --swatch: var(--color-blush);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.9rem;
+}
+
+.promise:nth-child(4n + 2) {
+  --swatch: var(--color-sage);
+}
+
+.promise:nth-child(4n + 3) {
+  --swatch: var(--color-sky);
+}
+
+.promise:nth-child(4n + 4) {
+  --swatch: var(--color-brass);
+}
+
+/* A small tile of the promise's colour, with a line of white stitching inside it. */
+.promise::before {
+  content: '';
+  grid-row: span 2;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 16px;
+  background: var(--color-bg);
+  outline: 2px dashed color-mix(in srgb, var(--swatch) 80%, var(--color-text));
+  outline-offset: -0.5rem;
+}
+
+.promise p {
+  margin: 0;
+}
+
+.promise__title {
+  align-self: end;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.promise__text {
+  align-self: start;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+/* On a narrow phone the tile sits above the words, so two columns still fit. */
+@media (max-width: 30rem) {
+  .promise {
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+  }
+
+  .promise::before {
+    grid-row: auto;
+  }
+}
+
+/* Companions: each on a card, drawn in its own colour until it has a photo */
+
+.companions .band__head h2 {
+  margin: 0;
+}
+
+.companions__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .companions__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.companions__list > li {
+  display: grid;
+}
+
+.companion {
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 16%, var(--color-surface));
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.6rem 1.1rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.companion:hover {
+  border-color: var(--color-text);
+}
+
+.companion__tone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.7rem;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+/* A companion with a photo: the photo fills the tile, at the same height as a sketch tile. */
+.companion__tone--photo {
+  padding: 0;
+  overflow: hidden;
+}
+
+.companion__photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: scale 0.35s ease;
+}
+
+.companion:hover .companion__photo {
+  scale: 1.04;
+}
+
+.companion__badge {
+  z-index: 1;
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.companion__sketch {
+  width: 62%;
+  stroke: var(--brass-deep);
+  stroke-width: 1;
+  transition: translate 0.25s ease;
+}
+
+.companion:hover .companion__sketch {
+  translate: 0 -0.3rem;
+}
+
+.companion__head {
+  fill: var(--color-surface);
+}
+
+.companion__cloth {
+  fill: var(--tint);
+  stroke-dasharray: 3 2.5;
+}
+
+.companion__eye {
+  fill: var(--color-text);
+  stroke: none;
+}
+
+.companion__name,
+.companion__kind,
+.companion__foot {
+  padding-inline: 0.5rem;
+}
+
+.companion__name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.companion__kind {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.companion__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.companion__price {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.companion__adopt {
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Story: why we make dolls, beside the facts that back it up */
+
+.story__inner {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 56rem) {
+  .story__inner {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 5rem;
+  }
+}
+
+.story__copy .rte {
+  max-width: 34em;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.story__facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.8rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.story__facts > div {
+  --swatch: var(--color-sage);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 1rem;
+  padding: 0.5rem;
+}
+
+.story__facts > div:nth-child(3n + 2) {
+  --swatch: var(--color-sky);
+}
+
+.story__facts > div:nth-child(3n + 3) {
+  --swatch: var(--color-blush);
+}
+
+.story__facts > div::before {
+  content: '';
+  grid-row: span 2;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 16px;
+  background: var(--color-bg);
+  outline: 2px dashed color-mix(in srgb, var(--swatch) 80%, var(--color-text));
+  outline-offset: -0.5rem;
+}
+
+.story__facts dt {
+  align-self: end;
+  font-weight: 600;
+}
+
+.story__facts dd {
+  align-self: start;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* Makers: the words about them, then one card each */
+
+.makers__intro {
+  max-width: 40rem;
+  margin-bottom: 2.25rem;
+}
+
+.makers__intro h2 {
+  margin-bottom: 0.4em;
+}
+
+.makers__intro p:not(.eyebrow) {
+  margin-bottom: 1.25rem;
+}
+
+/* The makers page with a single maker: a short title row, her card, a note on what she
+   works with, then the dolls she makes. */
+.maker-page {
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* Title on the left, the page's few words on the right, sharing one baseline. */
+.maker-page__head {
+  display: grid;
+  gap: 0.75rem 3rem;
+  align-items: end;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+@media (min-width: 52rem) {
+  .maker-page__head {
+    grid-template-columns: auto minmax(0, 28rem);
+    justify-content: space-between;
+  }
+}
+
+.maker-page__head h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 1.8rem + 4.5vw, 5rem);
+  line-height: 1;
+}
+
+.maker-page__lede p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.maker-note {
+  display: grid;
+  gap: 0.75rem 3rem;
+  margin-top: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 52rem) {
+  .maker-note {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+  }
+}
+
+.maker-note h2 {
+  margin: 0;
+}
+
+.maker-note p {
+  max-width: 38rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.35;
+}
+
+.band__head.maker-page__works {
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+/* A single maker: one wide card, her portrait on the left with a line of stitching
+   inside its edge, and on the right her name and the dolls she makes. */
+.maker-feature {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 52rem) {
+  .maker-feature {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+}
+
+.maker-feature__portrait {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  max-height: 30rem;
+  width: 100%;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--color-sage) 42%, var(--color-surface));
+}
+
+.maker-feature__portrait img,
+.maker-feature__portrait svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.maker-feature__portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0.6rem;
+  border: 1.5px dashed var(--color-surface);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.maker-feature__body {
+  padding: 0.5rem clamp(0.25rem, 2vw, 1.5rem) 1rem;
+}
+
+.maker-feature__body p {
+  margin: 0;
+}
+
+.maker-feature__intro {
+  max-width: 36rem;
+  margin-bottom: 1.75rem;
+}
+
+.maker-feature__intro h2 {
+  margin-bottom: 0.4em;
+}
+
+.maker-feature__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 0.9rem;
+}
+
+.maker-feature__name {
+  margin: 0;
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  line-height: 1.05;
+}
+
+/* Without the section's own heading the maker's name leads the card. */
+.maker-feature__body > .maker-feature__who:first-child .maker-feature__name {
+  font-size: clamp(2.75rem, 1.75rem + 4.5vw, 4.5rem);
+}
+
+.maker-feature__name a {
+  text-decoration: none;
+}
+
+.maker-feature__name a:hover {
+  text-decoration: underline 1px;
+  text-underline-offset: 0.12em;
+}
+
+.maker-feature__place {
+  color: var(--color-muted);
+}
+
+.maker-feature__body .maker-feature__bio {
+  max-width: 36rem;
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.4;
+}
+
+.maker-feature__body .maker-feature__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.maker-feature__facts li {
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  background: var(--sage-wash);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* The dolls she makes, as a row of small round photos. */
+.maker-feature__body .maker-feature__works {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.maker-feature__works a {
+  display: block;
+  overflow: hidden;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3.5px var(--sage-wash);
+  transition: box-shadow 0.15s ease, translate 0.15s ease;
+}
+
+.maker-feature__works a:hover {
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3.5px var(--color-text);
+  translate: 0 -2px;
+}
+
+.maker-feature__works img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.maker-feature__makes {
+  margin-top: 1.25rem;
+  font-weight: 600;
+}
+
+.maker-feature__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maker-feature__works a {
+    transition: none;
+  }
+
+  .maker-feature__works a:hover {
+    translate: none;
+  }
+}
+
+.maker-card {
+  padding: 0.6rem 0.6rem 1.1rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.maker-card:hover {
+  border-color: color-mix(in srgb, var(--color-sage) 42%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-sage) 16%, var(--color-surface));
+}
+
+.maker-card .maker-card__media {
+  margin-bottom: 0.8rem;
+  border-radius: 16px;
+}
+
+.maker-card .card__title,
+.maker-card > p {
+  padding-inline: 0.5rem;
+}
+
+.maker-card__makes {
+  display: inline-block;
+  margin: 0.6rem 0.5rem 0;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-band);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Personalization: a sample of the embroidery beside the offer */
+
+.personalize__inner {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 48rem) {
+  .personalize__inner {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4.5rem;
+  }
+}
+
+.personalize__card {
+  margin: 0;
+  padding: 0.7rem 0.7rem 1rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+/* The name on a soft cloth label, with a fine line of white stitching inside the edge. */
+.personalize__sample {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-brass) 30%, var(--color-surface));
+  outline: 1.5px dashed var(--color-surface);
+  outline-offset: -0.6rem;
+}
+
+.personalize__sample p {
+  margin: 0;
+  padding: 0 1.5rem;
+  color: color-mix(in srgb, var(--color-brass) 38%, var(--color-text));
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 2rem + 6vw, 5.5rem);
+  font-style: italic;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.personalize__card figcaption {
+  padding: 0.8rem 0.5rem 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.personalize__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  margin-block: 1.5rem;
+  color: var(--color-muted);
+}
+
+.personalize__price strong {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Reviews */
+
+.reviews__head {
+  margin-bottom: 2.25rem;
+}
+
+.reviews__head h2 {
+  margin: 0;
+}
+
+.reviews__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .reviews__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.review__stars {
+  display: flex;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.review__stars svg {
+  width: 1rem;
+  fill: var(--color-brass);
+}
+
+.review blockquote {
+  margin: 0;
+}
+
+.review blockquote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.review__author {
+  margin: auto 0 0;
+  font-weight: 600;
+}
+
+.review__author span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+/* Newsletter: one card on the band */
+
+.newsletter__card {
+  padding: clamp(1.5rem, 5vw, 2.75rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.newsletter__card h2 {
+  margin-bottom: 0.3em;
+}
+
+.newsletter__form {
+  margin-top: 1.5rem;
+}
+
+.newsletter__form .notice {
+  margin-bottom: 1.25rem;
+}
+
+.newsletter__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+}
+
+.newsletter__row .field {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion,
+  .companion__sketch,
+  .maker-card {
+    transition: none;
+  }
+
+  .companion:hover .companion__sketch {
+    translate: none;
+  }
+}
+
+/* Product page: what the price includes, and how the doll was made */
+
+.product__facts {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 1.1rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.making {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.making__facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.making__title {
+  margin: 1.5rem 0 0.9rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1.5rem;
+}
+
+/* The steps hang off a line of stitching, in the order they happened. */
+.making__steps {
+  display: grid;
+  gap: 0.7rem;
+  font-size: 0.925rem;
+}
+
+.making__steps li {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.making__steps li::before {
+  content: '';
+  position: absolute;
+  top: 0.45em;
+  left: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--color-brass);
+}
+
+.making__steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.25em;
+  bottom: -0.75rem;
+  left: calc(0.3rem - 1px);
+  border-left: 2px dashed var(--color-brass);
+}
+
+/* Adopt page: one question at a time, beside an order ticket that fills in as you go */
+
+.flow__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.flow__head h1,
+.flow__head h2 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.flow__head p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.flow__head p span {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+/* The seven stops, as a single thread with a knot at each one. */
+.rail {
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  border-block: 1px solid var(--rule);
+}
+
+.rail ol {
+  display: flex;
+  counter-reset: stop;
+}
+
+.rail li {
+  flex: 1 1 0;
+  min-width: 0;
+  counter-increment: stop;
+}
+
+.rail button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.85rem 0.25rem 0.75rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rail button::before {
+  content: counter(stop);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1;
+}
+
+.rail button:disabled {
+  color: var(--color-muted);
+  cursor: default;
+}
+
+.rail button:not(:disabled):hover {
+  border-bottom-color: var(--color-sage);
+}
+
+.rail button[aria-current='step'] {
+  border-bottom-color: var(--color-text);
+  font-weight: 600;
+}
+
+/* On a narrow screen only the current stop keeps its name; the others show their number. */
+@media (max-width: 47.99rem) {
+  .rail li {
+    flex: 0 0 auto;
+  }
+
+  .rail li:has([aria-current='step']) {
+    flex: 1 1 auto;
+  }
+
+  .rail button {
+    padding-inline: 0.6rem;
+    font-size: 0;
+  }
+
+  .rail button[aria-current='step'] {
+    font-size: 0.875rem;
+  }
+}
+
+.flow__form {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .flow__form {
+    grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 1fr);
+    grid-template-areas:
+      'steps ticket'
+      'nav ticket';
+    gap: 2.5rem 5rem;
+  }
+
+  .flow__steps {
+    grid-area: steps;
+  }
+
+  .flow__side {
+    grid-area: ticket;
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .flow__nav {
+    grid-area: nav;
+  }
+
+  .flow__adopt {
+    grid-column: 1 / -1;
+  }
+
+  /* The last two stops are about the ticket, so it takes the middle of the page. */
+  .flow__form[data-at='6'],
+  .flow__form[data-at='7'] {
+    grid-template-columns: minmax(0, 34rem);
+    grid-template-areas: 'steps' 'ticket' 'adopt' 'nav';
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .flow__form[data-at='6'] .flow__side,
+  .flow__form[data-at='7'] .flow__side {
+    position: static;
+  }
+
+  .flow__form[data-at='7'] .flow__adopt {
+    grid-area: adopt;
+  }
+}
+
+.flow__steps {
+  display: grid;
+  gap: 4rem;
+}
+
+.step-pane {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.step-pane[hidden] {
+  display: none;
+}
+
+.step-pane legend,
+.step-pane__legend {
+  display: block;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+/* The question is the page's main statement. */
+.step-pane__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.8rem + 3.4vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.step-pane__title:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.step-pane__sub {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.step-pane__chosen {
+  margin: 1.5rem 0 0;
+  color: var(--color-muted);
+}
+
+.step-pane__chosen strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Every choice hides its radio and shows the state on the label instead. */
+.roster__row input,
+.half input,
+.shape input,
+.bolt input {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Step 1: the companions, each on a soft rounded row tinted with its own colour. */
+.roster {
+  display: grid;
+  gap: 0.6rem;
+}
+
+@media (min-width: 40rem) {
+  .roster {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}
+
+/* Each companion's colour is thinned with the paper colour, so the set reads as pastels. */
+.roster__row {
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 16%, var(--color-surface));
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas:
+    'tone name price check'
+    'tone kind price check';
+  align-items: center;
+  column-gap: 0.9rem;
+  padding: 0.7rem 1rem 0.7rem 0.7rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.roster__row:hover {
+  background: var(--tint);
+}
+
+.roster__row:has(input:checked) {
+  border-color: var(--color-text);
+}
+
+.roster__row:has(input:focus-visible) {
+  box-shadow: var(--ring);
+}
+
+.roster__row:has(input:disabled) {
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+.roster__tone {
+  grid-area: tone;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 16px;
+  background: var(--soft);
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.06);
+  overflow: hidden;
+}
+
+/* At this size only the face reads, so the thumbnail closes in on the top of the photo. */
+.roster__tone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  scale: 2;
+  transform-origin: 47% 32%;
+}
+
+.roster__name {
+  grid-area: name;
+  align-self: end;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.roster__kind {
+  grid-area: kind;
+  align-self: start;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.roster__price {
+  grid-area: price;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* An empty ring that fills with a tick when the row is chosen. */
+.roster__check {
+  grid-area: check;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  border-radius: 50%;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.roster__row:has(input:checked) .roster__check {
+  border-color: var(--color-text);
+  background: var(--color-text)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.9rem no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roster__row,
+  .roster__check {
+    transition: none;
+  }
+}
+
+/* Step 2: girl or boy, as two white cards. The colour is kept to a soft tile, so the text
+   sits on white and stays easy to read. */
+.halves {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 36rem) {
+  .halves {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+/* The same thinned-colour recipe as the companion list: pink for one, blue for the other. */
+.half {
+  --swatch: var(--color-blush);
+  --soft: color-mix(in srgb, var(--swatch) 80%, var(--color-surface));
+  --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
+  cursor: pointer;
+}
+
+.half--boy {
+  --swatch: var(--color-sky);
+}
+
+.half__body {
+  position: relative;
+  display: grid;
+  gap: 0.4rem;
+  height: 100%;
+  padding: 0.7rem 0.7rem 1.4rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.half:hover .half__body {
+  border-color: var(--color-text);
+}
+
+.half input:checked + .half__body {
+  border-color: var(--color-text);
+}
+
+.half input:focus-visible + .half__body {
+  box-shadow: var(--ring);
+}
+
+.half__tone {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 2;
+  margin-bottom: 0.8rem;
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+.half__tone svg {
+  width: 3.25rem;
+  fill: var(--color-surface);
+}
+
+.half__name,
+.half__text {
+  padding-inline: 0.7rem;
+}
+
+.half__name {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.half__text {
+  max-width: 26em;
+  font-size: 0.95rem;
+}
+
+/* An empty ring on the colour tile that fills with a tick when the card is chosen. */
+.half__check {
+  position: absolute;
+  top: 1.3rem;
+  right: 1.3rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  border-radius: 50%;
+  background: var(--color-surface);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.half input:checked + .half__body .half__check {
+  border-color: var(--color-text);
+  background: var(--color-text)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.95rem no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .half__body,
+  .half__check {
+    transition: none;
+  }
+}
+
+/* Step 3: with or without arms, as two white cards with the sketch on a soft mint tile. */
+.shapes {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 36rem) {
+  .shapes {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+/* The same thinned-colour recipe as the other choices, in mint. */
+.shape {
+  --swatch: var(--color-sage);
+  --soft: color-mix(in srgb, var(--swatch) 80%, var(--color-surface));
+  --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
+  cursor: pointer;
+}
+
+.shape__body {
+  position: relative;
+  display: grid;
+  gap: 0.3rem;
+  height: 100%;
+  padding: 0.7rem 0.7rem 1.4rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.shape:hover .shape__body {
+  border-color: var(--color-text);
+}
+
+.shape input:checked + .shape__body {
+  border-color: var(--color-text);
+}
+
+.shape input:focus-visible + .shape__body {
+  box-shadow: var(--ring);
+}
+
+.shape__tone {
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.8rem;
+  padding-block: 1.25rem;
+  border-radius: 16px;
+  background: var(--soft);
+}
+
+/* A head on a flat square of cloth with a stitched edge; arms on the second one. */
+.shape__sketch {
+  width: min(8.5rem, 60%);
+  fill: var(--color-surface);
+  stroke: var(--brass-deep);
+  stroke-width: 1;
+  transition: translate 0.25s ease;
+}
+
+/* The sketch lifts a little under the pointer, so the whole card reads as one button. */
+.shape:hover .shape__sketch {
+  translate: 0 -0.3rem;
+}
+
+.shape__cloth {
+  stroke-dasharray: 2.5 2;
+}
+
+.shape__arm {
+  fill: none;
+  stroke: var(--color-surface);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.shape__name,
+.shape__selected,
+.shape__text {
+  padding-inline: 0.7rem;
+}
+
+.shape__name {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.shape__selected {
+  visibility: hidden;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.shape input:checked + .shape__body .shape__selected {
+  visibility: visible;
+}
+
+.shape__text {
+  max-width: 26em;
+  font-size: 0.95rem;
+}
+
+/* An empty ring on the tile that fills with a tick when the card is chosen. */
+.shape__check {
+  position: absolute;
+  top: 1.3rem;
+  right: 1.3rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  border-radius: 50%;
+  background: var(--color-surface);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.shape input:checked + .shape__body .shape__check {
+  border-color: var(--color-text);
+  background: var(--color-text)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.95rem no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shape__body,
+  .shape__check,
+  .shape__sketch {
+    transition: none;
+  }
+
+  .shape:hover .shape__sketch {
+    translate: none;
+  }
+}
+
+/* Step 4: the body fabrics, each a white card with a soft piece of the cloth at the top. */
+.bolts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (min-width: 36rem) {
+  .bolts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* The fabric's colour, thinned with the paper colour so six strong dyes sit together as pastels. */
+.bolt {
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 80%, var(--color-surface));
+  --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 14%, var(--color-surface));
+  cursor: pointer;
+}
+
+.bolt__body {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 0.6rem 0.6rem 1rem;
+  border: 1.5px solid transparent;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.bolt:hover .bolt__body,
+.bolt input:checked + .bolt__body {
+  border-color: var(--color-text);
+}
+
+.bolt input:focus-visible + .bolt__body {
+  box-shadow: var(--ring);
+}
+
+.bolt__cloth {
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  background: var(--soft);
+  transition: scale 0.25s ease;
+}
+
+/* The cloth swells a touch under the pointer, so the whole card reads as one button. */
+.bolt:hover .bolt__cloth {
+  scale: 1.03;
+}
+
+.bolt__name {
+  padding-inline: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.bolt input:checked + .bolt__body .bolt__name {
+  font-weight: 600;
+}
+
+/* An empty ring on the cloth that fills with a tick when the fabric is chosen. */
+.bolt__check {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  border-radius: 50%;
+  background: var(--color-surface);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.bolt input:checked + .bolt__body .bolt__check {
+  border-color: var(--color-text);
+  background: var(--color-text)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 0.95rem no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bolt__body,
+  .bolt__cloth,
+  .bolt__check {
+    transition: none;
+  }
+
+  .bolt:hover .bolt__cloth {
+    scale: none;
+  }
+}
+
+/* The companion taking shape: drawn like a pattern piece, coloured by the choices so far. */
+.figure {
+  display: block;
+  width: min(13rem, 60%);
+  margin: 0 auto 1.25rem;
+  stroke: var(--brass-deep);
+  stroke-width: 1;
+}
+
+.figure__head {
+  fill: color-mix(in srgb, var(--tone, var(--color-blush)) 42%, var(--color-surface));
+  transition: fill 0.25s;
+}
+
+/* The fabric colour, thinned a little so the sketch stays as soft as the list. */
+.figure__cloth {
+  fill: color-mix(in srgb, var(--cloth, var(--color-line)) 50%, var(--color-surface));
+  stroke-dasharray: 3 2.5;
+  transition: fill 0.25s;
+}
+
+.figure__arm {
+  fill: none;
+  stroke: color-mix(in srgb, var(--tone, var(--color-blush)) 42%, var(--color-surface));
+  stroke-width: 11;
+  stroke-linecap: round;
+  /* A hairline round each arm, so a pale companion's arms still show against the page. */
+  filter: drop-shadow(0 0 0.5px var(--brass-deep)) drop-shadow(0 0 0.5px var(--brass-deep));
+  opacity: 0;
+  transition: opacity 0.25s, stroke 0.25s;
+}
+
+.figure[data-arms='true'] .figure__arm {
+  opacity: 1;
+}
+
+.figure__eye {
+  fill: var(--color-text);
+  stroke: none;
+}
+
+/* A bow at the neck: pink for the first choice, blue for the second. */
+.figure__bow {
+  fill: var(--color-blush);
+  stroke-linejoin: round;
+  transition: fill 0.25s;
+}
+
+.figure[data-for='second'] .figure__bow {
+  fill: var(--color-sky);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .figure * {
+    transition: none;
+  }
+}
+
+/* The order ticket: a slip of paper with a perforated top edge. */
+.ticket {
+  position: relative;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.ticket::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  background: radial-gradient(circle at 6px 0, var(--color-bg) 4.5px, transparent 5px) 0 0 / 12px 6px repeat-x;
+}
+
+.ticket summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 1rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.ticket summary::-webkit-details-marker {
+  display: none;
+}
+
+.ticket__title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ticket__peek {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Open, the total is in the body, so the one in the heading steps aside. */
+.ticket[open] .ticket__peek {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .ticket summary {
+    pointer-events: none;
+  }
+}
+
+.ticket__body {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.ticket__lines {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding-block: 1rem;
+  border-top: 1px solid var(--color-text);
+}
+
+.ticket__lines > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.ticket__lines > div[hidden] {
+  display: none;
+}
+
+/* A dotted leader runs from each label to its value, as on a docket. */
+.ticket__lines dt {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.ticket__lines dt::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dotted var(--color-muted);
+}
+
+.ticket__lines dd {
+  margin: 0;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.ticket__prices {
+  border-top-color: var(--rule);
+}
+
+.ticket__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-text);
+  font-weight: 600;
+}
+
+.ticket__total strong {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The last stop: one large button with nothing under it, then a card that says what
+   happens after the order and what comes with it. */
+.flow__adopt[hidden] {
+  display: none;
+}
+
+.flow__adopt .button {
+  width: 100%;
+  padding-block: 1.15rem;
+  font-size: 1.05rem;
+}
+
+.flow__adopt .form-note:empty {
+  display: none;
+}
+
+.after {
+  margin-block: 1.5rem 2rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.after h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1.6rem;
+}
+
+.after__list {
+  margin: 0;
+}
+
+/* Three moments in order: a dot for each, joined by a line, with its timing in a pill. */
+.after__list > div {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding: 0 0 1.1rem 1.75rem;
+}
+
+.after__list > div:last-child {
+  padding-bottom: 0;
+}
+
+.after__list > div::before {
+  content: '';
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.after__list > div:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.2rem;
+  bottom: -0.45rem;
+  left: calc(0.375rem - 1px);
+  width: 2px;
+  background: var(--sage-wash);
+}
+
+.after__list dt {
+  font-weight: 600;
+}
+
+.after__list dd {
+  margin: 0;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background: var(--sage-wash);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* What comes with every order, as ticked pills closing the card. */
+.after .flow__promises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.flow__promises li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--color-band);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.flow__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.flow__nav[hidden] {
+  display: none;
+}
+
+.flow__nav [data-next] {
+  margin-left: auto;
+}
+
+.flow__nav [hidden] {
+  display: none;
+}
+
+/* A new step eases in, so the change of question is noticed. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .step-pane:not([hidden]) {
+    animation: step-in 0.25s ease-out;
+  }
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}
+
+/* Adoption certificate: a keepsake page. The names and the photo lead on one large card;
+   the facts, the making and the maker follow on quieter cards beneath it. */
+
+.record__page {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
+.record__card {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+/* The opening card: photo beside the two names. */
+.record__hero {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 28px;
+}
+
+@media (min-width: 48rem) {
+  .record__hero {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+/* The photo has a line of white stitching sewn just inside its edge. */
+.record__photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  background: var(--rose-wash);
+}
+
+.record__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.record__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0.6rem;
+  border: 1.5px dashed var(--color-surface);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.record__intro {
+  padding: 0.5rem clamp(0.25rem, 2vw, 1.5rem) 1rem;
+}
+
+.record__intro p {
+  margin: 0;
+}
+
+.record__intro .record__kind {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+.record__intro h1 {
+  margin-block: 0.1em 0.25em;
+  font-size: clamp(2.75rem, 1.75rem + 4.5vw, 5rem);
+  line-height: 1;
+}
+
+.record__date {
+  font-weight: 600;
+}
+
+.record__tagline {
+  color: var(--color-muted);
+}
+
+/* The gift message, on a soft pink note. */
+.record__message {
+  margin: 1.75rem 0 0;
+  padding: 1.1rem 1.25rem;
+  border-radius: 18px;
+  background: var(--color-bg);
+}
+
+.record__message p {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.record__message footer {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* The facts: six small cards, each with a drawing on a soft pink tile, the same pink as
+   the gift note above. One colour only, so the page stays calm. */
+.record__facts {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+@media (min-width: 36rem) {
+  .record__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 60rem) {
+  .record__facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.record__facts > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: center;
+  column-gap: 1rem;
+  padding: 1rem 1.25rem 1rem 1rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.record__icon {
+  grid-row: span 2;
+  align-self: center;
+  box-sizing: content-box;
+  padding: 0.75rem;
+  border-radius: 16px;
+  background: var(--color-bg);
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.record__facts dt {
+  align-self: end;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.record__facts dd {
+  align-self: start;
+  margin: 0.1rem 0 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.record__pair {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .record__pair {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+  }
+}
+
+.record__card .record__heading {
+  margin: 0 0 1.25rem;
+  font-size: 1.6rem;
+}
+
+/* Making steps: a ticked dot for each, joined by a line down the side. */
+.record__steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.9rem;
+  padding-bottom: 1.25rem;
+}
+
+.record__steps li:last-child {
+  padding-bottom: 0;
+}
+
+.record__steps li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 1.5rem;
+  bottom: 0;
+  left: calc(0.75rem - 1px);
+  width: 2px;
+  background: var(--sage-wash);
+}
+
+.record__tick {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+.record__step {
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.record__when {
+  grid-column: 2;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.record__maker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.record__portrait {
+  flex: none;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: var(--sage-wash);
+  object-fit: cover;
+  object-position: 50% 20%;
+  object-view-box: inset(16% 25% 44% 25%);
+}
+
+.record__maker p {
+  margin: 0;
+}
+
+.record__name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.record__name a {
+  text-decoration: none;
+}
+
+.record__name a:hover {
+  text-decoration: underline 1px;
+}
+
+.record__place {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* The maker's record, as small pills. */
+.record__card .record__about {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.record__about li {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--sage-wash);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.record__story {
+  margin: 1.25rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* The close: the maker's words and signature, with the shop and number as the seal. */
+.record__sign {
+  display: grid;
+  gap: 1.5rem 2.5rem;
+  align-items: end;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 48rem) {
+  .record__sign {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.record__sign p {
+  max-width: 36rem;
+  margin: 0;
+}
+
+.record__sign .record__signature {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.record__seal {
+  display: grid;
+  gap: 0.1rem;
+}
+
+@media (min-width: 48rem) {
+  .record__seal {
+    text-align: right;
+  }
+}
+
+.record__shop {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.record__number {
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.record__share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 0.5rem clamp(0.25rem, 2vw, 1rem) 0;
+}
+
+.record__share p {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+/* About page: the story beside a photo on one large card, the making as a row of
+   numbered cards, and a soft closing band that leads to the maker. */
+
+.about {
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.about__page {
+  display: grid;
+  gap: clamp(3rem, 7vw, 5rem);
+}
+
+.about__hero {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 52rem) {
+  .about__hero--photo {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.about__intro {
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.5rem, 3vw, 2.5rem);
+}
+
+.about__intro h1 {
+  margin: 0 0 0.5em;
+  font-size: clamp(2.75rem, 1.8rem + 4.5vw, 5rem);
+  line-height: 1;
+}
+
+.about__intro .rte {
+  max-width: 34rem;
+  font-size: 1.1rem;
+}
+
+/* The first paragraph is the one to read; it is set in the heading face. */
+.about__intro .rte > p:first-child {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.about__photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  background: var(--rose-wash);
+}
+
+.about__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0.6rem;
+  border: 1.5px dashed var(--color-surface);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.about__making h2 {
+  margin: 0 0 1.5rem;
+}
+
+.about__making .about__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+  counter-reset: step;
+}
+
+.about__steps li {
+  padding: 1.25rem 1.25rem 1.5rem;
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  counter-increment: step;
+}
+
+/* The step's number, on a soft pink tile. */
+.about__steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.25rem;
+  border-radius: 16px;
+  background: var(--color-bg);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.about__steps h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.6rem;
+}
+
+.about__steps p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.about__close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 3rem);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.about__close h2 {
+  margin: 0 0 0.3em;
+}
+
+.about__close p {
+  max-width: 34rem;
+  margin: 0;
+}
+
+.about__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
 }

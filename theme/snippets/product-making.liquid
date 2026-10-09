@@ -1,0 +1,53 @@
+{%- comment -%}
+  What the doll is made of and how it was made, from the product's metafields.
+  Accepts:
+  - product: {Object} the product
+{%- endcomment -%}
+
+{%- liquid
+  assign materials = product.metafields.custom.materials.value
+  assign technique = product.metafields.custom.technique.value
+  assign making_time = product.metafields.custom.making_time.value
+  assign stitches = product.metafields.custom.stitches.value
+  assign steps = product.metafields.custom.making_steps.value
+-%}
+
+{%- if materials != blank or technique != blank or making_time != blank or steps.size > 0 -%}
+  <div class="making">
+    <dl class="specs__facts making__facts">
+      {%- if materials != blank -%}
+        <div>
+          <dt>{{ 'products.materials' | t }}</dt>
+          <dd>{{ materials | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if technique != blank -%}
+        <div>
+          <dt>{{ 'products.technique' | t }}</dt>
+          <dd>{{ technique | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if making_time != blank -%}
+        <div>
+          <dt>{{ 'products.making_time' | t }}</dt>
+          <dd>{{ making_time | escape }}</dd>
+        </div>
+      {%- endif -%}
+      {%- if stitches != blank -%}
+        <div>
+          <dt>{{ 'products.stitches' | t }}</dt>
+          <dd>{{ stitches | escape }}</dd>
+        </div>
+      {%- endif -%}
+    </dl>
+
+    {%- if steps.size > 0 -%}
+      <h2 class="making__title">{{ 'products.making_steps' | t }}</h2>
+      <ol class="making__steps" role="list">
+        {%- for step in steps -%}
+          <li>{{ step | escape }}</li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+  </div>
+{%- endif -%}

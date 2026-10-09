@@ -1,53 +1,49 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {}
-    },
-    "steps": {
-      "type": "steps",
+    "about": {
+      "type": "about",
       "blocks": {
-        "cut": {
+        "crochet": {
           "type": "step",
           "settings": {
-            "title": "Cut",
-            "text": "Each body is cut from unbleached cotton using paper patterns we drew ourselves."
+            "title": "Crochet",
+            "text": "The body is crocheted by hand, one stitch at a time: about 840 stitches and two hours of work."
           }
         },
-        "sew": {
+        "assemble": {
           "type": "step",
           "settings": {
-            "title": "Sew",
-            "text": "Every seam is stitched twice, so arms and legs survive years of being carried by one hand."
-          }
-        },
-        "stuff": {
-          "type": "step",
-          "settings": {
-            "title": "Stuff",
-            "text": "We fill each doll with carded wool, firm in the neck and soft in the tummy."
+            "title": "Assemble",
+            "text": "Head, arms and cloth are joined and sewn firm. That takes another hour and a half."
           }
         },
         "embroider": {
           "type": "step",
           "settings": {
             "title": "Embroider",
-            "text": "Faces are embroidered by hand, which is why no two expressions match."
+            "text": "If you asked for a name, it is embroidered by hand, in gold or natural thread."
           }
         },
-        "dress": {
+        "box": {
           "type": "step",
           "settings": {
-            "title": "Dress",
-            "text": "Clothes come off and go back on with snaps that small hands can manage."
+            "title": "Check and box",
+            "text": "Each doll is checked, then wrapped in its gift box with its adoption certificate."
           }
         }
       },
-      "block_order": ["cut", "sew", "stuff", "embroider", "dress"],
+      "block_order": ["crochet", "assemble", "embroider", "box"],
       "settings": {
-        "heading": "How a doll is made"
+        "product": "buni",
+        "steps_heading": "How a doll is made",
+        "closing_heading": "Meet the hands behind every stitch",
+        "closing_text": "Isabelle crochets each doll herself, at a table by the window in Lyon.",
+        "button_label": "Meet Isabelle",
+        "button_link": "shopify://pages/makers",
+        "link_label": "See all the dolls",
+        "link": "shopify://collections/all"
       }
     }
   },
-  "order": ["main", "steps"]
+  "order": ["about"]
 }

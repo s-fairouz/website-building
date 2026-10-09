@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brand charter | Kwaii example</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<style>
+/* Preview shell: stands in for the chat widget these examples were written for. */
+:root {
+  --text-primary: #2A1A12;
+  --text-secondary: #6A4A30;
+  --text-muted: #8A6A50;
+  --text-success: #2E6B4A;
+  --text-warning: #8A5A10;
+  --text-accent: #8A4A20;
+  --surface-0: #EFE8E0;
+  --surface-1: #F7F3EF;
+  --surface-2: #FFFFFF;
+  --border: rgba(90, 50, 30, 0.15);
+  --border-strong: rgba(90, 50, 30, 0.3);
+  --border-success: rgba(46, 107, 74, 0.3);
+  --border-warning: rgba(138, 90, 16, 0.3);
+  --border-accent: #C87840;
+  --bg-success: #E6F2EA;
+  --bg-warning: #FBF0D8;
+  --bg-accent: #FBF0E6;
+  --radius: 8px;
+  --font-voice: Georgia, serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+body { margin: 0; padding: 24px 16px 48px; background: #F4EEE4; color: var(--text-primary); font-family: system-ui, sans-serif; }
+.preview-shell { max-width: 880px; margin: 0 auto; }
+.preview-back { display: inline-block; margin-bottom: 16px; color: var(--text-secondary); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+input[type="text"] { padding: 8px 10px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); }
+button { padding: 8px 14px; border: 0.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface-2); cursor: pointer; }
+</style>
+<script>
+// The example buttons ask the chat for another mock-up; here they have nothing to talk to.
+function sendPrompt(text) { alert('This button asked the chat for:\n\n' + text); }
+</script>
+</head>
+<body>
+<div class="preview-shell">
+<a class="preview-back" href="index.html">All Kwaii examples</a>
+<!-- Original example, unchanged, from here down. -->
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.sec{font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:#5A3A28;opacity:0.5;margin-bottom:12px;}
+.divider{height:0.5px;background:rgba(90,50,30,0.1);margin:22px 0;}
+.serif{font-family:Georgia,serif;}
+</style>
+
+<div style="font-family:sans-serif;background:#F7F3EF;border-radius:16px;padding:28px;border:0.5px solid rgba(90,50,30,0.12);">
+
+  <!-- HEADER -->
+  <div style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;margin-bottom:28px;">
+    <div>
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#B8956A;margin-bottom:5px;">Charte graphique finale — extraite des vrais doudous</div>
+      <div style="font-family:Georgia,serif;font-size:22px;color:#2A1A12;margin-bottom:4px;">Kwaii · l'identité réelle</div>
+      <div style="font-size:12px;color:#8A6A50;font-style:italic;">Chaque couleur vient directement des mains des artisanes.</div>
+    </div>
+    <!-- Yuki simplifié -->
+    <svg width="64" height="64" viewBox="0 0 64 64">
+      <ellipse cx="32" cy="38" rx="22" ry="20" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.2"/>
+      <ellipse cx="20" cy="28" rx="6" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.2"/>
+      <ellipse cx="44" cy="28" rx="6" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.2"/>
+      <ellipse cx="20" cy="26" rx="3" ry="4" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.5"/>
+      <ellipse cx="44" cy="26" rx="3" ry="4" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.5"/>
+      <circle cx="24" cy="36" r="5" fill="#2A1A12"/>
+      <circle cx="40" cy="36" r="5" fill="#2A1A12"/>
+      <circle cx="22.5" cy="34.5" r="1.8" fill="white"/>
+      <circle cx="38.5" cy="34.5" r="1.8" fill="white"/>
+      <ellipse cx="18" cy="42" r="4.5" rx="4.5" ry="3.2" fill="#F4B8C0" opacity="0.8"/>
+      <ellipse cx="46" cy="42" r="4.5" rx="4.5" ry="3.2" fill="#F4B8C0" opacity="0.8"/>
+      <path d="M29 44 Q32 47 35 44" stroke="#2A1A12" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- petites pattes -->
+      <ellipse cx="16" cy="56" rx="6" ry="4" fill="#FAF5EE" stroke="#2A1A12" stroke-width="1.8"/>
+      <ellipse cx="26" cy="58" rx="6" ry="4" fill="#FAF5EE" stroke="#2A1A12" stroke-width="1.8"/>
+      <ellipse cx="38" cy="58" rx="6" ry="4" fill="#FAF5EE" stroke="#2A1A12" stroke-width="1.8"/>
+      <ellipse cx="48" cy="56" rx="6" ry="4" fill="#FAF5EE" stroke="#2A1A12" stroke-width="1.8"/>
+    </svg>
+  </div>
+
+  <!-- OBSERVATION YUKI -->
+  <div style="background:#EAF3F8;border-radius:10px;padding:14px 16px;border-left:3px solid #8EC4D8;margin-bottom:22px;">
+    <div style="font-size:11px;font-weight:500;color:#2A4A5A;margin-bottom:4px;">Ce que Yuki nous dit sur la marque</div>
+    <div style="font-size:12px;color:#3A5A6A;line-height:1.7;">Yuki est un personnage <strong>illustration manga kawaii</strong> — outline épais, grands yeux expressifs, joues roses, corps rond stylisé. Il est la <strong>mascotte</strong> de la marque, pas le style du site. C'est la clé : Yuki apparaît dans le logo, les icônes, les illustrations — mais le site lui reste cocooning et adulte. Les deux univers coexistent sans se concurrencer.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PALETTE EXTRAITE DES DOUDOUS -->
+  <div class="sec">Palette extraite des vrais doudous</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;">
+
+    <div style="background:white;border-radius:12px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:10px;font-weight:500;color:#8A6A50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Fond universel</div>
+      <div style="height:36px;border-radius:6px;background:#F7F3EF;border:0.5px solid rgba(90,50,30,0.15);margin-bottom:6px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Crème chaud</div>
+      <div style="font-size:10px;color:#8A6A50;">#F7F3EF</div>
+      <div style="font-size:10px;color:#B8956A;margin-top:3px;">Le fond utilisé dans tes photos — la cohérence parfaite.</div>
+    </div>
+
+    <div style="background:white;border-radius:12px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:10px;font-weight:500;color:#8A6A50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Couleur signature</div>
+      <div style="height:36px;border-radius:6px;background:#C87840;margin-bottom:6px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Terracotta Kwaii</div>
+      <div style="font-size:10px;color:#8A6A50;">#C87840</div>
+      <div style="font-size:10px;color:#B8956A;margin-top:3px;">Le terracotta des nœuds de Buni, Zara, Rey — couleur fil rouge.</div>
+    </div>
+
+    <div style="background:white;border-radius:12px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:10px;font-weight:500;color:#8A6A50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Couleur principale</div>
+      <div style="height:36px;border-radius:6px;background:#2A1A12;margin-bottom:6px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Brun nocturne</div>
+      <div style="font-size:10px;color:#8A6A50;">#2A1A12</div>
+      <div style="font-size:10px;color:#B8956A;margin-top:3px;">Les broderies, les yeux, les contours de Yuki — profond et doux.</div>
+    </div>
+
+    <div style="background:white;border-radius:12px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:10px;font-weight:500;color:#8A6A50;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;">Crème ivoire</div>
+      <div style="height:36px;border-radius:6px;background:#F4EEE4;border:0.5px solid rgba(90,50,30,0.12);margin-bottom:6px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Lin naturel</div>
+      <div style="font-size:10px;color:#8A6A50;">#F4EEE4</div>
+      <div style="font-size:10px;color:#B8956A;margin-top:3px;">Le coton de Buni, Wooly, Tenta — chaleur naturelle.</div>
+    </div>
+  </div>
+
+  <!-- PALETTE PAR DOUDOU -->
+  <div class="sec">Couleur signature de chaque doudou — extraite des photos</div>
+  <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:22px;">
+
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#F4EEE4;border:1.5px solid #C87840;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Buni</div>
+      <div style="font-size:9px;color:#8A6A50;">Crème + terracotta</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#C4826A;border:1.5px solid #8A4A34;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Lambi</div>
+      <div style="font-size:9px;color:#8A6A50;">Terracotta rose</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#B8C4C8;border:1.5px solid #8A9CA4;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Pachi</div>
+      <div style="font-size:9px;color:#8A6A50;">Gris bleu perle</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#C87840;border:1.5px solid #8A4A20;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Rey</div>
+      <div style="font-size:9px;color:#8A6A50;">Terracotta vif</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#8EC4D8;border:1.5px solid #5A9AB8;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Ted</div>
+      <div style="font-size:9px;color:#8A6A50;">Bleu glacier</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#C0CCDA;border:1.5px solid #8A9CB0;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Tenta</div>
+      <div style="font-size:9px;color:#8A6A50;">Gris bleuté</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#D4921C;border:1.5px solid #A46A10;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Zara</div>
+      <div style="font-size:9px;color:#8A6A50;">Moutarde dorée</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="height:44px;border-radius:8px;background:#D4907A;border:1.5px solid #A86050;margin-bottom:5px;"></div>
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;">Wooly</div>
+      <div style="font-size:9px;color:#8A6A50;">Rose vieux</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- YUKI DANS LE SITE -->
+  <div class="sec">Comment Yuki s'intègre dans le site cocooning</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;">
+    <div style="background:white;border-radius:12px;padding:16px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;margin-bottom:10px;">Où Yuki apparaît</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#F7F3EF;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C87840;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Logo dans la navbar — version petite, sobre</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#F7F3EF;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C87840;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Section hero — illustration centrale, taille moyenne</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#F7F3EF;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C87840;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Messages système — 404, panier vide, confirmation</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#F7F3EF;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C87840;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Certificat d'adoption — illustration signature</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#F7F3EF;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C87840;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Newsletter "La lettre de Yuki" — en-tête</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:white;border-radius:12px;padding:16px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;margin-bottom:10px;">Où Yuki n'apparaît PAS</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#FDF0F0;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C84040;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Sur les fiches produits — photos réelles uniquement</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#FDF0F0;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C84040;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Sur les pages artisanes — photos humaines</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#FDF0F0;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C84040;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">En fond ou en pattern répété — trop kawaii</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#FDF0F0;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C84040;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Dans les boutons ou badges — trop chargé</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#FDF0F0;border-radius:6px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#C84040;flex-shrink:0;"></div>
+          <span style="font-size:12px;color:#3A2A1A;">Sur les pages institutionnelles — ton éditorial</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- APERÇU NAVBAR FINALE -->
+  <div class="sec">Aperçu navbar & hero — avec les vraies couleurs</div>
+  <div style="background:#F7F3EF;border-radius:12px;overflow:hidden;border:0.5px solid rgba(90,50,30,0.15);">
+    <!-- Navbar -->
+    <div style="padding:11px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid rgba(90,50,30,0.12);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <!-- mini Yuki navbar -->
+        <svg width="26" height="26" viewBox="0 0 64 64">
+          <ellipse cx="32" cy="38" rx="22" ry="20" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+          <ellipse cx="20" cy="28" rx="6" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+          <ellipse cx="44" cy="28" rx="6" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+          <ellipse cx="20" cy="26" rx="3" ry="4" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.8"/>
+          <ellipse cx="44" cy="26" rx="3" ry="4" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.8"/>
+          <circle cx="24" cy="36" r="5" fill="#2A1A12"/><circle cx="40" cy="36" r="5" fill="#2A1A12"/>
+          <circle cx="22.5" cy="34.5" r="1.8" fill="white"/><circle cx="38.5" cy="34.5" r="1.8" fill="white"/>
+          <ellipse cx="18" cy="42" rx="4.5" ry="3.2" fill="#F4B8C0" opacity="0.8"/>
+          <ellipse cx="46" cy="42" rx="4.5" ry="3.2" fill="#F4B8C0" opacity="0.8"/>
+          <path d="M29 44 Q32 47 35 44" stroke="#2A1A12" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span style="font-family:Georgia,serif;font-size:17px;color:#2A1A12;letter-spacing:0.02em;">Kwaii</span>
+      </div>
+      <div style="display:flex;gap:20px;font-size:11px;color:#6A4A30;letter-spacing:0.05em;">
+        <span>L'atelier</span><span>Artisanes</span><span>Notre histoire</span><span>Le carnet</span>
+      </div>
+      <div style="background:#2A1A12;color:#F7F3EF;font-size:10px;padding:6px 14px;border-radius:3px;letter-spacing:0.07em;">Panier (0)</div>
+    </div>
+    <!-- Hero simplifié -->
+    <div style="background:#EDE4D6;padding:28px 22px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;">
+      <div>
+        <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#C87840;margin-bottom:10px;font-weight:500;">Amigurumi · Fait main · France</div>
+        <div style="font-family:Georgia,serif;font-size:26px;color:#2A1A12;line-height:1.2;margin-bottom:8px;">Des doudous qui<br><em style="color:#C87840;">naissent à la main</em></div>
+        <div style="font-size:12px;color:#6A4A30;line-height:1.8;font-weight:300;margin-bottom:14px;">Buni, Tenta, Wooly... chaque compagnon est crocheté par une artisane passionnée. Unique, pour toute une vie.</div>
+        <div style="display:flex;gap:8px;">
+          <div style="background:#2A1A12;color:#F7F3EF;font-size:11px;padding:10px 18px;border-radius:3px;letter-spacing:0.07em;">Découvrir l'atelier</div>
+          <div style="background:transparent;color:#2A1A12;font-size:11px;padding:10px 18px;border-radius:3px;border:1px solid rgba(90,50,30,0.35);letter-spacing:0.07em;">Notre histoire</div>
+        </div>
+        <div style="font-family:Georgia,serif;font-style:italic;font-size:12px;color:#C87840;margin-top:12px;border-left:2px solid #D4A884;padding-left:10px;">"De fil en maille !"</div>
+      </div>
+      <!-- Yuki hero -->
+      <svg width="130" height="150" viewBox="0 0 130 150">
+        <ellipse cx="65" cy="92" rx="48" ry="46" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+        <ellipse cx="38" cy="72" rx="14" ry="18" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+        <ellipse cx="92" cy="72" rx="14" ry="18" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+        <ellipse cx="38" cy="70" rx="8" ry="12" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.8"/>
+        <ellipse cx="92" cy="70" rx="8" ry="12" fill="#F5E8A0" stroke="#2A1A12" stroke-width="1.8"/>
+        <ellipse cx="65" cy="68" rx="48" ry="46" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2.5"/>
+        <circle cx="48" cy="60" r="10" fill="#2A1A12"/><circle cx="82" cy="60" r="10" fill="#2A1A12"/>
+        <circle cx="44.5" cy="56.5" r="3.5" fill="white"/><circle cx="78.5" cy="56.5" r="3.5" fill="white"/>
+        <ellipse cx="30" cy="76" rx="10" ry="7" fill="#F4B8C0" opacity="0.8"/>
+        <ellipse cx="100" cy="76" rx="10" ry="7" fill="#F4B8C0" opacity="0.8"/>
+        <path d="M57 78 Q65 84 73 78" stroke="#2A1A12" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- pattes -->
+        <ellipse cx="30" cy="112" rx="12" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2"/>
+        <ellipse cx="50" cy="118" rx="12" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2"/>
+        <ellipse cx="80" cy="118" rx="12" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2"/>
+        <ellipse cx="100" cy="112" rx="12" ry="8" fill="#FAF5EE" stroke="#2A1A12" stroke-width="2"/>
+        <text x="65" y="142" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-style="italic" fill="#8A6A50">Yuki</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SYNTHÈSE FINALE -->
+  <div class="sec">Ce qui change dans les maquettes — mise à jour prioritaire</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+    <div style="background:white;border-radius:10px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;margin-bottom:6px;">Photos produits</div>
+      <div style="font-size:11px;color:#6A4A30;line-height:1.6;">Remplacer toutes les illustrations SVG par tes vraies photos sur fond crème `#F7F3EF`. C'est le changement le plus impactant.</div>
+    </div>
+    <div style="background:white;border-radius:10px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;margin-bottom:6px;">Couleurs CTA</div>
+      <div style="font-size:11px;color:#6A4A30;line-height:1.6;">Le terracotta `#C87840` des nœuds remplace le brun foncé pour les accents, liens et éléments de mise en valeur. Plus vivant.</div>
+    </div>
+    <div style="background:white;border-radius:10px;padding:14px;border:0.5px solid rgba(90,50,30,0.1);">
+      <div style="font-size:11px;font-weight:500;color:#2A1A12;margin-bottom:6px;">Yuki dans le site</div>
+      <div style="font-size:11px;color:#6A4A30;line-height:1.6;">Utiliser le vrai logo Yuki (ton fichier PNG) sur fond transparent dans la navbar et en hero. Cohérence totale avec l'identité visuelle.</div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>

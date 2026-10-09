@@ -1,6 +1,6 @@
 {%- comment -%}
-  Engraving field for products whose "personalizable" metafield is on.
-  The name is sent as a line item property, so it shows on the order.
+  Name field and thread choice for products whose "personalizable" metafield is on.
+  Both are sent as line item properties, so they show on the order.
   Accepts:
   - product: {Object} the product
 {%- endcomment -%}
@@ -12,10 +12,25 @@
       id="engraving"
       type="text"
       name="properties[{{ 'products.engraving' | t }}]"
-      maxlength="20"
+      maxlength="12"
       autocomplete="off"
       aria-describedby="engraving-hint"
+      data-name
     >
     <p class="form-note" id="engraving-hint">{{ 'products.engraving_hint' | t }}</p>
   </div>
+
+  <fieldset class="option">
+    <legend>{{ 'products.thread' | t }}</legend>
+    <div class="chips">
+      <label class="chip">
+        <input type="radio" name="properties[{{ 'products.thread' | t }}]" value="{{ 'products.thread_gold' | t }}" data-thread checked>
+        <span>{{ 'products.thread_gold' | t }}</span>
+      </label>
+      <label class="chip">
+        <input type="radio" name="properties[{{ 'products.thread' | t }}]" value="{{ 'products.thread_natural' | t }}" data-thread>
+        <span>{{ 'products.thread_natural' | t }}</span>
+      </label>
+    </div>
+  </fieldset>
 {%- endif -%}

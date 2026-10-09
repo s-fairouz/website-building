@@ -1,0 +1,234 @@
+{%- comment -%}
+  An adoption certificate laid out as a keepsake page of cards: who adopted which doll,
+  what it is made of, how it was made and by whom. The doll's facts come from its product
+  metafields and its maker; the names, number, dates and messages are typed in here.
+  This shows one certificate. A different one per order needs an app, not a theme.
+{%- endcomment -%}
+
+{%- liquid
+  assign doll = section.settings.product
+  assign artist = doll.metafields.custom.artist.value
+  assign portrait = artist.portrait.value
+  assign materials = doll.metafields.custom.materials.value
+  assign making_time = doll.metafields.custom.making_time.value
+  assign stitches = doll.metafields.custom.stitches.value
+-%}
+
+<section class="band record">
+  <div class="wrap">
+    <div class="record__page">
+      <article class="record__card record__hero">
+        {%- if doll.featured_image -%}
+          <div class="record__photo">
+            <img
+              src="{{ doll.featured_image | image_url: width: 900 }}"
+              alt="{{ doll.title | escape }}"
+              width="{{ doll.featured_image.width }}"
+              height="{{ doll.featured_image.height }}"
+            >
+          </div>
+        {%- endif -%}
+
+        <div class="record__intro">
+          <p class="record__kind">{{ 'record.title' | t }}</p>
+          <h1>
+            {{ section.settings.child | escape }}
+            {%- if doll %} &amp; {{ doll.title }}{% endif -%}
+          </h1>
+          {%- if section.settings.date != blank -%}
+            <p class="record__date">{{ 'record.adopted_on' | t: date: section.settings.date }}</p>
+          {%- endif -%}
+          {%- if section.settings.tagline != blank -%}
+            <p class="record__tagline">{{ section.settings.tagline | escape }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.message != blank -%}
+            <blockquote class="record__message">
+              <p>{{ section.settings.message | escape }}</p>
+              {%- if section.settings.message_from != blank -%}
+                <footer>{{ section.settings.message_from | escape }}</footer>
+              {%- endif -%}
+            </blockquote>
+          {%- endif -%}
+        </div>
+      </article>
+
+      <dl class="record__facts">
+        {%- if doll -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="8.5" r="5"/><path d="M6.5 21v-1.5a5.5 5.5 0 0 1 11 0V21"/><path d="M10 8.5h.01M14 8.5h.01"/></svg>
+            <dt>{{ 'journey.doll' | t }}</dt>
+            <dd>{{ doll.title }}, {{ doll.type | downcase }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.embroidery != blank -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4.5 19.5 16 8"/><circle cx="18" cy="6" r="2.5"/><path d="M4.5 19.5c-1.5-4 2.5-6.5 6-4.5s6 .5 6.5-2.5"/></svg>
+            <dt>{{ 'journey.embroidery' | t }}</dt>
+            <dd>{{ section.settings.embroidery | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if materials != blank -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 19c0-8 5.5-14 14-14 0 8.5-5.5 14-14 14z"/><path d="M5 19l8.5-8.5"/></svg>
+            <dt>{{ 'products.materials' | t }}</dt>
+            <dd>
+              {{ materials | escape }}
+              {%- if section.settings.colour != blank %}, {{ section.settings.colour | escape }}{% endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+        {%- if making_time != blank -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+            <dt>{{ 'products.making_time' | t }}</dt>
+            <dd>{{ making_time | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if stitches != blank -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 8h3.5M10.25 8h3.5M17.5 8H21M3 16h3.5M10.25 16h3.5M17.5 16H21"/></svg>
+            <dt>{{ 'products.stitches' | t }}</dt>
+            <dd>{{ stitches | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if artist.location.value != blank -%}
+          <div>
+            <svg class="record__icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 21s-6.5-5.5-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.5 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.25"/></svg>
+            <dt>{{ 'record.made_in' | t }}</dt>
+            <dd>{{ artist.location.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+
+      <div class="record__pair">
+        {%- if section.blocks.size > 0 -%}
+          <section class="record__card">
+            <h2 class="record__heading">{{ 'products.making_steps' | t }}</h2>
+            <ol class="record__steps" role="list">
+              {%- for block in section.blocks -%}
+                <li {{ block.shopify_attributes }}>
+                  <span class="record__tick">
+                    <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                      <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="visually-hidden">{{ 'record.done' | t }}</span>
+                  </span>
+                  <span class="record__step">{{ block.settings.title | escape }}</span>
+                  <span class="record__when">{{ block.settings.text | escape }}</span>
+                </li>
+              {%- endfor -%}
+            </ol>
+          </section>
+        {%- endif -%}
+
+        {%- if artist -%}
+          <section class="record__card">
+            <h2 class="record__heading">{{ 'record.maker' | t: doll: doll.title }}</h2>
+            <div class="record__maker">
+              {%- if portrait -%}
+                <img class="record__portrait" src="{{ portrait | image_url: width: 240 }}" alt="" width="96" height="96" loading="lazy">
+              {%- endif -%}
+              <div>
+                <p class="record__name">
+                  <a href="{{ artist.system.url }}">{{ artist.name.value | escape }}</a>
+                </p>
+                <p class="record__place">{{ artist.location.value | escape }}</p>
+              </div>
+            </div>
+            <ul class="record__about" role="list">
+              {%- if section.settings.maker_since != blank -%}
+                <li>{{ section.settings.maker_since | escape }}</li>
+              {%- endif -%}
+              {%- if artist.pieces_made.value -%}
+                <li>{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</li>
+              {%- endif -%}
+              {%- if section.settings.maker_rating != blank -%}
+                <li>{{ section.settings.maker_rating | escape }}</li>
+              {%- endif -%}
+            </ul>
+            {%- if section.settings.maker_story != blank -%}
+              <p class="record__story">{{ section.settings.maker_story | escape }}</p>
+            {%- endif -%}
+          </section>
+        {%- endif -%}
+      </div>
+
+      <footer class="record__sign">
+        {%- if section.settings.maker_message != blank -%}
+          <div class="record__closing">
+            <p>{{ section.settings.maker_message | escape }}</p>
+            {%- if artist -%}
+              <p class="record__signature">{{ artist.name.value | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <p class="record__seal">
+          <span class="record__shop">{{ shop.name }}</span>
+          {%- if section.settings.number != blank -%}
+            <span class="record__number">{{ 'record.number' | t: number: section.settings.number }}</span>
+          {%- endif -%}
+        </p>
+      </footer>
+
+      {%- if section.settings.share_text != blank -%}
+        <div class="record__share">
+          <p>{{ section.settings.share_text | escape }}</p>
+          {%- if section.settings.share_label != blank and section.settings.share_link != blank -%}
+            <a class="button button--outline" href="{{ section.settings.share_link }}">{{ section.settings.share_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Adoption certificate",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows one certificate, with the doll's details filled in from the product. A different certificate for each order needs an app."
+    },
+    { "type": "product", "id": "product", "label": "Doll" },
+    { "type": "text", "id": "child", "label": "Child's name", "default": "Léa" },
+    { "type": "text", "id": "number", "label": "Certificate number", "default": "HW-2025-00142" },
+    { "type": "text", "id": "date", "label": "Adoption date", "default": "14 May 2025" },
+    { "type": "text", "id": "tagline", "label": "Line under the date", "default": "A beautiful story begins" },
+    { "type": "textarea", "id": "message", "label": "Gift message", "default": "With all my love, so that you are never alone." },
+    { "type": "text", "id": "message_from", "label": "Message signed by", "default": "Granny Suzanne" },
+    { "type": "text", "id": "embroidery", "label": "Embroidery", "default": "Name embroidered in gold thread" },
+    { "type": "text", "id": "colour", "label": "Colour", "default": "pastel mauve" },
+    { "type": "header", "content": "The maker" },
+    { "type": "text", "id": "maker_since", "label": "Experience", "default": "Crocheting since 2018" },
+    { "type": "text", "id": "maker_rating", "label": "Rating", "info": "Only add a rating you can back up.", "default": "4.9 out of 5 from 28 reviews" },
+    { "type": "textarea", "id": "maker_story", "label": "In the maker's words" },
+    { "type": "textarea", "id": "maker_message", "label": "Maker's closing message" },
+    { "type": "header", "content": "Under the certificate" },
+    { "type": "textarea", "id": "share_text", "label": "Text" },
+    { "type": "text", "id": "share_label", "label": "Button label" },
+    { "type": "url", "id": "share_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Making step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Step", "default": "Body crocheted" },
+        { "type": "text", "id": "text", "label": "Date and detail", "default": "7 May 2025, 2 hours of work" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Adoption certificate",
+      "blocks": [
+        { "type": "step" },
+        { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

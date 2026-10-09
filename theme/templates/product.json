@@ -25,8 +25,15 @@
           }
         }
       },
-      "block_order": ["materials", "care", "shipping"],
-      "settings": {}
+      "block_order": [
+        "materials",
+        "care",
+        "shipping"
+      ],
+      "settings": {
+        "embroidery_product": "name-embroidery",
+        "included_note": "Comes with its adoption certificate."
+      }
     },
     "more": {
       "type": "featured-collection",
@@ -36,5 +43,8 @@
       }
     }
   },
-  "order": ["main", "more"]
+  "order": [
+    "main",
+    "more"
+  ]
 }

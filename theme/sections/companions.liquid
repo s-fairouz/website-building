@@ -1,0 +1,105 @@
+{%- comment -%}
+  A row of companions, each shown by a sketch in its own colour until it has a photo.
+  Every card leads to the page where the companion is adopted.
+{%- endcomment -%}
+
+<section class="band companions">
+  <div class="wrap">
+    <div class="band__head">
+      <div>
+        {%- if section.settings.kicker != blank -%}
+          <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.link_label != blank -%}
+        <a class="link" href="{{ section.settings.link | default: routes.all_products_collection_url }}">
+          {{- section.settings.link_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <ul class="companions__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign doll = block.settings.product
+          if doll == blank
+            continue
+          endif
+          assign tone = doll.metafields.custom.colors.value.first
+          assign artist = doll.metafields.custom.artist.value
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <a class="companion" href="{{ section.settings.adopt_link | default: doll.url }}" {% if tone %}style="--swatch: {{ tone.swatch.value }}"{% endif %}>
+            <span class="companion__tone{% if doll.featured_image %} companion__tone--photo{% endif %}">
+              {%- if block.settings.badge != blank -%}
+                <span class="companion__badge">{{ block.settings.badge | escape }}</span>
+              {%- endif -%}
+              {%- if doll.featured_image -%}
+                <img
+                  class="companion__photo"
+                  src="{{ doll.featured_image | image_url: width: 600 }}"
+                  alt="{{ doll.featured_image.alt | escape }}"
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <svg class="companion__sketch" viewBox="0 0 160 150" aria-hidden="true">
+                  <rect class="companion__cloth" x="42" y="80" width="76" height="60" rx="10"/>
+                  <circle class="companion__head" cx="80" cy="48" r="36"/>
+                  <circle class="companion__eye" cx="67" cy="46" r="3"/>
+                  <circle class="companion__eye" cx="93" cy="46" r="3"/>
+                </svg>
+              {%- endif -%}
+            </span>
+            <span class="companion__name">{{ doll.title }}</span>
+            <span class="companion__kind">
+              {{ 'companions.kind' | t: kind: doll.type | downcase }}
+              {%- if artist %}, {{ 'companions.by' | t: name: artist.name.value }}{% endif -%}
+            </span>
+            <span class="companion__foot">
+              <span class="companion__price">{{ doll.price | money }}</span>
+              <span class="companion__adopt">{{ 'journey.adopt' | t }}</span>
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Companions",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Line above the heading", "default": "The family" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The doll workshop" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "See all companions" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "url", "id": "adopt_link", "label": "Where the cards lead", "info": "For example the Adopt page. Uses each product's own page when empty." }
+  ],
+  "blocks": [
+    {
+      "type": "companion",
+      "name": "Companion",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Companion" },
+        { "type": "text", "id": "badge", "label": "Badge", "info": "For example \"Favourite of mums\". Leave empty for none." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Companions",
+      "blocks": [
+        { "type": "companion" },
+        { "type": "companion" },
+        { "type": "companion" },
+        { "type": "companion" }
+      ]
+    }
+  ]
+}
+{% endschema %}

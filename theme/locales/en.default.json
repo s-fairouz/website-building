@@ -25,9 +25,9 @@
     "add_to_cart": "Add to cart",
     "add_error": "That didn't go through. Try adding it again.",
     "show_photo": "Show photo {{ index }} of {{ total }}",
-    "engraving": "Engraved name",
-    "engraving_label": "Name to engrave (optional)",
-    "engraving_hint": "Up to 20 characters, engraved exactly as typed.",
+    "engraving": "Embroidered name",
+    "engraving_label": "Name to embroider (optional)",
+    "engraving_hint": "Up to 12 characters, embroidered by hand exactly as typed.",
     "lead_time": "Handcrafted to order. Currently dispatching in {{ min }}–{{ max }} business days.",
     "choose_options": "Choose options",
     "made_to_order": "Made to order",
@@ -36,7 +36,18 @@
     "height_value": "{{ cm }} cm ({{ inches }} in)",
     "height_short": "{{ cm }} cm tall",
     "size": "Size",
-    "colors": "Available colors"
+    "colors": "Available colors",
+    "thread": "Thread",
+    "thread_gold": "Gold thread",
+    "thread_natural": "Natural thread",
+    "fabric": "Body fabric",
+    "name_charge": "A name adds {{ price }} and {{ days }} working days.",
+    "name_days": "and {{ days }} more working days",
+    "materials": "Made of",
+    "technique": "How it’s made",
+    "making_time": "Handwork",
+    "stitches": "Stitches",
+    "making_steps": "How this doll was made"
   },
   "collections": {
     "title": "Collections",
@@ -107,6 +118,50 @@
     "materials": "Materials",
     "instagram": "Follow {{ name }} on Instagram",
     "pieces_by": "Made by {{ name }}",
-    "empty": "Add your makers under Content > Metaobjects in the Shopify admin."
+    "empty": "Add your makers under Content > Metaobjects in the Shopify admin.",
+    "pieces": "{{ count }} pieces made",
+    "see_all": "See them all"
+  },
+  "newsletter": {
+    "subscribe": "Subscribe",
+    "success": "You’re on the list. The next letter is on its way."
+  },
+  "journey": {
+    "for": "For",
+    "shape": "Shape",
+    "selected": "Selected",
+    "fabric_selected": "Fabric selected:",
+    "doll": "Doll",
+    "version": "Version",
+    "embroidery": "Embroidery",
+    "delivery": "Delivery",
+    "total": "Total",
+    "yes": "Yes",
+    "no": "No",
+    "adopt": "Adopt",
+    "adopt_button": "Adopt — {{ price }}",
+    "steps": "Steps",
+    "stop_companion": "Companion",
+    "stop_fabric": "Fabric",
+    "stop_name": "Name",
+    "stop_summary": "Summary",
+    "ticket": "Order ticket",
+    "back": "Back",
+    "continue": "Continue"
+  },
+  "record": {
+    "title": "Certificate of adoption",
+    "number": "No. {{ number }}",
+    "adopted_on": "Adopted on {{ date }}",
+    "made_in": "Made in",
+    "maker": "Who made {{ doll }}",
+    "done": "Done"
+  },
+  "companions": {
+    "kind": "the {{ kind }}",
+    "by": "by {{ name }}"
+  },
+  "reviews": {
+    "stars": "{{ count }} out of 5 stars"
   }
 }

@@ -94,7 +94,7 @@ function makerSvg(hair, skin, top) {
 // every field is read as field.value.
 const field = (value) => ({ value });
 
-function maker({ handle, name, location, bio, philosophy, status, remaining = null, total = null, hair, skin, top }) {
+function maker({ handle, name, location, bio, philosophy, status, remaining = null, total = null, hair, skin, top, pieces, specialty, makes }) {
   return {
     system: { handle, url: `/pages/artist/${handle}` },
     name: field(name),
@@ -104,6 +104,9 @@ function maker({ handle, name, location, bio, philosophy, status, remaining = nu
     commission_status: field(status),
     slots_remaining: field(remaining),
     slots_total: field(total),
+    pieces_made: field(pieces),
+    specialty: field(specialty),
+    makes: field(makes),
     instagram: field(`https://www.instagram.com/${handle.replace('-', '')}`),
     portrait: field(picture(`/mock/maker/${HAIR[hair]}-${SKIN[skin]}-${top}.svg`, name)),
   };
@@ -111,22 +114,10 @@ function maker({ handle, name, location, bio, philosophy, status, remaining = nu
 
 const makers = [
   maker({
-    handle: 'elena-marsh', name: 'Elena Marsh', location: 'Hebden Bridge, England',
-    status: 'Limited', remaining: 2, total: 5, hair: 'brown', skin: 'light', top: 'C3D4C5',
-    bio: 'Elena trained as a costume maker and spent ten years sewing for theatre before she made her first doll. She works at a table by the window, one doll at a time, and names each one before she embroiders its face.',
+    handle: 'isabelle', name: 'Isabelle', location: 'Lyon, France',
+    status: 'Limited', remaining: 2, total: 5, hair: 'brown', skin: 'light', top: 'C3D4C5', pieces: 47, specialty: 'All eight companions', makes: 'Buni, Zara, Ted, Pachi, Tenta, Wooly, Rey, Lambi',
+    bio: 'Isabelle trained as a costume maker and spent ten years sewing for theatre before she made her first doll. She works at a table by the window, one doll at a time, and names each one before she embroiders its face.',
     philosophy: 'Unbleached cotton for bodies, linen for clothes, and wool she cards herself for stuffing. Nothing synthetic touches a doll that leaves her table.',
-  }),
-  maker({
-    handle: 'ines-faure', name: 'Inès Faure', location: 'Honfleur, France',
-    status: 'Open', hair: 'black', skin: 'tan', top: 'E8C5BE',
-    bio: 'Inès learned to sew from her grandmother, who made dolls from flour sacks. She still cuts every pattern by hand and keeps her grandmother’s scissors on the bench.',
-    philosophy: 'Normandy linen, cotton thread and plant dyes she mixes in small pots. Colours vary a little from batch to batch, and she likes it that way.',
-  }),
-  maker({
-    handle: 'sam-okafor', name: 'Sam Okafor', location: 'Leeds, England',
-    status: 'Waitlist', hair: 'black', skin: 'deep', top: 'C9A67E',
-    bio: 'Sam makes the pocket dolls. He started by sewing one for his daughter’s coat pocket, then one for every child on her street.',
-    philosophy: 'Offcuts from the larger dolls, so very little is wasted. Each pocket doll uses fabric from at least three others.',
   }),
 ];
 
@@ -135,9 +126,28 @@ const colors = Object.fromEntries(
   Object.entries(DRESS).map(([name, hex]) => [name, { system: { handle: name.toLowerCase() }, name: field(name), swatch: field(`#${hex}`) }])
 );
 
+// Body fabrics a doll can be made in. Like colours, each is a "color" metaobject on Shopify.
+const fabrics = [
+  ['Terracotta flowers', 'C87840'],
+  ['Sky-blue stars', 'B8D4E8'],
+  ['Powder-pink moons', 'EDD8D8'],
+  ['Watercolour floral', 'D4C0B0'],
+  ['Flowering foxes', 'EAE4D8'],
+  ['Polar-blue minky', '8EC4D8'],
+].map(([name, hex]) => ({ system: { handle: name.toLowerCase().replace(/\W+/g, '-') }, name: field(name), swatch: field(`#${hex}`) }));
+
+// How a doll is made. The same sample record is used for every doll in the preview.
+const MAKING = {
+  materials: 'Oeko-Tex certified cotton',
+  technique: 'Crocheted by hand',
+  making_time: 'About 4½ hours',
+  stitches: 'About 840, placed one by one',
+  making_steps: ['Body crocheted, 2 hours', 'Parts assembled, 1½ hours', 'Name embroidered in gold thread', 'Checked and boxed'],
+};
+
 let nextId = 1000;
 
-function doll({ handle, title, type, price, compare = null, hair, skin, style, dresses, available = true, description, optionName = 'Dress color', madeBy, leadTime, personalizable = false, stock = null, height = null, size }) {
+function doll({ handle, title, type, price, compare = null, hair, skin, style, dresses, available = true, description, optionName = 'Dress color', madeBy, leadTime, personalizable = false, stock = null, height = null, size, tone = null, making = Boolean(height) }) {
   const single = dresses.length === 1;
   const images = dresses.map((dress) =>
     picture(`/mock/doll/${HAIR[hair]}-${DRESS[dress]}-${SKIN[skin]}-${STYLE[style]}.svg`, `${title} in ${dress.toLowerCase()}`)
@@ -186,75 +196,52 @@ function doll({ handle, title, type, price, compare = null, hair, skin, style, d
         lead_time_max_days: field(leadTime[1]),
         height_cm: field(height),
         size: field(size),
-        colors: field(dresses.map((dress) => colors[dress])),
+        colors: field(tone ? [{ system: { handle }, name: field(tone[0]), swatch: field(`#${tone[1]}`) }] : dresses.map((dress) => colors[dress])),
+        fabrics: field(making ? fabrics : []),
+        ...Object.fromEntries(Object.entries(MAKING).map(([key, value]) => [key, field(making ? value : null)])),
       },
     },
   };
 }
 
 const products = [
+  // The eight companions: the whole catalogue, and the choices on the order journey page.
+  ...[
+    ['buni', 'Buni', 'Rabbit', 3400, 'Cream and terracotta', 'F4EEE4'],
+    ['zara', 'Zara', 'Giraffe', 3600, 'Golden mustard', 'D4921C'],
+    ['ted', 'Ted', 'Bear', 3400, 'Glacier blue', '8EC4D8'],
+    ['pachi', 'Pachi', 'Elephant', 3600, 'Pearl blue-grey', 'B8C4C8'],
+    ['tenta', 'Tenta', 'Octopus', 3600, 'Blue-grey', 'C0CCDA'],
+    ['wooly', 'Wooly', 'Lamb', 3500, 'Old rose', 'D4907A'],
+    ['rey', 'Rey', 'Zebra', 3600, 'Bright terracotta', 'C87840'],
+    ['lambi', 'Lambi', 'Doe', 3600, 'Rose terracotta', 'C4826A'],
+  ].map(([handle, title, type, price, toneName, toneHex, madeBy = 'isabelle']) =>
+    doll({
+      handle, title, type, price, tone: [toneName, toneHex],
+      hair: 'brown', skin: 'light', style: 'short', dresses: ['Butter'],
+      madeBy, leadTime: [5, 7], personalizable: true, making: true,
+      description: `<p>${title} the ${type.toLowerCase()}, crocheted by hand.</p>`,
+    })
+  ),
+  // The charge for an embroidered name: a product of its own, kept out of the catalogue.
   doll({
-    handle: 'wren', title: 'Wren', type: 'Cloth doll', price: 6400,
-    hair: 'brown', skin: 'light', style: 'pigtails', dresses: ['Rosehip', 'Chambray', 'Moss'],
-    madeBy: 'elena-marsh', leadTime: [4, 6], personalizable: true, height: 38, size: 'Full size',
-    description: '<p>Wren is 38 cm tall, with yarn pigtails you can re-tie and a smock that comes off for washing. She sits up on her own and fits a child’s arm from wrist to elbow.</p>',
-  }),
-  doll({
-    handle: 'odile', title: 'Odile', type: 'Cloth doll', price: 7200,
-    hair: 'black', skin: 'tan', style: 'bun', dresses: ['Butter'],
-    madeBy: 'elena-marsh', leadTime: [4, 6], personalizable: true, height: 40, size: 'Full size',
-    description: '<p>Odile is 40 cm tall and wears her hair in a hand-wound bun. Her butter-yellow dress has a white collar and fastens with two snaps at the back.</p>',
-  }),
-  doll({
-    handle: 'pim', title: 'Pim', type: 'Pocket doll', price: 2800,
-    hair: 'ginger', skin: 'light', style: 'short', dresses: ['Moss'],
-    madeBy: 'sam-okafor', leadTime: [2, 3], stock: 3, height: 18, size: 'Pocket size',
-    description: '<p>Pim is 18 cm tall, small enough for a coat pocket or a school bag. Clothes are sewn on, so there is nothing to lose.</p>',
-  }),
-  doll({
-    handle: 'marguerite', title: 'Marguerite', type: 'Cloth doll', price: 7800, compare: 9200,
-    hair: 'blonde', skin: 'light', style: 'long', dresses: ['Chambray', 'Rosehip'],
-    madeBy: 'ines-faure', leadTime: [5, 8], personalizable: true, height: 40, size: 'Full size',
-    description: '<p>Marguerite is 40 cm tall with long wool hair that can be brushed and plaited. This is the last batch in this fabric.</p>',
-  }),
-  doll({
-    handle: 'tansy', title: 'Tansy', type: 'Pocket doll', price: 2800,
-    hair: 'black', skin: 'brown', style: 'pigtails', dresses: ['Rosehip'],
-    madeBy: 'sam-okafor', leadTime: [2, 3], stock: 5, height: 18, size: 'Pocket size',
-    description: '<p>Tansy is 18 cm tall, with two tight pigtails and a rosehip-red dress. Clothes are sewn on, so there is nothing to lose.</p>',
-  }),
-  doll({
-    handle: 'bram', title: 'Bram', type: 'Cloth doll', price: 6400, available: false,
-    hair: 'black', skin: 'tan', style: 'short', dresses: ['Chambray'],
-    madeBy: 'elena-marsh', leadTime: [4, 6], personalizable: true, height: 38, size: 'Full size',
-    description: '<p>Bram is 38 cm tall and wears a chambray smock with a white collar. The next batch is being sewn now.</p>',
-  }),
-  doll({
-    handle: 'juno', title: 'Juno', type: 'Cloth doll', price: 7200,
-    hair: 'black', skin: 'deep', style: 'bun', dresses: ['Butter', 'Moss'],
-    madeBy: 'ines-faure', leadTime: [5, 8], personalizable: true, height: 40, size: 'Full size',
-    description: '<p>Juno is 40 cm tall with a hand-wound bun. Her dress has a white collar and fastens with two snaps at the back.</p>',
-  }),
-  doll({
-    handle: 'spare-smock', title: 'Spare smock', type: 'Doll clothes', price: 1800, optionName: 'Color',
-    hair: 'brown', skin: 'light', style: 'pigtails', dresses: ['Rosehip', 'Chambray', 'Moss', 'Butter'],
-    madeBy: 'ines-faure', leadTime: [2, 3], size: 'Fits 38 to 40 cm dolls',
-    description: '<p>An extra smock for any 38 to 40 cm doll. Cotton, with a white collar and two snaps at the back.</p>',
+    handle: 'name-embroidery', title: 'Name embroidery', type: 'Add-on', price: 400,
+    hair: 'brown', skin: 'light', style: 'short', dresses: ['Butter'],
+    madeBy: null, leadTime: [null, null],
+    description: '<p>A name embroidered by hand on the doll. Ordered together with a doll.</p>',
   }),
 ];
+
+// Product types that are sold but not listed in the catalogue.
+const HIDDEN_TYPES = ['Add-on'];
 
 function collection(handle, title, description, list) {
   return { handle, title, description, url: `/collections/${handle}`, products: list, products_count: list.length, all_products_count: list.length };
 }
 
-const byType = (type) => products.filter((product) => product.type === type);
-
 // An array so templates can loop over it, with each collection also reachable by handle.
 const collections = [
-  collection('all', 'The Heirloom Doll Collection', '', products),
-  collection('cloth-dolls', 'Cloth dolls', '<p>Our full-size dolls, 38 to 40 cm tall, with clothes that come off.</p>', byType('Cloth doll')),
-  collection('pocket-dolls', 'Pocket dolls', '<p>Small 18 cm dolls made to travel.</p>', byType('Pocket doll')),
-  collection('doll-clothes', 'Doll clothes', '<p>Spare outfits for full-size dolls.</p>', byType('Doll clothes')),
+  collection('all', 'The Heirloom Doll Collection', '', products.filter((product) => !HIDDEN_TYPES.includes(product.type))),
 ];
 
 // Each maker's profile points at a collection of their own work.
@@ -267,15 +254,25 @@ for (const item of makers) {
 collections.forEach((item) => { collections[item.handle] = item; });
 
 const pages = {
+  certificate: {
+    title: 'Adoption certificate',
+    template_suffix: 'certificate',
+    content: '',
+  },
+  adopt: {
+    title: 'Adopt a doll',
+    template_suffix: 'adopt',
+    content: '',
+  },
   about: {
     title: 'About Hazelwick',
     template_suffix: 'about',
-    content: '<p>Hazelwick is a small group of makers who sell under one roof. It started with dolls sewn for our own children and kept going when their friends asked for one.</p><p>Everything is made in batches of ten or so, and we only use materials we would give to our own family: cotton, linen, wool felt and carded wool.</p>',
+    content: '<p>Hazelwick is a small workshop in Lyon. Every doll is crocheted by hand by Isabelle, one at a time, and made to order.</p><p>We only use materials we would give to our own family: certified cotton yarn, soft muslin and plush that small hands can hold on to.</p>',
   },
   makers: {
-    title: 'Our makers',
+    title: 'Our maker',
     template_suffix: 'makers',
-    content: '<p>Three people make everything in this shop. Each works alone, in small batches, under their own name.</p>',
+    content: '<p>One person makes everything in this shop. She works alone, in small batches, under her own name.</p>',
   },
   contact: {
     title: 'Contact us',
@@ -298,17 +295,19 @@ const linklists = {
   'main-menu': {
     links: [
       { title: 'All dolls', url: '/collections/all' },
-      { title: 'Cloth dolls', url: '/collections/cloth-dolls' },
-      { title: 'Pocket dolls', url: '/collections/pocket-dolls' },
+      { title: 'Adopt', url: '/pages/adopt' },
+      { title: 'Certificate', url: '/pages/certificate' },
       { title: 'Makers', url: '/pages/makers' },
       { title: 'About', url: '/pages/about' },
     ],
   },
   footer: {
     links: [
+      { title: 'Adoption certificate', url: '/pages/certificate' },
       { title: 'Questions and answers', url: '/pages/faq' },
       { title: 'Shipping and returns', url: '/pages/shipping-returns' },
       { title: 'Contact us', url: '/pages/contact' },
+      { title: 'Instagram', url: 'https://www.instagram.com/' },
       { title: 'About', url: '/pages/about' },
     ],
   },
@@ -331,7 +330,7 @@ const routes = {
 
 // Section settings a merchant would pick in the theme editor, keyed by template then section.
 const previewSettings = {
-  index: { hero: { product: 'wren' } },
+  index: { hero: { product: 'lambi' } },
 };
 
 function findVariant(id) {
@@ -342,4 +341,4 @@ function findVariant(id) {
   return null;
 }
 
-module.exports = { products, collections, pages, linklists, shop, routes, previewSettings, makers, findVariant, dollSvg, makerSvg };
+module.exports = { products, collections, pages, linklists, shop, routes, previewSettings, makers, HIDDEN_TYPES, findVariant, dollSvg, makerSvg };
