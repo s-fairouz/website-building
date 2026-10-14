@@ -297,6 +297,8 @@ async function renderPage(template, requestPath, locale, globals = {}) {
   let body = '';
   for (const id of json.order) {
     const config = json.sections[id];
+    // Shopify keeps switched-off sections in the order with "disabled": true.
+    if (config.disabled) continue;
     const settings = { ...config.settings, ...overrides[id] };
     body += await renderSection(`template--${id}`, config.type, { ...config, settings }, ctx);
   }

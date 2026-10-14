@@ -3,6 +3,7 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "product": "lambi",
         "button_link": "shopify://collections/all",
         "secondary_label": "Our story",
         "secondary_link": "shopify://pages/about",
@@ -16,10 +17,12 @@
     },
     "featured": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {}
     },
     "steps": {
       "type": "steps",
+      "disabled": true,
       "blocks": {
         "cut": {
           "type": "step",
@@ -272,6 +275,8 @@
     "makers",
     "personalize",
     "reviews",
-    "newsletter"
+    "newsletter",
+    "featured",
+    "steps"
   ]
 }

@@ -426,31 +426,111 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   const button = find('[data-journey-add]');
   const status = find('[data-journey-status]');
   const figure = find('[data-figure]');
+  const sideButtons = [...journey.querySelectorAll('[data-side]')];
+  const guide = find('[data-sides]');
+  const fabricStep = steps.findIndex((step) => step.querySelector('[data-fabric-side]'));
+  const nextLabel = next.querySelector('[data-next-label]');
+  const continueText = nextLabel.textContent;
   const wide = window.matchMedia('(min-width: 60rem)');
   let at = 0;
   let reached = 0;
+  let side = 0;
+  let sidesSeen = 0;
 
   const chosen = (part) => {
-    const input = journey.querySelector(`[data-recap-part="${part}"] input:checked`);
+    const input = journey.querySelector(`[data-recap-part="${part}"] input:checked:not(:disabled)`);
     return input ? input.value : '';
   };
 
+  // Only the chosen companion's head colours are offered; the others are switched off so
+  // they stay out of the order. Moving to another companion picks its first colour.
+  const offerHeads = (model) => {
+    journey.querySelectorAll('[data-heads-for]').forEach((group) => {
+      const own = Boolean(model) && group.dataset.headsFor === model.value;
+      const inputs = [...group.querySelectorAll('input')];
+      group.hidden = !own;
+      inputs.forEach((input) => {
+        input.disabled = !own;
+      });
+      if (own && inputs.length && !inputs.some((input) => input.checked)) inputs[0].checked = true;
+    });
+  };
+
+  // The fabrics are chosen in two parts of their step, outside then inside. The little
+  // stepper above them marks the part done, the part being chosen and the part to come,
+  // Continue leads to the next part before the next step, and the sketch outlines the
+  // piece of the doll being chosen.
+  const onFabrics = () => sideButtons.length > 0 && at === fabricStep;
+
+  const settleSides = () => {
+    const last = side === sideButtons.length - 1;
+    nextLabel.textContent = onFabrics() && !last ? next.dataset.textInside : continueText;
+    if (onFabrics()) figure.dataset.choosing = sideButtons[side].dataset.side;
+    else delete figure.dataset.choosing;
+  };
+
+  const showSide = (index, focus = false) => {
+    side = index;
+    sidesSeen = Math.max(sidesSeen, index);
+    sideButtons.forEach((option, i) => {
+      option.dataset.state = i < index ? 'done' : i === index ? 'current' : 'next';
+      if (i === index) option.setAttribute('aria-current', 'step');
+      else option.removeAttribute('aria-current');
+    });
+    journey.querySelectorAll('[data-fabric-side]').forEach((panel) => {
+      panel.hidden = panel.dataset.fabricSide !== sideButtons[index].dataset.side;
+    });
+    journey.querySelectorAll('[data-side-part]').forEach((part) => {
+      part.hidden = part.dataset.sidePart !== sideButtons[index].dataset.side;
+    });
+    settleSides();
+    update();
+    if (focus) {
+      guide.querySelector('[data-side-part]:not([hidden]) .fabric-guide__title').focus({ preventScroll: true });
+      journey.scrollIntoView({ block: 'start' });
+    }
+  };
+
   const update = () => {
-    // The sketch: cloth in the fabric's colour, arms and bow from the choices.
+    const model = journey.querySelector('[data-model]:checked');
+    offerHeads(model);
+
+    // The sketch: cloth in the outside fabric with a corner turned back to show the inside one,
+    // arms and bow from the choices. The head stays plain until its own step is reached,
+    // so choosing a companion does not colour it.
     const part = (name) => [...journey.querySelectorAll(`[data-recap-part="${name}"] input`)];
-    const fabric = part('fabric').find((input) => input.checked);
-    if (fabric && fabric.dataset.hex) figure.style.setProperty('--cloth', fabric.dataset.hex);
+    const headStep = steps.findIndex((step) => step.dataset.recapPart === 'head');
+    const head = part('head').find((input) => input.checked && !input.disabled);
+    if (reached >= headStep && head && head.dataset.hex) figure.style.setProperty('--tone', head.dataset.hex);
+    else figure.style.removeProperty('--tone');
+    const outer = part('outer').find((input) => input.checked);
+    const inner = part('inner').find((input) => input.checked);
+    // The guide's small pattern pieces take the same two colours as the sketch.
+    [figure, guide].forEach((drawing) => {
+      if (!drawing) return;
+      if (outer && outer.dataset.hex) drawing.style.setProperty('--cloth', outer.dataset.hex);
+      if (inner && inner.dataset.hex) drawing.style.setProperty('--lining', inner.dataset.hex);
+    });
     figure.dataset.arms = String(part('shape').findIndex((input) => input.checked) > 0);
     figure.dataset.for = part('for').findIndex((input) => input.checked) > 0 ? 'second' : 'first';
 
-    find('[data-fabric-name]').textContent = chosen('fabric');
+    find('[data-head-name]').textContent = chosen('head');
+    // Each part of the fabric stepper shows the fabric picked for it, once the part has been
+    // opened; until then the inside's starting fabric would read as a choice nobody made.
+    sideButtons.forEach((option, i) => {
+      const input = part(option.dataset.side).find((choice) => choice.checked);
+      const seen = i <= sidesSeen && input;
+      option.querySelector('[data-side-name]').textContent = seen ? input.value : option.dataset.textEmpty;
+      if (seen && input.dataset.hex) option.style.setProperty('--swatch', input.dataset.hex);
+      else option.style.removeProperty('--swatch');
+      option.classList.toggle('is-empty', !seen);
+      find(`[data-recap="${option.dataset.side}"]`).textContent = seen ? input.value : option.dataset.textEmpty;
+    });
     find('[data-recap="version"]').textContent = [chosen('for'), chosen('shape').toLowerCase()].filter(Boolean).join(', ');
-    find('[data-recap="fabric"]').textContent = chosen('fabric');
+    find('[data-recap="head"]').textContent = chosen('head');
 
-    const model = journey.querySelector('[data-model]:checked');
     if (!model) return;
     const price = model.dataset.priceText;
-    if (model.dataset.tone) figure.style.setProperty('--tone', model.dataset.tone);
     find('[data-recap="doll"]').textContent = [model.dataset.title, model.dataset.kind.toLowerCase()].filter(Boolean).join(', ');
     find('[data-price-doll]').textContent = model.dataset.priceText;
     journey.querySelectorAll('[data-total]').forEach((total) => {
@@ -467,6 +547,7 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   };
 
   const show = (index, focus = true) => {
+    const from = at;
     at = Math.max(0, Math.min(index, steps.length - 1));
     reached = Math.max(reached, at);
     steps.forEach((step, i) => {
@@ -482,21 +563,42 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     next.hidden = at === steps.length - 1;
     adoptPane.hidden = at !== steps.length - 1;
     settleTicket();
+    // Coming to the fabrics from a later step lands on their last part, otherwise the first.
+    if (onFabrics() && from !== at) showSide(from > at ? sideButtons.length - 1 : 0);
+    settleSides();
+    update();
     if (focus) {
       steps[at].querySelector('.step-pane__title').focus({ preventScroll: true });
       journey.scrollIntoView({ block: 'start' });
     }
   };
 
-  back.addEventListener('click', () => show(at - 1));
-  next.addEventListener('click', () => show(at + 1));
+  back.addEventListener('click', () => {
+    if (onFabrics() && side > 0) showSide(side - 1, true);
+    else show(at - 1);
+  });
+  next.addEventListener('click', () => {
+    if (onFabrics() && side < sideButtons.length - 1) showSide(side + 1, true);
+    else show(at + 1);
+  });
   stops.forEach((stop, i) => {
     stop.addEventListener('click', () => show(i));
+  });
+  sideButtons.forEach((option, i) => {
+    option.addEventListener('click', () => showSide(i, true));
   });
   wide.addEventListener('change', settleTicket);
 
   form.addEventListener('input', update);
   update();
+  // Only one set of head colours shows from here on, so its companion's name would only repeat.
+  journey.querySelectorAll('[data-set-title]').forEach((title) => {
+    title.hidden = true;
+  });
+  if (sideButtons.length) {
+    guide.hidden = false;
+    showSide(0);
+  }
   rail.hidden = false;
   nav.hidden = false;
   show(0, false);

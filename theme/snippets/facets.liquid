@@ -34,10 +34,30 @@
 {%- endcomment -%}
 {%- assign pool = collections.all.products | default: results.products -%}
 
+{%- comment -%}
+  The animal bubbles normally come from the product-type filter (Search & Discovery app).
+  Until that filter is switched on, a collection page builds them from the dolls' own types
+  and links each one to Shopify's built-in page for that type.
+{%- endcomment -%}
+{%- liquid
+  assign has_type_filter = false
+  for filter in results.filters
+    if filter.type == 'list' and filter.param_name contains 'product_type'
+      assign has_type_filter = true
+    endif
+  endfor
+  assign all_url = clear_url
+  assign on_type = false
+  if collection and collection.current_type != blank
+    assign on_type = true
+    assign all_url = collections.all.url
+  endif
+-%}
+
 <div class="catalog-bar">
   <ul class="bubbles" role="list">
     <li>
-      <a class="bubble" href="{{ clear_url }}"{% if active_count == 0 %} aria-current="true"{% endif %}>
+      <a class="bubble" href="{{ all_url }}"{% if active_count == 0 and on_type == false %} aria-current="true"{% endif %}>
         <span class="bubble__photo bubble__photo--all">
           {%- for product in pool limit: 4 -%}
             {%- if product.featured_image -%}
@@ -83,6 +103,29 @@
         </li>
       {%- endfor -%}
     {%- endfor -%}
+
+    {%- if has_type_filter == false and collection -%}
+      {%- assign seen = '|' -%}
+      {%- for product in pool -%}
+        {%- assign key = product.type | append: '|' -%}
+        {%- if product.type == blank or seen contains key -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign seen = seen | append: key -%}
+        <li>
+          <a class="bubble" href="{{ product.type | url_for_type }}"{% if collection.current_type == product.type %} aria-current="true"{% endif %}>
+            <span class="bubble__photo">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 200 }}" alt="" width="100" height="100" loading="lazy">
+              {%- else -%}
+                {{ product.type | slice: 0 | upcase }}
+              {%- endif -%}
+            </span>
+            <span class="bubble__name">{{ product.type | escape }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    {%- endif -%}
   </ul>
 
   <div class="catalog-bar__status">

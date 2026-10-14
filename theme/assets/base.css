@@ -22,6 +22,16 @@
   --shadow-lift: 0 2px 4px rgb(45 41 38 / 0.05), 0 14px 28px rgb(45 41 38 / 0.09);
   /* The focus ring is brass, deepened just enough to be seen on linen and on white. */
   --ring: 0 0 0 2px var(--color-bg), 0 0 0 4px color-mix(in srgb, var(--color-brass) 62%, var(--color-text));
+  /* Roles for the soft palette, so no button, border or mark falls back to the near-black text:
+     blush for actions and chosen things, rose-wood for selection rings, warm wood for edges. */
+  --accent: var(--color-blush);
+  --accent-hover: color-mix(in srgb, var(--color-blush) 78%, var(--color-brass));
+  --accent-ink: var(--color-text);
+  --accent-ring: color-mix(in srgb, var(--color-blush) 60%, var(--color-brass));
+  --edge: color-mix(in srgb, var(--color-brass) 70%, var(--color-bg));
+  --edge-focus: var(--brass-deep);
+  /* A field's resting edge: warm taupe, still dark enough (about 3.7:1) to see the field. */
+  --edge-field: color-mix(in srgb, var(--color-brass) 70%, var(--color-text));
 }
 
 /* Base */
@@ -257,10 +267,10 @@ ol[role='list'] {
   align-items: center;
   justify-content: center;
   padding: 0.95rem 1.75rem;
-  border: 1px solid var(--color-text);
+  border: 1px solid var(--accent);
   border-radius: 999px;
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   font: inherit;
   font-size: 0.95rem;
   font-weight: 600;
@@ -272,8 +282,8 @@ ol[role='list'] {
 }
 
 .button:hover {
-  border-color: color-mix(in srgb, var(--color-text) 84%, var(--color-surface));
-  background: color-mix(in srgb, var(--color-text) 84%, var(--color-surface));
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
 }
 
 .button:active {
@@ -287,14 +297,15 @@ ol[role='list'] {
   cursor: not-allowed;
 }
 
-/* The second button: paper with an ink outline; blush when you reach for it. */
+/* The second button: paper with a warm wood edge; blush when you reach for it. */
 .button--outline {
+  border-color: var(--edge);
   background: var(--color-surface);
   color: var(--color-text);
 }
 
 .button--outline:hover {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
   background: var(--color-blush);
   color: var(--color-text);
 }
@@ -303,16 +314,16 @@ ol[role='list'] {
 .button--soft {
   width: 100%;
   padding: 0.7rem 1rem;
-  border-color: var(--color-text);
+  border-color: var(--edge);
   background: var(--color-surface);
   color: var(--color-text);
   font-size: 0.875rem;
 }
 
 .button--soft:hover {
-  border-color: var(--color-text);
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .link {
@@ -352,7 +363,7 @@ select,
 textarea {
   width: 100%;
   padding: 0.75rem 0.9rem;
-  border: 1px solid var(--color-muted);
+  border: 1px solid var(--edge-field);
   border-radius: var(--radius-field);
   background: var(--color-surface);
   color: var(--color-text);
@@ -538,8 +549,8 @@ input[type='checkbox'] {
 
 /* The page you are on: a filled pill, like the chosen filter on the catalogue. */
 .site-nav a[aria-current='page'] {
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
@@ -671,8 +682,8 @@ input[type='checkbox'] {
 
 /* The page you are on: the same filled pill as in the header row. */
 .menu__panel a[aria-current='page'] {
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
@@ -1111,8 +1122,8 @@ input[type='checkbox'] {
 
 .card:hover .card__go,
 .card__open:focus-visible .card__go {
-  background: var(--color-text);
-  color: var(--color-surface);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 @media (max-width: 34rem) {
@@ -1366,13 +1377,13 @@ input[type='checkbox'] {
 }
 
 .bubble:hover .bubble__photo {
-  box-shadow: 0 0 0 1.5px var(--color-text);
+  box-shadow: 0 0 0 1.5px var(--edge);
   scale: 1.05;
 }
 
 /* Chosen: a dark ring with a little air between it and the photo. */
 .bubble[aria-current='true'] .bubble__photo {
-  box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--color-text);
+  box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 5px var(--accent-ring);
 }
 
 .bubble[aria-current='true'] .bubble__name {
@@ -1439,11 +1450,12 @@ input[type='checkbox'] {
 
 .catalog-bar .pill--switch:hover {
   background: var(--color-surface);
-  box-shadow: 0 0 0 1px var(--color-text);
+  box-shadow: 0 0 0 1px var(--edge);
 }
 
 .catalog-bar .pill--switch[aria-current='true'] {
-  background: var(--color-text);
+  background: var(--accent);
+  color: var(--accent-ink);
   box-shadow: none;
 }
 
@@ -1476,11 +1488,11 @@ input[type='checkbox'] {
 
 .catalog-bar__tools .pill:hover {
   background: var(--color-surface);
-  box-shadow: 0 0 0 1px var(--color-text);
+  box-shadow: 0 0 0 1px var(--edge);
 }
 
 .catalog-bar__tools [open] > .pill {
-  box-shadow: 0 0 0 1.5px var(--color-text);
+  box-shadow: 0 0 0 1.5px var(--accent-ring);
 }
 
 .pill__label {
@@ -1540,9 +1552,9 @@ input[type='checkbox'] {
 }
 
 .pill[aria-current='true'] {
-  border-color: var(--color-text);
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .pill--tool {
@@ -1654,9 +1666,9 @@ input[type='checkbox'] {
 }
 
 .dropdown__option input:checked + span::after {
-  border-color: var(--color-text);
-  background: var(--color-text)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+  border-color: var(--accent-ring);
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / 0.8rem no-repeat;
 }
 
@@ -1833,9 +1845,9 @@ input[type='checkbox'] {
 }
 
 .chip input:checked + span {
-  border-color: var(--color-text);
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-color: var(--accent-ring);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .chip input:focus-visible + span {
@@ -2631,7 +2643,7 @@ input[type='checkbox'] {
 }
 
 .companion:hover {
-  border-color: var(--color-text);
+  border-color: var(--edge);
 }
 
 .companion__tone {
@@ -2734,8 +2746,8 @@ input[type='checkbox'] {
 .companion__adopt {
   padding: 0.4rem 0.95rem;
   border-radius: 999px;
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -3023,7 +3035,7 @@ input[type='checkbox'] {
 }
 
 .maker-feature__works a:hover {
-  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3.5px var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 3.5px var(--edge);
   translate: 0 -2px;
 }
 
@@ -3067,7 +3079,7 @@ input[type='checkbox'] {
 }
 
 .maker-card:hover {
-  border-color: var(--color-text);
+  border-color: var(--edge);
 }
 
 .maker-card .maker-card__media {
@@ -3412,7 +3424,7 @@ input[type='checkbox'] {
 }
 
 .rail button[aria-current='step'] {
-  border-bottom-color: var(--color-text);
+  border-bottom-color: var(--accent-ring);
   font-weight: 600;
 }
 
@@ -3470,32 +3482,32 @@ input[type='checkbox'] {
   }
 
   /* The last two stops are about the ticket, so it takes the middle of the page. */
-  .flow__form[data-at='5'],
-  .flow__form[data-at='6'] {
+  .flow__form[data-at='6'],
+  .flow__form[data-at='7'] {
     grid-template-columns: minmax(0, 34rem);
     grid-template-areas: 'steps' 'ticket' 'adopt' 'nav';
     justify-content: center;
     gap: 2rem;
   }
 
-  .flow__form[data-at='5'] .flow__side,
-  .flow__form[data-at='6'] .flow__side {
+  .flow__form[data-at='6'] .flow__side,
+  .flow__form[data-at='7'] .flow__side {
     position: static;
   }
 
-  .flow__form[data-at='6'] .flow__adopt {
+  .flow__form[data-at='7'] .flow__adopt {
     grid-area: adopt;
   }
 
   /* One centred column, so the heading is centred over it and sits close to the ticket. */
-  .flow__form[data-at='5'] .step-pane__legend,
-  .flow__form[data-at='6'] .step-pane__legend {
+  .flow__form[data-at='6'] .step-pane__legend,
+  .flow__form[data-at='7'] .step-pane__legend {
     margin-bottom: 0;
     text-align: center;
   }
 
-  .flow__form[data-at='5'] .figure,
-  .flow__form[data-at='6'] .figure {
+  .flow__form[data-at='6'] .figure,
+  .flow__form[data-at='7'] .figure {
     margin-bottom: 1.25rem;
   }
 }
@@ -3604,7 +3616,7 @@ input[type='checkbox'] {
 }
 
 .roster__row:has(input:checked) {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .roster__row:has(input:focus-visible) {
@@ -3669,9 +3681,9 @@ input[type='checkbox'] {
 }
 
 .roster__row:has(input:checked) .roster__check {
-  border-color: var(--color-text);
-  background: var(--color-text)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+  border-color: var(--accent-ring);
+  background: var(--color-sage)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / 0.9rem no-repeat;
 }
 
@@ -3722,11 +3734,11 @@ input[type='checkbox'] {
 }
 
 .half:hover .half__body {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .half input:checked + .half__body {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .half input:focus-visible + .half__body {
@@ -3778,9 +3790,9 @@ input[type='checkbox'] {
 }
 
 .half input:checked + .half__body .half__check {
-  border-color: var(--color-text);
-  background: var(--color-text)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+  border-color: var(--accent-ring);
+  background: var(--color-sage)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / 0.95rem no-repeat;
 }
 
@@ -3826,11 +3838,11 @@ input[type='checkbox'] {
 }
 
 .shape:hover .shape__body {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .shape input:checked + .shape__body {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .shape input:focus-visible + .shape__body {
@@ -3913,9 +3925,9 @@ input[type='checkbox'] {
 }
 
 .shape input:checked + .shape__body .shape__check {
-  border-color: var(--color-text);
-  background: var(--color-text)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+  border-color: var(--accent-ring);
+  background: var(--color-sage)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / 0.95rem no-repeat;
 }
 
@@ -3967,7 +3979,7 @@ input[type='checkbox'] {
 
 .bolt:hover .bolt__body,
 .bolt input:checked + .bolt__body {
-  border-color: var(--color-text);
+  border-color: var(--accent-ring);
 }
 
 .bolt input:focus-visible + .bolt__body {
@@ -4011,9 +4023,9 @@ input[type='checkbox'] {
 }
 
 .bolt input:checked + .bolt__body .bolt__check {
-  border-color: var(--color-text);
-  background: var(--color-text)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+  border-color: var(--accent-ring);
+  background: var(--color-sage)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
     center / 0.95rem no-repeat;
 }
 
@@ -4026,6 +4038,271 @@ input[type='checkbox'] {
 
   .bolt:hover .bolt__cloth {
     scale: none;
+  }
+}
+
+/* Steps 4 and 5 offer several sets of cards (a companion's head colours, a side's fabrics).
+   Without the script they all show, each under its title; the script shows one at a time
+   and hides the titles. */
+.choice-sets {
+  display: grid;
+  gap: 2rem;
+}
+
+.heads[hidden],
+.fabric-side[hidden],
+.choice-sets__title[hidden] {
+  display: none;
+}
+
+.choice-sets__title {
+  margin: 0 0 0.75rem;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+/* Step 4: the head colours, the same cards as the fabrics with a round dab of colour
+   in place of the cloth. */
+
+.bolts--heads .bolt__cloth {
+  width: 62%;
+  aspect-ratio: 1;
+  margin: 0.4rem auto 0;
+  border-radius: 50%;
+}
+
+/* Step 5: the fabrics are chosen in two parts, outside then inside. One soft blush panel
+   guides the way: the two parts along the top as a stepper, and under a fine rule what
+   the part being chosen is, beside a small pattern piece with that part marked. */
+.fabric-guide {
+  margin-bottom: 1.75rem;
+  padding: 1.25rem 1.4rem 1.4rem;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--color-blush) 16%, var(--color-card));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-blush) 45%, transparent);
+}
+
+.fabric-guide[hidden],
+.fabric-guide__part[hidden] {
+  display: none;
+}
+
+/* The stepper: a numbered dot per part, joined by a line that turns sage once the
+   first part is done. Each part shows the fabric picked for it underneath. */
+.fabric-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.fabric-steps__item {
+  position: relative;
+}
+
+.fabric-steps__item:first-child::after {
+  content: '';
+  position: absolute;
+  top: calc(0.35rem + 1rem);
+  left: calc(0.35rem + 2rem + 0.6rem);
+  right: calc(-1.5rem - 0.35rem + 0.6rem);
+  height: 2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-muted) 25%, transparent);
+  transition: background-color 0.2s ease;
+}
+
+.fabric-steps__item:has([data-state='done'])::after {
+  background: var(--color-sage);
+}
+
+.fabric-steps__stop {
+  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.35rem;
+  border: 0;
+  border-radius: 16px;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fabric-steps__stop:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.fabric-steps__number {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.2rem;
+  border-radius: 50%;
+  background: var(--color-card);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-muted) 35%, transparent);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fabric-steps__stop:hover .fabric-steps__number {
+  box-shadow: 0 0 0 1px var(--edge);
+}
+
+/* The part being chosen: a blush dot with a softer blush halo, in the palette's own pink. */
+.fabric-steps__stop[data-state='current'] .fabric-steps__number {
+  background: var(--color-blush);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-blush) 40%, transparent);
+  color: var(--color-text);
+}
+
+.fabric-steps__stop[data-state='done'] .fabric-steps__number {
+  background: var(--color-sage) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 1rem no-repeat;
+  box-shadow: none;
+  color: transparent;
+}
+
+.fabric-steps__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.fabric-steps__stop[data-state='next'] .fabric-steps__label {
+  color: var(--color-muted);
+}
+
+.fabric-steps__pick {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-width: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.fabric-steps__swatch {
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-top: 0.12rem;
+  border-radius: 50%;
+  background: var(--soft);
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12);
+}
+
+/* A part not opened yet: an empty ring in place of the fabric's colour. */
+.fabric-steps__stop.is-empty .fabric-steps__swatch {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--color-muted);
+  opacity: 0.5;
+}
+
+/* The part being chosen, explained under a fine rule. */
+.fabric-guide__part {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-blush) 60%, transparent);
+}
+
+/* A small pattern piece of the body: the part being chosen in its fabric with an ink
+   line, the other part faint and dashed. */
+.fabric-guide__piece {
+  width: 4.25rem;
+  height: auto;
+  padding: 0.45rem;
+  border-radius: 16px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+  overflow: visible;
+}
+
+.fabric-guide__cloth,
+.fabric-guide__lining {
+  fill: var(--color-surface);
+  stroke: color-mix(in srgb, var(--color-muted) 55%, transparent);
+  stroke-width: 1.2;
+  stroke-dasharray: 2.5 2;
+  stroke-linejoin: round;
+  transition: fill 0.25s;
+}
+
+.fabric-guide__piece[data-piece='outer'] .fabric-guide__cloth {
+  fill: color-mix(in srgb, var(--cloth, var(--color-line)) 70%, var(--color-surface));
+  stroke: var(--brass-deep);
+  stroke-width: 1.6;
+  stroke-dasharray: none;
+}
+
+.fabric-guide__piece[data-piece='inner'] .fabric-guide__lining {
+  fill: color-mix(in srgb, var(--lining, var(--color-line)) 70%, var(--color-surface));
+  stroke: var(--brass-deep);
+  stroke-width: 1.6;
+  stroke-dasharray: none;
+}
+
+.fabric-guide__count {
+  margin: 0 0 0.15rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fabric-guide__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.fabric-guide__title:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.fabric-guide__text {
+  margin: 0.3rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 35.99rem) {
+  .fabric-guide {
+    padding: 1rem 1rem 1.15rem;
+    border-radius: 24px;
+  }
+
+  .fabric-guide__part {
+    align-items: start;
+  }
+
+  .fabric-guide__piece {
+    width: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fabric-steps__item::after,
+  .fabric-steps__number,
+  .fabric-guide__cloth,
+  .fabric-guide__lining {
+    transition: none;
   }
 }
 
@@ -4048,6 +4325,21 @@ input[type='checkbox'] {
   fill: color-mix(in srgb, var(--cloth, var(--color-line)) 50%, var(--color-surface));
   stroke-dasharray: 3 2.5;
   transition: fill 0.25s;
+}
+
+/* The corner turned back over the front, showing the inside fabric. */
+.figure__lining {
+  fill: color-mix(in srgb, var(--lining, var(--color-line)) 50%, var(--color-surface));
+  stroke-linejoin: round;
+  transition: fill 0.25s, stroke-width 0.25s;
+}
+
+/* While a fabric is being chosen, its piece of the doll is drawn with a firm ink line. */
+.figure[data-choosing='outer'] .figure__cloth,
+.figure[data-choosing='inner'] .figure__lining {
+  stroke: var(--brass-deep);
+  stroke-width: 2;
+  stroke-dasharray: none;
 }
 
 .figure__arm {
@@ -4265,7 +4557,7 @@ input[type='checkbox'] {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  background: var(--color-text);
+  background: var(--brass-deep);
 }
 
 .after__list > div:not(:last-child)::after {
@@ -4325,6 +4617,43 @@ input[type='checkbox'] {
 
 .flow__nav [data-next] {
   margin-left: auto;
+}
+
+/* Back and Continue each carry a soft arrow pointing the way they go; it nudges that way
+   under the pointer. */
+.flow__step {
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.flow__arrow {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: translate 0.2s ease;
+}
+
+.flow__step[data-next]:hover .flow__arrow {
+  translate: 3px 0;
+}
+
+.flow__step[data-back]:hover .flow__arrow {
+  translate: -3px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow__arrow {
+    transition: none;
+  }
+
+  .flow__step:hover .flow__arrow {
+    translate: none;
+  }
 }
 
 .flow__nav [hidden] {
@@ -4555,7 +4884,7 @@ input[type='checkbox'] {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background: var(--color-text);
+  background: var(--brass-deep);
   color: var(--color-surface);
 }
 
@@ -4974,7 +5303,7 @@ input[type='search']:focus,
 input[type='number']:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--color-text);
+  border-color: var(--edge-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5084,11 +5413,11 @@ textarea:focus {
 }
 
 .product .product__thumb:hover {
-  box-shadow: 0 0 0 1.5px var(--color-text);
+  box-shadow: 0 0 0 1.5px var(--edge);
 }
 
 .product .product__thumb[aria-current='true'] {
-  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--accent-ring);
 }
 
 /* Name, what it is, and the price with its "made to order" tag. */
@@ -5188,7 +5517,7 @@ textarea:focus {
 }
 
 .dot input:checked + .dot__fill {
-  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12), 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-text);
+  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12), 0 0 0 2px var(--color-surface), 0 0 0 4px var(--accent-ring);
 }
 
 .dot input:focus-visible + .dot__fill {
@@ -5247,7 +5576,7 @@ textarea:focus {
   gap: 0.15rem;
   padding: 0.3rem;
   border-radius: 999px;
-  box-shadow: inset 0 0 0 1px var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--edge);
 }
 
 /* Each button is a round disc inside the pill, so its hover never covers the pill's edge. */
@@ -5273,8 +5602,8 @@ textarea:focus {
 }
 
 .stepper__button:active {
-  background: var(--color-text);
-  color: var(--color-surface);
+  background: var(--accent);
+  color: var(--accent-ink);
   scale: 0.92;
 }
 
@@ -5433,7 +5762,7 @@ textarea:focus {
 
 .product__folds [open] > summary::after {
   content: '−';
-  background: var(--color-text);
+  background: var(--brass-deep);
   color: var(--color-surface);
 }
 

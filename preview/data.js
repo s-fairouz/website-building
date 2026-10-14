@@ -147,7 +147,7 @@ const MAKING = {
 
 let nextId = 1000;
 
-function doll({ handle, title, type, price, compare = null, hair, skin, style, dresses, available = true, description, optionName = 'Dress color', madeBy, leadTime, personalizable = false, stock = null, height = null, size, tone = null, making = Boolean(height) }) {
+function doll({ handle, title, type, price, compare = null, hair, skin, style, dresses, available = true, description, optionName = 'Dress color', madeBy, leadTime, personalizable = false, stock = null, height = null, size, tones = null, making = Boolean(height) }) {
   const single = dresses.length === 1;
   const images = dresses.map((dress) =>
     picture(`/mock/doll/${HAIR[hair]}-${DRESS[dress]}-${SKIN[skin]}-${STYLE[style]}.svg`, `${title} in ${dress.toLowerCase()}`)
@@ -196,7 +196,9 @@ function doll({ handle, title, type, price, compare = null, hair, skin, style, d
         lead_time_max_days: field(leadTime[1]),
         height_cm: field(height),
         size: field(size),
-        colors: field(tone ? [{ system: { handle }, name: field(tone[0]), swatch: field(`#${tone[1]}`) }] : dresses.map((dress) => colors[dress])),
+        colors: field(tones
+          ? tones.map(([name, hex]) => ({ system: { handle: `${handle}-${name.toLowerCase().replace(/W+/g, '-')}` }, name: field(name), swatch: field(`#${hex}`) }))
+          : dresses.map((dress) => colors[dress])),
         fabrics: field(making ? fabrics : []),
         ...Object.fromEntries(Object.entries(MAKING).map(([key, value]) => [key, field(making ? value : null)])),
       },
@@ -206,18 +208,19 @@ function doll({ handle, title, type, price, compare = null, hair, skin, style, d
 
 const products = [
   // The eight companions: the whole catalogue, and the choices on the order journey page.
+  // Each lists its head colours; the first is the companion's own colour on cards and lists.
   ...[
-    ['buni', 'Buni', 'Rabbit', 3400, 'Cream and terracotta', 'F4EEE4'],
-    ['zara', 'Zara', 'Giraffe', 3600, 'Golden mustard', 'D4921C'],
-    ['ted', 'Ted', 'Bear', 3400, 'Glacier blue', '8EC4D8'],
-    ['pachi', 'Pachi', 'Elephant', 3600, 'Pearl blue-grey', 'B8C4C8'],
-    ['tenta', 'Tenta', 'Octopus', 3600, 'Blue-grey', 'C0CCDA'],
-    ['wooly', 'Wooly', 'Lamb', 3500, 'Old rose', 'D4907A'],
-    ['rey', 'Rey', 'Zebra', 3600, 'Bright terracotta', 'C87840'],
-    ['lambi', 'Lambi', 'Doe', 3600, 'Rose terracotta', 'C4826A'],
-  ].map(([handle, title, type, price, toneName, toneHex, madeBy = 'isabelle']) =>
+    ['buni', 'Buni', 'Rabbit', 3400, [['Cream and terracotta', 'F4EEE4'], ['Powder pink', 'EDD8D8'], ['Sky blue', 'B8D4E8']]],
+    ['zara', 'Zara', 'Giraffe', 3600, [['Golden mustard', 'D4921C'], ['Honey', 'E8C27A'], ['Sand', 'E6D5B8']]],
+    ['ted', 'Ted', 'Bear', 3400, [['Glacier blue', '8EC4D8'], ['Caramel', 'C89A6A'], ['Cream', 'F4EEE4']]],
+    ['pachi', 'Pachi', 'Elephant', 3600, [['Pearl blue-grey', 'B8C4C8'], ['Powder pink', 'EDD8D8'], ['Sage green', 'B5C7B0']]],
+    ['tenta', 'Tenta', 'Octopus', 3600, [['Blue-grey', 'C0CCDA'], ['Lilac', 'CDBEDC'], ['Coral', 'E8A090']]],
+    ['wooly', 'Wooly', 'Lamb', 3500, [['Old rose', 'D4907A'], ['Cream', 'F4EEE4'], ['Dove grey', 'CFCAC4']]],
+    ['rey', 'Rey', 'Zebra', 3600, [['Bright terracotta', 'C87840'], ['Sky blue', 'B8D4E8']]],
+    ['lambi', 'Lambi', 'Doe', 3600, [['Rose terracotta', 'C4826A'], ['Caramel', 'C89A6A'], ['Sage green', 'B5C7B0']]],
+  ].map(([handle, title, type, price, tones, madeBy = 'isabelle']) =>
     doll({
-      handle, title, type, price, tone: [toneName, toneHex],
+      handle, title, type, price, tones,
       hair: 'brown', skin: 'light', style: 'short', dresses: ['Butter'],
       madeBy, leadTime: [5, 7], personalizable: true, making: true,
       description: `<p>${title} the ${type.toLowerCase()}, crocheted by hand.</p>`,
