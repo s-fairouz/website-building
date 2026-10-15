@@ -298,20 +298,36 @@ if (product) {
     });
   });
 
-  // The chosen fabric's name is written beside its label.
-  const fabricName = form.querySelector('[data-fabric-name]');
+  // Head colour and body fabrics: each choice's name is written beside its label, and the
+  // small body sketches take the outside and inside fabrics' colours.
+  const body = form.querySelector('[data-body]');
+  const showChoices = () => {
+    form.querySelectorAll('[data-choice]').forEach((choice) => {
+      const input = choice.querySelector('input:checked');
+      const name = choice.querySelector('[data-choice-name]');
+      if (input && name) name.textContent = input.value;
+    });
+    if (!body) return;
+    [['outer', '--cloth'], ['inner', '--lining']].forEach(([part, colour]) => {
+      const input = body.querySelector(`[data-part="${part}"] input:checked`);
+      if (input && input.dataset.hex) body.style.setProperty(colour, input.dataset.hex);
+    });
+  };
   form.addEventListener('change', (event) => {
-    if (fabricName && event.target.matches('[data-fabric]')) fabricName.textContent = event.target.value;
+    if (event.target.closest('[data-choice]')) showChoices();
   });
+  showChoices();
 
-  // The name: a running count, and the thread choice once there is a name to embroider.
+  // The name: once something is typed, how many letters are left, warmer when only a few are.
   const typedName = form.querySelector('[data-name]');
   const nameCount = form.querySelector('[data-name-count]');
-  const threadChoice = form.querySelector('[data-thread-choice]');
   if (typedName) {
     const showName = () => {
-      if (nameCount) nameCount.textContent = typedName.value.length;
-      if (threadChoice) threadChoice.hidden = typedName.value.trim() === '';
+      if (!nameCount) return;
+      const left = typedName.maxLength - typedName.value.length;
+      nameCount.hidden = typedName.value.length === 0;
+      nameCount.textContent = nameCount.dataset.textLeft.replace('[count]', left);
+      nameCount.classList.toggle('is-low', left <= 3);
     };
     typedName.addEventListener('input', showName);
     showName();
@@ -331,9 +347,6 @@ if (product) {
     const fields = new FormData(form);
     const nameField = form.querySelector('[data-name]');
     const name = nameField ? nameField.value.trim() : '';
-    const thread = form.querySelector('[data-thread]');
-    // The thread only matters when there is a name to embroider.
-    if (thread && !name) fields.delete(thread.name);
 
     if (!name || !text.addonId) return updateCart(text.addUrl, new URLSearchParams(fields));
 
@@ -426,16 +439,12 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   const button = find('[data-journey-add]');
   const status = find('[data-journey-status]');
   const figure = find('[data-figure]');
-  const sideButtons = [...journey.querySelectorAll('[data-side]')];
-  const guide = find('[data-sides]');
-  const fabricStep = steps.findIndex((step) => step.querySelector('[data-fabric-side]'));
-  const nextLabel = next.querySelector('[data-next-label]');
-  const continueText = nextLabel.textContent;
+  const look = find('[data-body]');
+  const lookRows = [...journey.querySelectorAll('[data-look-part]')];
+  const lookStep = steps.findIndex((step) => step.hasAttribute('data-look-step'));
   const wide = window.matchMedia('(min-width: 60rem)');
   let at = 0;
   let reached = 0;
-  let side = 0;
-  let sidesSeen = 0;
 
   const chosen = (part) => {
     const input = journey.querySelector(`[data-recap-part="${part}"] input:checked:not(:disabled)`);
@@ -456,57 +465,41 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     });
   };
 
-  // The fabrics are chosen in two parts of their step, outside then inside. The little
-  // stepper above them marks the part done, the part being chosen and the part to come,
-  // Continue leads to the next part before the next step, and the sketch outlines the
-  // piece of the doll being chosen.
-  const onFabrics = () => sideButtons.length > 0 && at === fabricStep;
-
-  const settleSides = () => {
-    const last = side === sideButtons.length - 1;
-    nextLabel.textContent = onFabrics() && !last ? next.dataset.textInside : continueText;
-    if (onFabrics()) figure.dataset.choosing = sideButtons[side].dataset.side;
-    else delete figure.dataset.choosing;
-  };
-
-  const showSide = (index, focus = false) => {
-    side = index;
-    sidesSeen = Math.max(sidesSeen, index);
-    sideButtons.forEach((option, i) => {
-      option.dataset.state = i < index ? 'done' : i === index ? 'current' : 'next';
-      if (i === index) option.setAttribute('aria-current', 'step');
-      else option.removeAttribute('aria-current');
+  // While a row of the Colours card is pointed at or in use, the sketch outlines its piece
+  // of the doll: the head, the outside or the inside.
+  lookRows.forEach((row) => {
+    const mark = () => {
+      figure.dataset.choosing = row.dataset.lookPart;
+    };
+    const unmark = () => {
+      if (figure.dataset.choosing === row.dataset.lookPart) delete figure.dataset.choosing;
+    };
+    row.addEventListener('pointerenter', mark);
+    row.addEventListener('focusin', mark);
+    row.addEventListener('pointerleave', () => {
+      if (!row.contains(document.activeElement)) unmark();
     });
-    journey.querySelectorAll('[data-fabric-side]').forEach((panel) => {
-      panel.hidden = panel.dataset.fabricSide !== sideButtons[index].dataset.side;
+    row.addEventListener('focusout', (event) => {
+      if (!row.contains(event.relatedTarget)) unmark();
     });
-    journey.querySelectorAll('[data-side-part]').forEach((part) => {
-      part.hidden = part.dataset.sidePart !== sideButtons[index].dataset.side;
-    });
-    settleSides();
-    update();
-    if (focus) {
-      guide.querySelector('[data-side-part]:not([hidden]) .fabric-guide__title').focus({ preventScroll: true });
-      journey.scrollIntoView({ block: 'start' });
-    }
-  };
+  });
 
   const update = () => {
     const model = journey.querySelector('[data-model]:checked');
     offerHeads(model);
 
     // The sketch: cloth in the outside fabric with a corner turned back to show the inside one,
-    // arms and bow from the choices. The head stays plain until its own step is reached,
+    // arms and bow from the choices. The head stays plain until the Colours step is reached,
     // so choosing a companion does not colour it.
     const part = (name) => [...journey.querySelectorAll(`[data-recap-part="${name}"] input`)];
-    const headStep = steps.findIndex((step) => step.dataset.recapPart === 'head');
     const head = part('head').find((input) => input.checked && !input.disabled);
-    if (reached >= headStep && head && head.dataset.hex) figure.style.setProperty('--tone', head.dataset.hex);
+    if (reached >= lookStep && head && head.dataset.hex) figure.style.setProperty('--tone', head.dataset.hex);
     else figure.style.removeProperty('--tone');
+    if (head && head.dataset.hex) look.style.setProperty('--tone', head.dataset.hex);
     const outer = part('outer').find((input) => input.checked);
     const inner = part('inner').find((input) => input.checked);
-    // The guide's small pattern pieces take the same two colours as the sketch.
-    [figure, guide].forEach((drawing) => {
+    // The card's small sketches take the same colours as the big one.
+    [figure, look].forEach((drawing) => {
       if (!drawing) return;
       if (outer && outer.dataset.hex) drawing.style.setProperty('--cloth', outer.dataset.hex);
       if (inner && inner.dataset.hex) drawing.style.setProperty('--lining', inner.dataset.hex);
@@ -514,20 +507,14 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     figure.dataset.arms = String(part('shape').findIndex((input) => input.checked) > 0);
     figure.dataset.for = part('for').findIndex((input) => input.checked) > 0 ? 'second' : 'first';
 
-    find('[data-head-name]').textContent = chosen('head');
-    // Each part of the fabric stepper shows the fabric picked for it, once the part has been
-    // opened; until then the inside's starting fabric would read as a choice nobody made.
-    sideButtons.forEach((option, i) => {
-      const input = part(option.dataset.side).find((choice) => choice.checked);
-      const seen = i <= sidesSeen && input;
-      option.querySelector('[data-side-name]').textContent = seen ? input.value : option.dataset.textEmpty;
-      if (seen && input.dataset.hex) option.style.setProperty('--swatch', input.dataset.hex);
-      else option.style.removeProperty('--swatch');
-      option.classList.toggle('is-empty', !seen);
-      find(`[data-recap="${option.dataset.side}"]`).textContent = seen ? input.value : option.dataset.textEmpty;
+    // Each row of the Colours card names its chosen colour beside its label, and the ticket
+    // lists the same three.
+    lookRows.forEach((row) => {
+      const name = chosen(row.dataset.lookPart);
+      row.querySelector('[data-choice-name]').textContent = name;
+      find(`[data-recap="${row.dataset.lookPart}"]`).textContent = name;
     });
     find('[data-recap="version"]').textContent = [chosen('for'), chosen('shape').toLowerCase()].filter(Boolean).join(', ');
-    find('[data-recap="head"]').textContent = chosen('head');
 
     if (!model) return;
     const price = model.dataset.priceText;
@@ -547,7 +534,6 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   };
 
   const show = (index, focus = true) => {
-    const from = at;
     at = Math.max(0, Math.min(index, steps.length - 1));
     reached = Math.max(reached, at);
     steps.forEach((step, i) => {
@@ -563,9 +549,6 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     next.hidden = at === steps.length - 1;
     adoptPane.hidden = at !== steps.length - 1;
     settleTicket();
-    // Coming to the fabrics from a later step lands on their last part, otherwise the first.
-    if (onFabrics() && from !== at) showSide(from > at ? sideButtons.length - 1 : 0);
-    settleSides();
     update();
     if (focus) {
       steps[at].querySelector('.step-pane__title').focus({ preventScroll: true });
@@ -573,19 +556,10 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     }
   };
 
-  back.addEventListener('click', () => {
-    if (onFabrics() && side > 0) showSide(side - 1, true);
-    else show(at - 1);
-  });
-  next.addEventListener('click', () => {
-    if (onFabrics() && side < sideButtons.length - 1) showSide(side + 1, true);
-    else show(at + 1);
-  });
+  back.addEventListener('click', () => show(at - 1));
+  next.addEventListener('click', () => show(at + 1));
   stops.forEach((stop, i) => {
     stop.addEventListener('click', () => show(i));
-  });
-  sideButtons.forEach((option, i) => {
-    option.addEventListener('click', () => showSide(i, true));
   });
   wide.addEventListener('change', settleTicket);
 
@@ -595,10 +569,6 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   journey.querySelectorAll('[data-set-title]').forEach((title) => {
     title.hidden = true;
   });
-  if (sideButtons.length) {
-    guide.hidden = false;
-    showSide(0);
-  }
   rail.hidden = false;
   nav.hidden = false;
   show(0, false);

@@ -1,7 +1,9 @@
 {%- comment -%}
   What the doll is made of and how it was made, from the product's metafields.
+  The facts sit in the doll's story; the steps sit in their own fold-out.
   Accepts:
   - product: {Object} the product
+  - show: {String} 'facts' or 'steps'
 {%- endcomment -%}
 
 {%- liquid
@@ -12,9 +14,9 @@
   assign steps = product.metafields.custom.making_steps.value
 -%}
 
-{%- if materials != blank or technique != blank or making_time != blank or steps.size > 0 -%}
-  <div class="making">
-    <dl class="specs__facts making__facts">
+{%- if show == 'facts' -%}
+  {%- if materials != blank or technique != blank or making_time != blank or stitches != blank -%}
+    <dl class="facts">
       {%- if materials != blank -%}
         <div>
           <dt>{{ 'products.materials' | t }}</dt>
@@ -40,14 +42,11 @@
         </div>
       {%- endif -%}
     </dl>
-
-    {%- if steps.size > 0 -%}
-      <h2 class="making__title">{{ 'products.making_steps' | t }}</h2>
-      <ol class="making__steps" role="list">
-        {%- for step in steps -%}
-          <li>{{ step | escape }}</li>
-        {%- endfor -%}
-      </ol>
-    {%- endif -%}
-  </div>
+  {%- endif -%}
+{%- elsif show == 'steps' and steps.size > 0 -%}
+  <ol class="making-steps" role="list">
+    {%- for step in steps -%}
+      <li><span class="making-steps__number" aria-hidden="true">{{ forloop.index }}</span>{{ step | escape }}</li>
+    {%- endfor -%}
+  </ol>
 {%- endif -%}

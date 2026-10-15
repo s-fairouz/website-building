@@ -6,33 +6,25 @@
         "materials": {
           "type": "detail",
           "settings": {
-            "heading": "Materials",
-            "content": "<p>Cotton body and clothes, wool felt shoes, carded wool stuffing, cotton embroidery thread.</p>"
-          }
-        },
-        "care": {
-          "type": "detail",
-          "settings": {
-            "heading": "Care",
-            "content": "<p>Spot clean with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>"
+            "heading": "Materials and care",
+            "content": "<p>Cotton body and clothes, wool felt shoes, carded wool stuffing, cotton embroidery thread.</p><p>Spot clean with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>"
           }
         },
         "shipping": {
           "type": "detail",
           "settings": {
             "heading": "Shipping and returns",
-            "content": "<p>Each doll is made to order and ships within about a week. Unused dolls can be returned within 30 days.</p>"
+            "content": "<p>Each doll is made to order and ready in 5 to 7 days. Unused dolls can be returned within 30 days.</p>"
           }
         }
       },
       "block_order": [
         "materials",
-        "care",
         "shipping"
       ],
       "settings": {
         "embroidery_product": "name-embroidery",
-        "included_note": "Comes with its adoption certificate."
+        "included_note": "Adoption certificate included"
       }
     },
     "more": {

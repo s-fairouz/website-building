@@ -21,10 +21,20 @@ const escapeHtml = (value) =>
 
 // Languages: like Shopify, the first is the default and the others live under a URL prefix.
 const LOCALES = [
-  { iso_code: 'en', endonym_name: 'English', root_url: '' },
-  { iso_code: 'fr', endonym_name: 'français', root_url: '/fr' },
+  { iso_code: 'fr', endonym_name: 'français', root_url: '' },
+  { iso_code: 'en', endonym_name: 'English', root_url: '/en' },
 ];
-const themeStrings = (code) => JSON.parse(read('locales', code === 'en' ? 'en.default.json' : `${code}.json`));
+const DEFAULT_LOCALE = LOCALES[0].iso_code;
+
+// The shop's own content (products, pages, section text) is written in English; every other
+// language is swapped in from content.<language>.js.
+const CONTENT_LANGUAGE = 'en';
+
+// The theme's default language has its own file name, as on Shopify: fr.default.json.
+const themeStrings = (code) => {
+  const file = fs.existsSync(path.join(THEME, 'locales', `${code}.default.json`)) ? `${code}.default.json` : `${code}.json`;
+  return JSON.parse(read('locales', file));
+};
 
 // Stands in for Shopify's Translate & Adapt app: swaps shop content for its
 // translation (from content.<language>.js) and adds the language prefix to links.
@@ -32,16 +42,19 @@ const UNTRANSLATED = new Set(['handle', 'param_name', 'src', 'template_suffix'])
 const localized = new WeakSet();
 
 function localize(input, locale) {
-  if (!locale.root_url) return input;
-  const dictionary = require(`./content.${locale.iso_code}.js`);
+  const translated = locale.iso_code !== CONTENT_LANGUAGE;
+  if (!translated && !locale.root_url) return input;
+  // English under /en keeps its words and only gains the prefix on its links.
+  const dictionary = translated ? require(`./content.${locale.iso_code}.js`) : {};
   const copies = new WeakMap();
 
   const translate = (value, key) => {
     if (UNTRANSLATED.has(key)) return value;
     if (key === 'url' || (key && (key.startsWith('url_') || key.endsWith('_url')))) {
-      return value.startsWith('/') ? (locale.root_url + value).replace(/\/$/, '') : value;
+      // The home page stays "/" when the language has no prefix, rather than an empty link.
+      return value.startsWith('/') ? (locale.root_url + value).replace(/(.)\/$/, '$1') : value;
     }
-    const alt = key === 'alt' && value.match(/^(.+) in (\w+)$/);
+    const alt = translated && key === 'alt' && value.match(/^(.+) in (\w+)$/);
     if (alt) {
       const color = alt[2][0].toUpperCase() + alt[2].slice(1);
       return alt[1] + dictionary[' in '] + (dictionary[color] || color).toLowerCase();
@@ -114,7 +127,7 @@ engine.registerFilter('t', function (key, ...args) {
   const code = this.context.globals.request.locale.iso_code;
   const values = Object.fromEntries(args.filter(Array.isArray));
   const find = (strings) => key.split('.').reduce((node, part) => (node ? node[part] : undefined), strings);
-  let text = find(themeStrings(code)) ?? find(themeStrings('en'));
+  let text = find(themeStrings(code)) ?? find(themeStrings(DEFAULT_LOCALE));
   if (text && typeof text === 'object') {
     text = text[new Intl.PluralRules(code).select(Number(values.count))] ?? text.other;
   }

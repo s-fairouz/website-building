@@ -1,6 +1,6 @@
 {%- comment -%}
-  Name field and thread choice for products whose "personalizable" metafield is on.
-  Both are sent as line item properties, so they show on the order.
+  Name field for products whose "personalizable" metafield is on.
+  The name is sent as a line item property, so it shows on the order.
   Accepts:
   - product: {Object} the product
   - charge: {String} optional, what a name costs, already formatted as money
@@ -21,33 +21,23 @@
       name="properties[{{ 'products.engraving' | t }}]"
       maxlength="12"
       autocomplete="off"
+      placeholder="{{ 'products.name_placeholder' | t }}"
       aria-describedby="engraving-hint"
       data-name
     >
+    {%- comment -%}
+      The price is beside the label, so the hint only says what to expect. The script shows
+      how many letters are left once something is typed.
+    {%- endcomment -%}
     <div class="field__foot">
       <p class="form-note" id="engraving-hint">
-        {%- if charge != blank and days != blank -%}
-          {{ 'products.name_charge' | t: price: charge, days: days }}
+        {%- if days != blank -%}
+          {{ 'products.name_hint_days' | t: days: days }}
         {%- else -%}
           {{ 'products.engraving_hint' | t }}
         {%- endif -%}
       </p>
-      <p class="form-note field__count" aria-hidden="true"><span data-name-count>0</span> / 12</p>
+      <p class="form-note field__count" aria-hidden="true" data-name-count data-text-left="{{ 'products.letters_left' | t }}" hidden></p>
     </div>
   </div>
-
-  {%- comment -%} The script shows the thread choice once a name is typed. {%- endcomment -%}
-  <fieldset class="option" data-thread-choice>
-    <legend>{{ 'products.thread' | t }}</legend>
-    <div class="chips">
-      <label class="chip">
-        <input type="radio" name="properties[{{ 'products.thread' | t }}]" value="{{ 'products.thread_gold' | t }}" data-thread checked>
-        <span>{{ 'products.thread_gold' | t }}</span>
-      </label>
-      <label class="chip">
-        <input type="radio" name="properties[{{ 'products.thread' | t }}]" value="{{ 'products.thread_natural' | t }}" data-thread>
-        <span>{{ 'products.thread_natural' | t }}</span>
-      </label>
-    </div>
-  </fieldset>
 {%- endif -%}

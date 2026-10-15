@@ -40,7 +40,9 @@
             {%- comment -%} The buttons change the number and save the cart straight away (assets/theme.js). {%- endcomment -%}
             <div class="cart-item__quantity">
               <div class="stepper stepper--small">
-                <button type="button" class="stepper__button" data-cart-step="-1" aria-label="{{ 'products.decrease' | t }}">−</button>
+                <button type="button" class="stepper__button" data-cart-step="-1" aria-label="{{ 'products.decrease' | t }}">
+                  <svg class="stepper__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/></svg>
+                </button>
                 <label class="visually-hidden" for="quantity-{{ forloop.index }}">
                   {{- 'cart.quantity_for' | t: title: item.product.title -}}
                 </label>
@@ -52,7 +54,9 @@
                   min="0"
                   inputmode="numeric"
                 >
-                <button type="button" class="stepper__button" data-cart-step="1" aria-label="{{ 'products.increase' | t }}">+</button>
+                <button type="button" class="stepper__button" data-cart-step="1" aria-label="{{ 'products.increase' | t }}">
+                  <svg class="stepper__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9M8 3.5v9"/></svg>
+                </button>
               </div>
               <a class="cart-item__remove" href="{{ item.url_to_remove }}" aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}">
                 {{- 'cart.remove' | t -}}

@@ -32,6 +32,11 @@
   --edge-focus: var(--brass-deep);
   /* A field's resting edge: warm taupe, still dark enough (about 3.7:1) to see the field. */
   --edge-field: color-mix(in srgb, var(--color-brass) 70%, var(--color-text));
+  /* Hover previews, selection commits: anything reached for gets a warm linen wash, never
+     the blush that marks what is chosen, so hover and selection never look alike. */
+  --hover-wash: color-mix(in srgb, var(--color-brass) 18%, var(--color-card));
+  /* A pale blush for large chosen areas where the full blush would be too strong. */
+  --accent-wash: color-mix(in srgb, var(--color-blush) 28%, var(--color-card));
 }
 
 /* Base */
@@ -306,7 +311,7 @@ ol[role='list'] {
 
 .button--outline:hover {
   border-color: var(--accent-ring);
-  background: var(--color-blush);
+  background: var(--hover-wash);
   color: var(--color-text);
 }
 
@@ -321,9 +326,9 @@ ol[role='list'] {
 }
 
 .button--soft:hover {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--accent-ink);
+  border-color: var(--edge);
+  background: var(--hover-wash);
+  color: var(--color-text);
 }
 
 .link {
@@ -544,7 +549,7 @@ input[type='checkbox'] {
 }
 
 .site-nav a:hover {
-  background: var(--color-bg);
+  background: var(--hover-wash);
 }
 
 /* The page you are on: a filled pill, like the chosen filter on the catalogue. */
@@ -573,7 +578,7 @@ input[type='checkbox'] {
 }
 
 .icon-button:hover {
-  background: var(--rose-wash);
+  background: var(--hover-wash);
 }
 
 .cart-link {
@@ -592,15 +597,16 @@ input[type='checkbox'] {
 }
 
 .cart-link:hover {
-  background: var(--rose-wash);
+  background: var(--hover-wash);
 }
 
 .cart-link__count {
   min-width: 1.5rem;
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
-  background: var(--color-blush);
-  color: var(--color-text);
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent-ring);
+  color: var(--accent-ink);
   font-size: 0.75rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -677,7 +683,7 @@ input[type='checkbox'] {
 }
 
 .menu__panel a:hover {
-  background: var(--color-bg);
+  background: var(--hover-wash);
 }
 
 /* The page you are on: the same filled pill as in the header row. */
@@ -1269,22 +1275,23 @@ input[type='checkbox'] {
   box-shadow: var(--shadow);
 }
 
+/* A badge on a card's photo, the same white pill as the companions' badge on the home page.
+   Only a sale is blush, so it stands out. */
 .flag {
   position: absolute;
   top: 0.6rem;
   left: 0.6rem;
   z-index: 1;
-  padding: 0.2rem 0.7rem;
+  padding: 0.2rem 0.65rem;
   border-radius: 999px;
   background: var(--color-blush);
   color: var(--color-text);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
 .flag--ready {
-  background: var(--color-sage);
-  font-weight: 500;
+  background: var(--color-surface);
 }
 
 .flag--plain {
@@ -1449,7 +1456,7 @@ input[type='checkbox'] {
 }
 
 .catalog-bar .pill--switch:hover {
-  background: var(--color-surface);
+  background: var(--hover-wash);
   box-shadow: 0 0 0 1px var(--edge);
 }
 
@@ -1487,7 +1494,7 @@ input[type='checkbox'] {
 }
 
 .catalog-bar__tools .pill:hover {
-  background: var(--color-surface);
+  background: var(--hover-wash);
   box-shadow: 0 0 0 1px var(--edge);
 }
 
@@ -1548,7 +1555,7 @@ input[type='checkbox'] {
 }
 
 .pill:hover {
-  background: var(--color-sky);
+  background: var(--hover-wash);
 }
 
 .pill[aria-current='true'] {
@@ -1658,7 +1665,7 @@ input[type='checkbox'] {
 }
 
 .dropdown__option:hover span {
-  background: var(--color-bg);
+  background: var(--hover-wash);
 }
 
 .dropdown__option input:checked + span {
@@ -2206,7 +2213,7 @@ input[type='checkbox'] {
 }
 
 .cart-item .stepper--small .stepper__button:active {
-  background: var(--color-blush);
+  background: var(--accent-hover);
   color: inherit;
 }
 
@@ -2350,7 +2357,7 @@ input[type='checkbox'] {
 }
 
 .drawer__close:hover {
-  background: var(--color-blush);
+  background: var(--hover-wash);
 }
 
 .drawer[open] {
@@ -3292,58 +3299,6 @@ input[type='checkbox'] {
   font-size: 0.9rem;
 }
 
-.making {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  border-radius: var(--radius-card);
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-.making__facts {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-}
-
-.making__title {
-  margin: 1.5rem 0 0.9rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--rule);
-  font-size: 1.5rem;
-}
-
-/* The steps hang off a line of stitching, in the order they happened. */
-.making__steps {
-  display: grid;
-  gap: 0.7rem;
-  font-size: 0.925rem;
-}
-
-.making__steps li {
-  position: relative;
-  padding-left: 1.6rem;
-}
-
-.making__steps li::before {
-  content: '';
-  position: absolute;
-  top: 0.45em;
-  left: 0;
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--color-brass);
-}
-
-.making__steps li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  top: 1.25em;
-  bottom: -0.75rem;
-  left: calc(0.3rem - 1px);
-  border-left: 2px dashed var(--color-brass);
-}
-
 /* Adopt page: one question at a time, beside an order ticket that fills in as you go */
 
 .flow__head {
@@ -3372,7 +3327,7 @@ input[type='checkbox'] {
   font-style: italic;
 }
 
-/* The seven stops, as a single thread with a knot at each one. */
+/* The six stops, as a single thread with a knot at each one. */
 .rail {
   margin-bottom: clamp(2rem, 5vw, 3.5rem);
   border-block: 1px solid var(--rule);
@@ -3482,32 +3437,32 @@ input[type='checkbox'] {
   }
 
   /* The last two stops are about the ticket, so it takes the middle of the page. */
-  .flow__form[data-at='6'],
-  .flow__form[data-at='7'] {
+  .flow__form[data-at='5'],
+  .flow__form[data-at='6'] {
     grid-template-columns: minmax(0, 34rem);
     grid-template-areas: 'steps' 'ticket' 'adopt' 'nav';
     justify-content: center;
     gap: 2rem;
   }
 
-  .flow__form[data-at='6'] .flow__side,
-  .flow__form[data-at='7'] .flow__side {
+  .flow__form[data-at='5'] .flow__side,
+  .flow__form[data-at='6'] .flow__side {
     position: static;
   }
 
-  .flow__form[data-at='7'] .flow__adopt {
+  .flow__form[data-at='6'] .flow__adopt {
     grid-area: adopt;
   }
 
   /* One centred column, so the heading is centred over it and sits close to the ticket. */
-  .flow__form[data-at='6'] .step-pane__legend,
-  .flow__form[data-at='7'] .step-pane__legend {
+  .flow__form[data-at='5'] .step-pane__legend,
+  .flow__form[data-at='6'] .step-pane__legend {
     margin-bottom: 0;
     text-align: center;
   }
 
-  .flow__form[data-at='6'] .figure,
-  .flow__form[data-at='7'] .figure {
+  .flow__form[data-at='5'] .figure,
+  .flow__form[data-at='6'] .figure {
     margin-bottom: 1.25rem;
   }
 }
@@ -3559,21 +3514,10 @@ input[type='checkbox'] {
   font-weight: 400;
 }
 
-.step-pane__chosen {
-  margin: 1.5rem 0 0;
-  color: var(--color-muted);
-}
-
-.step-pane__chosen strong {
-  color: var(--color-text);
-  font-weight: 600;
-}
-
 /* Every choice hides its radio and shows the state on the label instead. */
 .roster__row input,
 .half input,
-.shape input,
-.bolt input {
+.shape input {
   position: absolute;
   opacity: 0;
 }
@@ -3943,278 +3887,79 @@ input[type='checkbox'] {
   }
 }
 
-/* Step 4: the body fabrics, each a white card with a soft piece of the cloth at the top. */
-.bolts {
+/* Step 4: the head and the two body fabrics on one white card, one row each: a small
+   sketch of that piece of the doll, its name with the colour chosen, and a row of round
+   colours, the same way as on the doll page. Each companion has its own head colours;
+   without the script they all show, each under its companion's name, and the script
+   shows only the chosen companion's and hides the names. */
+.look {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-@media (min-width: 36rem) {
-  .bolts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-  }
-}
-
-/* The fabric's colour, thinned with the paper colour so six strong dyes sit together as pastels. */
-.bolt {
-  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
-  --tint: color-mix(in srgb, var(--swatch, var(--color-line)) 14%, var(--color-surface));
-  cursor: pointer;
-}
-
-.bolt__body {
-  position: relative;
-  display: grid;
-  gap: 0.75rem;
-  height: 100%;
-  padding: 0.6rem 0.6rem 1rem;
-  border: 1.5px solid transparent;
-  border-radius: 22px;
+  gap: 1.5rem;
+  padding: 1.6rem 1.75rem;
+  border-radius: 28px;
   background: var(--color-card);
   box-shadow: var(--shadow);
-  transition: background 0.2s, border-color 0.2s;
 }
 
-.bolt:hover .bolt__body,
-.bolt input:checked + .bolt__body {
-  border-color: var(--accent-ring);
+.look .option__part + .option__part {
+  margin-top: 0;
 }
 
-.bolt input:focus-visible + .bolt__body {
-  box-shadow: var(--ring);
+.look .option__part-label {
+  font-size: 1rem;
 }
 
-.bolt__cloth {
-  aspect-ratio: 4 / 3;
-  border-radius: 16px;
-  background: var(--soft);
-  transition: scale 0.25s ease;
+.look .option__piece {
+  width: 3.25rem;
 }
 
-/* The cloth swells a touch under the pointer, so the whole card reads as one button. */
-.bolt:hover .bolt__cloth {
-  scale: 1.03;
+.look .dot__fill {
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
-.bolt__name {
-  padding-inline: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.3;
+/* The head row's sketch is a round head in the chosen colour. */
+.look__head circle {
+  fill: color-mix(in srgb, var(--tone, var(--color-blush)) 70%, var(--color-surface));
+  stroke: var(--brass-deep);
+  stroke-width: 1.6;
+  transition: fill 0.25s;
 }
 
-.bolt input:checked + .bolt__body .bolt__name {
-  font-weight: 600;
-}
-
-/* An empty ring on the cloth that fills with a tick when the fabric is chosen. */
-.bolt__check {
-  position: absolute;
-  top: 1.1rem;
-  right: 1.1rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  border: 1.5px solid color-mix(in srgb, var(--color-muted) 45%, transparent);
-  border-radius: 50%;
-  background: var(--color-surface);
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.bolt input:checked + .bolt__body .bolt__check {
-  border-color: var(--accent-ring);
-  background: var(--color-sage)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-    center / 0.95rem no-repeat;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bolt__body,
-  .bolt__cloth,
-  .bolt__check {
-    transition: none;
-  }
-
-  .bolt:hover .bolt__cloth {
-    scale: none;
-  }
-}
-
-/* Steps 4 and 5 offer several sets of cards (a companion's head colours, a side's fabrics).
-   Without the script they all show, each under its title; the script shows one at a time
-   and hides the titles. */
-.choice-sets {
+.look__sets {
+  grid-area: dots;
   display: grid;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .heads[hidden],
-.fabric-side[hidden],
 .choice-sets__title[hidden] {
   display: none;
 }
 
 .choice-sets__title {
-  margin: 0 0 0.75rem;
-  color: var(--color-muted);
-  font-size: 0.95rem;
-}
-
-/* Step 4: the head colours, the same cards as the fabrics with a round dab of colour
-   in place of the cloth. */
-
-.bolts--heads .bolt__cloth {
-  width: 62%;
-  aspect-ratio: 1;
-  margin: 0.4rem auto 0;
-  border-radius: 50%;
-}
-
-/* Step 5: the fabrics are chosen in two parts, outside then inside. One soft blush panel
-   guides the way: the two parts along the top as a stepper, and under a fine rule what
-   the part being chosen is, beside a small pattern piece with that part marked. */
-.fabric-guide {
-  margin-bottom: 1.75rem;
-  padding: 1.25rem 1.4rem 1.4rem;
-  border-radius: 28px;
-  background: color-mix(in srgb, var(--color-blush) 16%, var(--color-card));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-blush) 45%, transparent);
-}
-
-.fabric-guide[hidden],
-.fabric-guide__part[hidden] {
-  display: none;
-}
-
-/* The stepper: a numbered dot per part, joined by a line that turns sage once the
-   first part is done. Each part shows the fabric picked for it underneath. */
-.fabric-steps {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-}
-
-.fabric-steps__item {
-  position: relative;
-}
-
-.fabric-steps__item:first-child::after {
-  content: '';
-  position: absolute;
-  top: calc(0.35rem + 1rem);
-  left: calc(0.35rem + 2rem + 0.6rem);
-  right: calc(-1.5rem - 0.35rem + 0.6rem);
-  height: 2px;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--color-muted) 25%, transparent);
-  transition: background-color 0.2s ease;
-}
-
-.fabric-steps__item:has([data-state='done'])::after {
-  background: var(--color-sage);
-}
-
-.fabric-steps__stop {
-  --soft: color-mix(in srgb, var(--swatch, var(--color-line)) 100%, var(--color-surface));
-  display: grid;
-  justify-items: start;
-  gap: 0.35rem;
-  width: 100%;
-  padding: 0.35rem;
-  border: 0;
-  border-radius: 16px;
-  background: none;
-  color: var(--color-text);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.fabric-steps__stop:focus-visible {
-  outline: none;
-  box-shadow: var(--ring);
-}
-
-.fabric-steps__number {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  margin-bottom: 0.2rem;
-  border-radius: 50%;
-  background: var(--color-card);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-muted) 35%, transparent);
+  margin: 0 0 0.25rem;
   color: var(--color-muted);
   font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.fabric-steps__stop:hover .fabric-steps__number {
-  box-shadow: 0 0 0 1px var(--edge);
-}
+@media (max-width: 35.99rem) {
+  .look {
+    padding: 1.25rem 1.1rem;
+    border-radius: 24px;
+  }
 
-/* The part being chosen: a blush dot with a softer blush halo, in the palette's own pink. */
-.fabric-steps__stop[data-state='current'] .fabric-steps__number {
-  background: var(--color-blush);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-blush) 40%, transparent);
-  color: var(--color-text);
-}
+  .look .option__part {
+    column-gap: 0.7rem;
+  }
 
-.fabric-steps__stop[data-state='done'] .fabric-steps__number {
-  background: var(--color-sage) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 1rem no-repeat;
-  box-shadow: none;
-  color: transparent;
-}
+  .look .option__piece {
+    width: 2.75rem;
+  }
 
-.fabric-steps__label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.fabric-steps__stop[data-state='next'] .fabric-steps__label {
-  color: var(--color-muted);
-}
-
-.fabric-steps__pick {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
-  min-width: 0;
-  color: var(--color-muted);
-  font-size: 0.85rem;
-  line-height: 1.3;
-}
-
-.fabric-steps__swatch {
-  flex: none;
-  width: 0.85rem;
-  height: 0.85rem;
-  margin-top: 0.12rem;
-  border-radius: 50%;
-  background: var(--soft);
-  box-shadow: inset 0 0 0 1px rgb(45 41 38 / 0.12);
-}
-
-/* A part not opened yet: an empty ring in place of the fabric's colour. */
-.fabric-steps__stop.is-empty .fabric-steps__swatch {
-  background: none;
-  box-shadow: inset 0 0 0 1px var(--color-muted);
-  opacity: 0.5;
-}
-
-/* The part being chosen, explained under a fine rule. */
-.fabric-guide__part {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.1rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid color-mix(in srgb, var(--color-blush) 60%, transparent);
+  .look .dots {
+    gap: 0.6rem;
+  }
 }
 
 /* A small pattern piece of the body: the part being chosen in its fabric with an ink
@@ -4253,55 +3998,10 @@ input[type='checkbox'] {
   stroke-dasharray: none;
 }
 
-.fabric-guide__count {
-  margin: 0 0 0.15rem;
-  color: var(--color-muted);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.fabric-guide__title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem);
-  font-weight: 500;
-  line-height: 1.1;
-}
-
-.fabric-guide__title:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.fabric-guide__text {
-  margin: 0.3rem 0 0;
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  line-height: 1.45;
-}
-
-@media (max-width: 35.99rem) {
-  .fabric-guide {
-    padding: 1rem 1rem 1.15rem;
-    border-radius: 24px;
-  }
-
-  .fabric-guide__part {
-    align-items: start;
-  }
-
-  .fabric-guide__piece {
-    width: 3.5rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .fabric-steps__item::after,
-  .fabric-steps__number,
   .fabric-guide__cloth,
-  .fabric-guide__lining {
+  .fabric-guide__lining,
+  .look__head circle {
     transition: none;
   }
 }
@@ -4335,6 +4035,7 @@ input[type='checkbox'] {
 }
 
 /* While a fabric is being chosen, its piece of the doll is drawn with a firm ink line. */
+.figure[data-choosing='head'] .figure__head,
 .figure[data-choosing='outer'] .figure__cloth,
 .figure[data-choosing='inner'] .figure__lining {
   stroke: var(--brass-deep);
@@ -5207,23 +4908,20 @@ input[type='checkbox'] {
    time. Reaching for it lifts it; choosing it gives it a blush ring and a sage tick. */
 .roster__row,
 .half__body,
-.shape__body,
-.bolt__body {
+.shape__body {
   transition: box-shadow 0.2s ease, translate 0.2s ease, scale 0.1s ease;
 }
 
 /* Rows keep their own height, so a card stretched to match its neighbour
    does not stretch its colour tile out of the card. */
 .half__body,
-.shape__body,
-.bolt__body {
+.shape__body {
   align-content: start;
 }
 
 .roster__row:hover,
 .half:hover .half__body,
-.shape:hover .shape__body,
-.bolt:hover .bolt__body {
+.shape:hover .shape__body {
   border-color: transparent;
   background: var(--color-card);
   box-shadow: var(--shadow-hover);
@@ -5232,8 +4930,7 @@ input[type='checkbox'] {
 
 .roster__row:has(input:checked),
 .half input:checked + .half__body,
-.shape input:checked + .shape__body,
-.bolt input:checked + .bolt__body {
+.shape input:checked + .shape__body {
   border-color: transparent;
   background: var(--color-card);
   box-shadow: 0 0 0 2px var(--color-blush),
@@ -5243,15 +4940,13 @@ input[type='checkbox'] {
 
 .roster__row:has(input:focus-visible),
 .half input:focus-visible + .half__body,
-.shape input:focus-visible + .shape__body,
-.bolt input:focus-visible + .bolt__body {
+.shape input:focus-visible + .shape__body {
   box-shadow: var(--ring);
 }
 
 .roster__row:active,
 .half:active .half__body,
-.shape:active .shape__body,
-.bolt:active .bolt__body {
+.shape:active .shape__body {
   scale: 0.99;
 }
 
@@ -5259,8 +4954,7 @@ input[type='checkbox'] {
    so it shows on a pink, blue or green tile alike. */
 .roster__check,
 .half__check,
-.shape__check,
-.bolt__check {
+.shape__check {
   border: 0;
   background-color: var(--color-surface);
   box-shadow: 0 0 0 1px var(--hairline);
@@ -5269,8 +4963,7 @@ input[type='checkbox'] {
 
 .roster__row:has(input:checked) .roster__check,
 .half input:checked + .half__body .half__check,
-.shape input:checked + .shape__body .shape__check,
-.bolt input:checked + .bolt__body .bolt__check {
+.shape input:checked + .shape__body .shape__check {
   background: var(--color-sage) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.95rem no-repeat;
   box-shadow: 0 0 0 2px var(--color-surface);
 }
@@ -5293,7 +4986,7 @@ input[type='checkbox'] {
 }
 
 .chip:hover input:not(:checked):not(:disabled) + span {
-  background: var(--color-blush);
+  background: var(--hover-wash);
 }
 
 /* Fields: an ink edge while you type. */
@@ -5311,8 +5004,7 @@ textarea:focus {
   .maker-card,
   .roster__row,
   .half__body,
-  .shape__body,
-  .bolt__body {
+  .shape__body {
     transition: none;
   }
 
@@ -5325,15 +5017,13 @@ textarea:focus {
   .maker-card:active,
   .roster__row:active,
   .half:active .half__body,
-  .shape:active .shape__body,
-  .bolt:active .bolt__body {
+  .shape:active .shape__body {
     scale: none;
   }
 
   .roster__row:hover,
   .half:hover .half__body,
-  .shape:hover .shape__body,
-  .bolt:hover .bolt__body {
+  .shape:hover .shape__body {
     translate: none;
   }
 }
@@ -5445,15 +5135,44 @@ textarea:focus {
   line-height: 1;
 }
 
+/* Beside the price, a quiet note rather than a badge: a fine rule, a small ball of yarn,
+   "Made to order" and the days in the softer text colour. */
 .product__price .lead-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   margin: 0;
-  padding: 0.3rem 0.8rem;
+  padding: 0 0 0 1rem;
   border: 0;
-  border-radius: 999px;
-  background: var(--color-sage);
+  border-left: 1px solid var(--hairline);
+  border-radius: 0;
+  background: none;
   box-shadow: none;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
+}
+
+.lead-time__icon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: var(--brass-deep);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.lead-time__days {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+/* On a phone the note drops under the price, where a rule before it would lead nowhere. */
+@media (max-width: 35.99rem) {
+  .product__price .lead-time {
+    padding-left: 0;
+    border-left: 0;
+  }
 }
 
 /* The buy card. */
@@ -5472,6 +5191,25 @@ textarea:focus {
   margin: 0;
 }
 
+/* The name field is filled rather than outlined: a soft linen ground with no border. Typing
+   in it turns it white with a thin warm ring, so it is still clear which field is in use. */
+.field--name input {
+  border-color: transparent;
+  background: var(--hover-wash);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field--name input:hover {
+  background: color-mix(in srgb, var(--color-brass) 24%, var(--color-card));
+}
+
+.field--name input:focus {
+  border-color: transparent;
+  background: var(--color-card);
+  box-shadow: 0 0 0 1.5px var(--edge-focus);
+  outline: none;
+}
+
 .buy .option legend {
   display: flex;
   flex-wrap: wrap;
@@ -5482,6 +5220,57 @@ textarea:focus {
 .option__chosen {
   color: var(--color-muted);
   font-weight: 400;
+}
+
+/* Body fabrics: an outside part and an inside part, each a small sketch of the body with
+   its part filled in, beside the part's name and its row of fabric dots. */
+.option__part {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'piece label'
+    'piece dots';
+  align-items: center;
+  column-gap: 0.85rem;
+  row-gap: 0.35rem;
+}
+
+.option__part + .option__part {
+  margin-top: 0.9rem;
+}
+
+.option__piece {
+  grid-area: piece;
+  align-self: start;
+  width: 2.75rem;
+  padding: 0.3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+
+/* The part not being picked keeps a faint wash of its own fabric, so the sketch reads as
+   the whole body and the part in question stands out against it. */
+.option__piece .fabric-guide__cloth {
+  fill: color-mix(in srgb, var(--cloth, var(--color-line)) 30%, var(--color-surface));
+}
+
+.option__piece .fabric-guide__lining {
+  fill: color-mix(in srgb, var(--lining, var(--color-line)) 30%, var(--color-surface));
+}
+
+.option__part-label {
+  grid-area: label;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.option__part-label .option__chosen {
+  margin-left: 0.3rem;
+}
+
+.option__part .dots {
+  grid-area: dots;
 }
 
 /* Fabrics as round colours. The chosen one wears a dark ring. */
@@ -5547,8 +5336,19 @@ textarea:focus {
   font-variant-numeric: tabular-nums;
 }
 
-.buy [data-thread-choice][hidden] {
+.field__count[hidden] {
   display: none;
+}
+
+/* Only a few letters left: the count warms to the deep brown, still easy to read. */
+.field__count.is-low {
+  color: var(--brass-deep);
+  font-weight: 600;
+}
+
+.field--name input::placeholder {
+  color: var(--color-muted);
+  opacity: 0.6;
 }
 
 /* Quantity and the button on one line. */
@@ -5598,11 +5398,21 @@ textarea:focus {
 }
 
 .stepper__button:hover {
-  background: var(--color-blush);
+  background: var(--hover-wash);
+}
+
+/* The minus and plus are drawn, so they sit in the exact centre of the disc. */
+.stepper__icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
 }
 
 .stepper__button:active {
-  background: var(--accent);
+  background: var(--accent-hover);
   color: var(--accent-ink);
   scale: 0.92;
 }
@@ -5628,26 +5438,42 @@ textarea:focus {
   display: none;
 }
 
-/* Three reassurances, each with a small sky disc: delivery is sky's job. */
-.product__info .assure {
+/* The three promises close the buy card, right under the button, where the decision to buy
+   is made: one soft linen panel, three across at every width, each a small white disc with
+   its line icon above a few words. No divider; the panel itself does the separating. */
+.buy .assure {
   display: grid;
-  gap: 0.7rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.9rem 0.75rem;
+  border-radius: 18px;
+  background: var(--hover-wash);
 }
 
 .assure li {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.8rem;
-  font-size: 0.95rem;
+  gap: 0.45rem;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .assure svg {
   flex: none;
   box-sizing: content-box;
-  padding: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  padding: 0.45rem;
   border-radius: 50%;
-  background: var(--color-sky);
+  background: var(--color-card);
+  box-shadow: 0 0 0 1px var(--hairline);
+  color: var(--color-text);
 }
 
 /* Below: the story on the left, the fold-outs on the right. */
@@ -5678,42 +5504,76 @@ textarea:focus {
   font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
 }
 
-/* Inside the story card the making details are plain, not a card of their own. */
-.product__story .making {
+/* The doll's key facts under its story: a two-by-two grid, each a small label over its value,
+   with a fine rule above. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1.5rem;
   margin: 1.5rem 0 0;
-  padding: 0;
-  background: none;
-  box-shadow: none;
 }
 
-.product__story .making__title {
-  font-size: 1.4rem;
+.facts > div {
+  padding-block: 0.85rem;
+  border-top: 1px solid var(--hairline);
 }
 
-/* Done steps wear a sage tick, joined by a fine line. */
-.product__story .making__steps {
-  gap: 0.9rem;
-  font-size: 1rem;
+.facts dt {
+  margin-bottom: 0.25rem;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.product__story .making__steps li {
-  padding-left: 2.1rem;
+.facts dd {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-.product__story .making__steps li:not(:last-child)::after {
-  top: 1.5rem;
-  bottom: -0.9rem;
-  left: calc(0.65rem - 1px);
-  border-left: 2px solid var(--color-sage);
+/* How the doll was made, inside its fold: numbered linen discs joined by a fine line. */
+/* Ends with the same space under it as a text fold. Placed on the fold so it outranks the
+   list reset, which would otherwise take the space away. */
+.making-steps {
+  display: grid;
+  gap: 0.85rem;
 }
 
-.product__story .making__steps li::before {
-  top: 0.15rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  background: var(--color-sage)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.5' fill='none' stroke='%232D2926' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-    center / 0.7rem no-repeat;
+.detail .making-steps {
+  padding: 0.15rem 0 1.25rem;
+}
+
+.making-steps li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.95rem;
+}
+
+.making-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.75rem;
+  bottom: -0.85rem;
+  left: calc(0.875rem - 0.5px);
+  border-left: 1px solid var(--hairline);
+}
+
+.making-steps__number {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--hover-wash);
+  color: var(--brass-deep);
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 /* Fold-outs: a plus that turns into a minus. */
@@ -5727,7 +5587,15 @@ textarea:focus {
   border-bottom: 0;
 }
 
-.product__folds .detail:first-child {
+/* The card's title, then the folds, the first without a rule above it. */
+/* The folds card has a slimmer padding than the story card, so its title makes up the
+   difference and lines up with "About …" beside it. */
+.product__folds-title {
+  margin: calc(clamp(1.25rem, 3vw, 2rem) - 0.5rem) 0 0.35rem;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+}
+
+.product__folds-title + .detail {
   border-top: 0;
 }
 
@@ -5746,24 +5614,32 @@ textarea:focus {
   display: none;
 }
 
+/* A round plus that turns into a blush minus when the fold is open. The two strokes are
+   drawn rather than typed, so they sit in the exact centre of the disc whatever the font. */
 .product__folds summary::after {
-  content: '+';
+  --fold-disc: var(--color-bg);
+  content: '';
   flex: none;
-  display: grid;
-  place-items: center;
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 50%;
-  background: var(--color-bg);
-  font-size: 1.1rem;
-  font-weight: 400;
-  line-height: 1;
+  background:
+    linear-gradient(currentColor, currentColor) center / 0.7rem 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 0.7rem no-repeat,
+    var(--fold-disc);
+  transition: background-color 0.15s ease;
+}
+
+.product__folds summary:hover::after {
+  --fold-disc: var(--hover-wash);
 }
 
 .product__folds [open] > summary::after {
-  content: '−';
-  background: var(--brass-deep);
-  color: var(--color-surface);
+  --fold-disc: var(--accent);
+  background:
+    linear-gradient(currentColor, currentColor) center / 0.7rem 1.5px no-repeat,
+    var(--fold-disc);
+  color: var(--accent-ink);
 }
 
 .product__folds .detail .rte {

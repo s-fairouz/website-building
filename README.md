@@ -137,17 +137,17 @@ Most photos in the preview are drawings. To try real photos, or to generate plac
 
 ## Languages
 
-The theme speaks English and French. In the preview, French is at http://localhost:9292/fr, or use the language menu in the footer.
+The theme speaks French and English, with French as the default. In the preview, French is at http://localhost:9292 and English at http://localhost:9292/en, or use the language menu in the footer.
 
 Translations live in two places:
 
-- **Interface text** (buttons, labels, messages) is in `theme/locales/en.default.json` and `theme/locales/fr.json`. To add another language, copy `fr.json` to, say, `es.json` and translate the values.
-- **Your content** (products, pages, menus, and text typed into the theme editor) is translated in the Shopify admin, not in the theme. `preview/content.fr.js` holds French versions for the preview only.
+- **Interface text** (buttons, labels, messages) is in `theme/locales/fr.default.json` (the default) and `theme/locales/en.json`. To add another language, copy `en.json` to, say, `es.json` and translate the values.
+- **Your content** (products, pages, menus, and text typed into the theme editor) is managed in the Shopify admin, not in the theme. The preview's sample content is written in English, and `preview/content.fr.js` holds its French versions for the preview only.
 
-To turn French on in a real store:
+To make French the default in a real store:
 
-1. Go to **Settings > Languages**, add French and publish it.
-2. Install Shopify's free **Translate & Adapt** app and translate your products, pages, menus and theme text. You can paste the French text from `preview/content.fr.js`.
+1. Go to **Settings > Languages**, add French, publish it and set it as the **default language**. English stays published as the second language.
+2. Write your products, pages and menus in French in the admin (you can paste the French text from `preview/content.fr.js`), then install Shopify's free **Translate & Adapt** app for the English versions.
 
 The language menu in the footer appears on its own once a second language is published.
 

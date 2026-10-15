@@ -1,5 +1,6 @@
 {%- comment -%}
   Made-to-order dispatch estimate, from the product's lead time metafields.
+  A quiet line rather than a badge: a small ball of yarn, "Made to order", and the days.
   Accepts:
   - product: {Object} the product
 {%- endcomment -%}
@@ -10,5 +11,13 @@
 -%}
 
 {%- if min_days and max_days -%}
-  <p class="lead-time">{{ 'products.made_to_order_days' | t: min: min_days, max: max_days }}</p>
+  <p class="lead-time">
+    <svg class="lead-time__icon" viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="10" cy="10" r="6.5"/>
+      <path d="M5.2 6.8c2.6.4 6.2 2.6 8 6.4M4.3 10.6c2.6-.2 6.1 1.2 7.6 4.6M8.2 3.8c2.5 1.4 5.6 4.6 6.2 8.4"/>
+      <path d="M15.6 13.6c1.1.9 1.7 2 1.9 3.2"/>
+    </svg>
+    <span>{{ 'products.made_to_order' | t }}</span>
+    <span class="lead-time__days">· {{ 'products.ready_in' | t: min: min_days, max: max_days }}</span>
+  </p>
 {%- endif -%}

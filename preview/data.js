@@ -229,7 +229,7 @@ const products = [
   // The charge for an embroidered name: a product of its own, kept out of the catalogue.
   doll({
     handle: 'name-embroidery', title: 'Name embroidery', type: 'Add-on', price: 400,
-    hair: 'brown', skin: 'light', style: 'short', dresses: ['Butter'],
+    hair: 'brown', skin: 'light', style: 'short', dresses: ['Butter'], tones: [],
     madeBy: null, leadTime: [null, null],
     description: '<p>A name embroidered by hand on the doll. Ordered together with a doll.</p>',
   }),
@@ -297,6 +297,7 @@ const pages = {
 const linklists = {
   'main-menu': {
     links: [
+      { title: 'Home', url: '/' },
       { title: 'All dolls', url: '/collections/all' },
       { title: 'Adopt', url: '/pages/adopt' },
       { title: 'Certificate', url: '/pages/certificate' },

@@ -39,16 +39,15 @@
       </p>
     </header>
 
-    {%- comment -%} The seven stops. Shown once the script has taken over the stepping. {%- endcomment -%}
+    {%- comment -%} The six stops. Shown once the script has taken over the stepping. {%- endcomment -%}
     <nav class="rail" aria-label="{{ 'journey.steps' | t }}" data-rail hidden>
       <ol role="list">
         <li><button type="button" data-goto="0">{{ 'journey.stop_companion' | t }}</button></li>
         <li><button type="button" data-goto="1">{{ for_label }}</button></li>
         <li><button type="button" data-goto="2">{{ shape_label }}</button></li>
-        <li><button type="button" data-goto="3">{{ 'journey.stop_head' | t }}</button></li>
-        <li><button type="button" data-goto="4">{{ 'journey.stop_fabric' | t }}</button></li>
-        <li><button type="button" data-goto="5">{{ 'journey.stop_summary' | t }}</button></li>
-        <li><button type="button" data-goto="6">{{ 'journey.adopt' | t }}</button></li>
+        <li><button type="button" data-goto="3">{{ 'journey.stop_look' | t }}</button></li>
+        <li><button type="button" data-goto="4">{{ 'journey.stop_summary' | t }}</button></li>
+        <li><button type="button" data-goto="5">{{ 'journey.adopt' | t }}</button></li>
       </ol>
     </nav>
 
@@ -192,128 +191,78 @@
         </fieldset>
 
         {%- comment -%}
-          4. Head colour: one set of colours per companion, from its colour metaobjects.
-          The script shows only the chosen companion's set and switches the others off.
+          4. Colours: the head and the two body fabrics on one card, picked as round dots the
+          same way as on the doll page. The head colours come from each companion's colour
+          metaobjects; the script shows only the chosen companion's set and switches the others
+          off. The body is sewn from two fabrics, one outside and one lining the inside, each
+          beside a small sketch of the body with its part filled in. The outside starts on the
+          first fabric and the inside on the second.
         {%- endcomment -%}
-        <fieldset class="step-pane" data-step data-recap-part="head">
+        {%- liquid
+          assign fabric_count = 0
+          for fabric in fabrics
+            assign label = fabric | split: '|' | first | strip
+            if label != blank
+              assign fabric_count = fabric_count | plus: 1
+            endif
+          endfor
+          assign inner_start = 2
+          if fabric_count < 2
+            assign inner_start = 1
+          endif
+        -%}
+        <fieldset class="step-pane" data-step data-look-step>
           <legend>
-            <span class="step-pane__title" tabindex="-1">{{ section.settings.head_title | escape }}</span>
-            <span class="step-pane__sub">{{ section.settings.head_text | escape }}</span>
+            <span class="step-pane__title" tabindex="-1">{{ section.settings.look_title | escape }}</span>
+            <span class="step-pane__sub">{{ section.settings.look_text | escape }}</span>
           </legend>
-          <div class="choice-sets">
-          {%- for block in section.blocks -%}
-            {%- liquid
-              if block.type != 'model'
-                continue
-              endif
-              assign model = block.settings.product
-              if model == blank
-                continue
-              endif
-              assign variant = model.selected_or_first_available_variant
-              assign heads = model.metafields.custom.colors.value
-            -%}
-            <div class="heads" data-heads-for="{{ variant.id }}">
-              <p class="choice-sets__title" data-set-title>{{ model.title }}</p>
-              <div class="bolts bolts--heads">
-                {%- for color in heads -%}
-                  <label class="bolt" style="--swatch: {{ color.swatch.value }}">
-                    <input
-                      type="radio"
-                      name="properties[{{ head_label }}]"
-                      value="{{ color.name.value | escape }}"
-                      data-hex="{{ color.swatch.value }}"
-                      {% if variant.available and has_head == false %}checked{% endif %}
-                    >
-                    <span class="bolt__body">
-                      <span class="bolt__cloth"></span>
-                      <span class="bolt__name">{{ color.name.value | escape }}</span>
-                      <span class="bolt__check"></span>
-                    </span>
-                  </label>
-                  {%- if variant.available -%}
-                    {%- assign has_head = true -%}
-                  {%- endif -%}
+          <div class="look" data-body>
+            <div class="option__part look__row" data-recap-part="head" data-look-part="head">
+              <svg class="option__piece look__head" viewBox="0 0 48 44" aria-hidden="true">
+                <circle cx="24" cy="22" r="16"/>
+              </svg>
+              <p class="option__part-label" id="{{ section.id }}-head">
+                {{ head_label }}
+                <span class="option__chosen" data-choice-name></span>
+              </p>
+              <div class="look__sets">
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    if block.type != 'model'
+                      continue
+                    endif
+                    assign model = block.settings.product
+                    if model == blank
+                      continue
+                    endif
+                    assign variant = model.selected_or_first_available_variant
+                    assign heads = model.metafields.custom.colors.value
+                  -%}
+                  <div class="heads" data-heads-for="{{ variant.id }}">
+                    <p class="choice-sets__title" data-set-title>{{ model.title }}</p>
+                    <div class="dots" role="radiogroup" aria-labelledby="{{ section.id }}-head">
+                      {%- for color in heads -%}
+                        <label class="dot" title="{{ color.name.value | escape }}">
+                          <input
+                            type="radio"
+                            name="properties[{{ head_label }}]"
+                            value="{{ color.name.value | escape }}"
+                            data-hex="{{ color.swatch.value }}"
+                            {% if variant.available and has_head == false %}checked{% endif %}
+                          >
+                          <span class="dot__fill" style="--swatch: {{ color.swatch.value }}"></span>
+                          <span class="visually-hidden">{{ color.name.value | escape }}</span>
+                        </label>
+                        {%- if variant.available -%}
+                          {%- assign has_head = true -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
                 {%- endfor -%}
               </div>
             </div>
-          {%- endfor -%}
-          </div>
-          <p class="step-pane__chosen">
-            {{ 'journey.head_selected' | t }}
-            <strong data-head-name></strong>
-          </p>
-        </fieldset>
 
-        {%- comment -%}
-          5. Body fabrics: the doll is sewn from two, one outside and one lining the inside,
-          chosen one after the other in two parts of this step. The script adds the guide
-          above the parts and shows one part at a time; without it both parts show, each under its name.
-          The outside starts on the first fabric and the inside on the second.
-        {%- endcomment -%}
-        <fieldset class="step-pane" data-step>
-          <legend>
-            <span class="step-pane__title" tabindex="-1">{{ section.settings.fabric_title | escape }}</span>
-            <span class="step-pane__sub">{{ section.settings.fabric_text | escape }}</span>
-          </legend>
-          {%- liquid
-            assign fabric_count = 0
-            for fabric in fabrics
-              assign label = fabric | split: '|' | first | strip
-              if label != blank
-                assign fabric_count = fabric_count | plus: 1
-              endif
-            endfor
-            assign inner_start = 2
-            if fabric_count < 2
-              assign inner_start = 1
-            endif
-          -%}
-          {%- comment -%}
-            The guide: one soft panel holding the two parts as a stepper, and under it what the
-            part being chosen is, with a small pattern piece marking it. Shown by the script.
-          {%- endcomment -%}
-          <div class="fabric-guide" data-sides hidden>
-            <ol class="fabric-steps" role="list">
-              {%- for side in sides -%}
-                <li class="fabric-steps__item">
-                  <button type="button" class="fabric-steps__stop" data-side="{{ side }}" data-text-empty="{{ 'journey.not_chosen' | t }}" aria-controls="{{ section.id }}-{{ side }}">
-                    <span class="fabric-steps__number">{{ forloop.index }}</span>
-                    <span class="fabric-steps__label">
-                      {%- if side == 'outer' -%}{{ outer_label }}{%- else -%}{{ inner_label }}{%- endif -%}
-                    </span>
-                    <span class="fabric-steps__pick">
-                      <span class="fabric-steps__swatch"></span>
-                      <span data-side-name></span>
-                    </span>
-                  </button>
-                </li>
-              {%- endfor -%}
-            </ol>
-            {%- for side in sides -%}
-              {%- liquid
-                if side == 'outer'
-                  assign side_title = section.settings.outer_title
-                  assign side_text = section.settings.outer_text
-                else
-                  assign side_title = section.settings.inner_title
-                  assign side_text = section.settings.inner_text
-                endif
-              -%}
-              <div class="fabric-guide__part" data-side-part="{{ side }}">
-                <svg class="fabric-guide__piece" data-piece="{{ side }}" viewBox="0 0 48 44" aria-hidden="true">
-                  <path class="fabric-guide__cloth" d="M9 4 H37 Q43 4 43 10 V26 L27 40 H9 Q5 40 5 36 V8 Q5 4 9 4 Z"/>
-                  <path class="fabric-guide__lining" d="M27 40 L43 26 H31 Q27 26 27 30 Z"/>
-                </svg>
-                <div class="fabric-guide__words">
-                  <p class="fabric-guide__count">{{ 'journey.part' | t: number: forloop.index, total: sides.size }}</p>
-                  <p class="fabric-guide__title" tabindex="-1">{{ side_title | escape }}</p>
-                  <p class="fabric-guide__text">{{ side_text | escape }}</p>
-                </div>
-              </div>
-            {%- endfor -%}
-          </div>
-          <div class="choice-sets">
             {%- for side in sides -%}
               {%- liquid
                 if side == 'outer'
@@ -325,9 +274,16 @@
                 endif
                 assign n = 0
               -%}
-              <div class="fabric-side" id="{{ section.id }}-{{ side }}" data-recap-part="{{ side }}" data-fabric-side="{{ side }}">
-                <p class="choice-sets__title" data-set-title>{{ side_label }}</p>
-                <div class="bolts">
+              <div class="option__part look__row" data-recap-part="{{ side }}" data-look-part="{{ side }}">
+                <svg class="fabric-guide__piece option__piece" data-piece="{{ side }}" viewBox="0 0 48 44" aria-hidden="true">
+                  <path class="fabric-guide__cloth" d="M9 4 H37 Q43 4 43 10 V26 L27 40 H9 Q5 40 5 36 V8 Q5 4 9 4 Z"/>
+                  <path class="fabric-guide__lining" d="M27 40 L43 26 H31 Q27 26 27 30 Z"/>
+                </svg>
+                <p class="option__part-label" id="{{ section.id }}-{{ side }}">
+                  {{ side_label }}
+                  <span class="option__chosen" data-choice-name></span>
+                </p>
+                <div class="dots" role="radiogroup" aria-labelledby="{{ section.id }}-{{ side }}">
                   {%- for fabric in fabrics -%}
                     {%- liquid
                       assign parts = fabric | split: '|'
@@ -338,7 +294,7 @@
                       endif
                       assign n = n | plus: 1
                     -%}
-                    <label class="bolt" style="--swatch: {{ hex | escape }}">
+                    <label class="dot" title="{{ label | escape }}">
                       <input
                         type="radio"
                         name="properties[{{ side_label }}]"
@@ -346,11 +302,8 @@
                         data-hex="{{ hex | escape }}"
                         {% if n == start %}checked{% endif %}
                       >
-                      <span class="bolt__body">
-                        <span class="bolt__cloth"></span>
-                        <span class="bolt__name">{{ label | escape }}</span>
-                        <span class="bolt__check"></span>
-                      </span>
+                      <span class="dot__fill" style="--swatch: {{ hex | escape }}"></span>
+                      <span class="visually-hidden">{{ label | escape }}</span>
                     </label>
                   {%- endfor -%}
                 </div>
@@ -359,7 +312,7 @@
           </div>
         </fieldset>
 
-        {%- comment -%} 6. Summary: the ticket itself is the summary, so this step only introduces it {%- endcomment -%}
+        {%- comment -%} 5. Summary: the ticket itself is the summary, so this step only introduces it {%- endcomment -%}
         <div class="step-pane step-pane--plain" data-step>
           <p class="step-pane__legend">
             <span class="step-pane__title" tabindex="-1">{{ section.settings.summary_title | escape }}</span>
@@ -367,7 +320,7 @@
           </p>
         </div>
 
-        {%- comment -%} 7. Adopt {%- endcomment -%}
+        {%- comment -%} 6. Adopt {%- endcomment -%}
         <div class="step-pane step-pane--plain" data-step>
           <p class="step-pane__legend">
             <span class="step-pane__title" tabindex="-1">{{ 'journey.adopt' | t }} <span data-adopt-name></span></span>
@@ -486,8 +439,8 @@
           <svg class="flow__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg>
           <span>{{ 'journey.back' | t }}</span>
         </button>
-        <button type="button" class="button flow__step" data-next data-text-inside="{{ 'journey.next_inside' | t }}">
-          <span data-next-label>{{ 'journey.continue' | t }}</span>
+        <button type="button" class="button flow__step" data-next>
+          <span>{{ 'journey.continue' | t }}</span>
           <svg class="flow__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5l4.5 4.5L6 12.5"/></svg>
         </button>
       </div>
@@ -501,7 +454,7 @@
   "settings": [
     { "type": "text", "id": "kicker", "label": "Line above the heading", "default": "Shopping experience" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Order journey" },
-    { "type": "text", "id": "text", "label": "Text", "default": "From the studio to your home: 7 steps designed for mums." },
+    { "type": "text", "id": "text", "label": "Text", "default": "From the studio to your home: 6 steps designed for mums." },
 
     { "type": "header", "content": "Step 1: the doll" },
     { "type": "text", "id": "model_title", "label": "Title", "default": "Choose your companion" },
@@ -523,18 +476,10 @@
     { "type": "text", "id": "arms_title", "label": "Second choice", "default": "With arms" },
     { "type": "text", "id": "arms_text", "label": "Second choice, description", "default": "Head, arms and flat fabric, ideal from 6 months" },
 
-    { "type": "header", "content": "Step 4: head colour" },
-    { "type": "paragraph", "content": "Each doll's colours come from its Colours metafield." },
-    { "type": "text", "id": "head_title", "label": "Title", "default": "Choose the head colour" },
-    { "type": "text", "id": "head_text", "label": "Text", "default": "Each companion comes in its own colours" },
-
-    { "type": "header", "content": "Step 5: fabric" },
-    { "type": "text", "id": "fabric_title", "label": "Title", "default": "Choose the body fabrics" },
-    { "type": "text", "id": "fabric_text", "label": "Text", "default": "Two fabrics make the body: one outside, one inside" },
-    { "type": "text", "id": "outer_title", "label": "Part 1 title", "default": "The outside" },
-    { "type": "text", "id": "outer_text", "label": "Part 1 text", "default": "The fabric everyone sees on the front of the doll." },
-    { "type": "text", "id": "inner_title", "label": "Part 2 title", "default": "The inside" },
-    { "type": "text", "id": "inner_text", "label": "Part 2 text", "default": "The lining sewn inside the body. It shows where the fabric folds back." },
+    { "type": "header", "content": "Step 4: colours" },
+    { "type": "paragraph", "content": "The head colours come from each doll's Colours metafield; the fabrics below are offered for both the outside and the inside of the body." },
+    { "type": "text", "id": "look_title", "label": "Title", "default": "Choose the colours" },
+    { "type": "text", "id": "look_text", "label": "Text", "default": "The head, then the two fabrics of the body: one outside, one inside" },
     {
       "type": "textarea",
       "id": "fabrics",
@@ -543,12 +488,12 @@
       "default": "Terracotta flowers | #C87840\nSky-blue stars | #B8D4E8\nPowder-pink moons | #EDD8D8\nWatercolour floral | #D4C0B0\nFlowering foxes | #EAE4D8\nPolar-blue minky | #8EC4D8"
     },
 
-    { "type": "header", "content": "Step 6: summary" },
+    { "type": "header", "content": "Step 5: summary" },
     { "type": "text", "id": "summary_title", "label": "Title", "default": "Summary" },
     { "type": "text", "id": "summary_text", "label": "Text", "default": "A last check before the adoption" },
     { "type": "text", "id": "delivery_text", "label": "Delivery line", "info": "Keep this in step with the free-shipping amount on the Cart drawer section.", "default": "Free from $50" },
 
-    { "type": "header", "content": "Step 7: adopt" },
+    { "type": "header", "content": "Step 6: adopt" },
     { "type": "text", "id": "adopt_text", "label": "Text", "default": "Adoption certificate included. Delivery in 5 to 7 working days." },
 
     { "type": "header", "content": "After the order" },

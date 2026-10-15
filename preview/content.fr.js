@@ -7,6 +7,7 @@
 
 module.exports = {
   // Menus, collections and pages
+  'Home': 'Accueil',
   'All dolls': 'Toutes les poupées',
   'Cloth dolls': 'Poupées de chiffon',
   'Pocket dolls': 'Poupées de poche',
@@ -154,6 +155,12 @@ module.exports = {
     'Les vêtements s’enlèvent et se remettent grâce à des pressions faciles pour les petites mains.',
 
   // Product page details
+  'Materials and care': 'Matières et entretien',
+  '<p>Cotton body and clothes, wool felt shoes, carded wool stuffing, cotton embroidery thread.</p><p>Spot clean with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>':
+    '<p>Corps et vêtements en coton, chaussures en feutre de laine, rembourrage en laine cardée, fil à broder en coton.</p><p>Nettoyez les taches avec un linge humide et un savon doux. Les vêtements se lavent à la main à l’eau fraîche et sèchent à plat.</p>',
+  '<p>Each doll is made to order and ready in 5 to 7 days. Unused dolls can be returned within 30 days.</p>':
+    '<p>Chaque poupée est fabriquée à la commande et prête en 5 à 7 jours. Les poupées non utilisées peuvent être retournées sous 30 jours.</p>',
+  'Ships in 5 to 7 days': 'Expédiée en 5 à 7 jours',
   'Materials': 'Matières',
   '<p>Cotton body and clothes, wool felt shoes, carded wool stuffing, cotton embroidery thread.</p>':
     '<p>Corps et vêtements en coton, chaussures en feutre de laine, rembourrage en laine cardée, fil à broder en coton.</p>',
@@ -242,7 +249,47 @@ module.exports = {
   'Adopt': 'Adopter',
   'Shopping experience': 'Expérience d’achat',
   'Kwaii order journey': 'Parcours de commande Kwaii',
-  'From the studio to your home: 7 steps designed for mums.': 'De l’atelier à la maison : 7 étapes pensées pour les mamans.',
+  'From the studio to your home: 6 steps designed for mums.': 'De l’atelier à la maison : 6 étapes pensées pour les mamans.',
+  'Choose your companion': 'Choisir son compagnon',
+  'Among the dolls of the Kwaii family': 'Parmi les poupées de la famille Kwaii',
+  'Girl or boy?': 'Fille ou garçon ?',
+  'Decides the colours of the doll and the fabric': 'Détermine les couleurs de la poupée et du tissu',
+  'Girl': 'Fille',
+  'Powder pink, mauve and floral tones. Pink accessories. Floral or moon fabric.':
+    'Tons rose poudré, parme, fleuri. Accessoires roses. Tissu floral ou lunes.',
+  'Boy': 'Garçon',
+  'Sky blue, sage green and star tones. Bow tie. Star or fox fabric.':
+    'Tons bleu ciel, vert sauge, étoiles. Nœud papillon. Tissu étoiles ou renards.',
+  'With or without arms?': 'Avec ou sans bras ?',
+  'Two different shapes, the same tenderness': 'Deux silhouettes différentes, même tendresse',
+  'Without arms': 'Sans bras',
+  'Head and soft flat fabric, ideal from 0 to 6 months': 'Tête et tissu plat doux, idéal de 0 à 6 mois',
+  'With arms': 'Avec bras',
+  'Head, arms and flat fabric, ideal from 6 months': 'Tête, bras et tissu plat, idéal dès 6 mois',
+  'Choose the colours': 'Choisir les couleurs',
+  'The head, then the two fabrics of the body: one outside, one inside':
+    'La tête, puis les deux tissus du corps : un dehors, un dedans',
+  'Terracotta flowers': 'Fleurs terracotta',
+  'Sky-blue stars': 'Étoiles bleu ciel',
+  'Powder-pink moons': 'Lunes rose poudré',
+  'Watercolour floral': 'Floral aquarelle',
+  'Flowering foxes': 'Renards fleuris',
+  'Polar-blue minky': 'Minky bleu polaire',
+  'Oeko-Tex certified cotton': 'Coton certifié Oeko-Tex',
+  'Crocheted by hand': 'Crochetée à la main',
+  'About 4½ hours': 'Environ 4 h 30',
+  'About 840, placed one by one': 'Environ 840, posées une à une',
+  'Body crocheted, 2 hours': 'Corps principal crocheté, 2 h',
+  'Parts assembled, 1½ hours': 'Assemblage des pièces, 1 h 30',
+  'Name embroidered in gold thread': 'Prénom brodé au fil doré',
+  'Checked and boxed': 'Contrôle qualité et mise en coffret',
+
+  // Order journey page
+  'Adopt a doll': 'Adopter une poupée',
+  'Adopt': 'Adopter',
+  'Shopping experience': 'Expérience d’achat',
+  'Kwaii order journey': 'Parcours de commande Kwaii',
+  'From the studio to your home: 6 steps designed for mums.': 'De l’atelier à la maison : 6 étapes pensées pour les mamans.',
   'Choose your companion': 'Choisir son compagnon',
   'Among the dolls of the Kwaii family': 'Parmi les poupées de la famille Kwaii',
   'Girl or boy?': 'Fille ou garçon ?',

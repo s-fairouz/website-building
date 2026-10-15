@@ -3,6 +3,12 @@
   assign image = current.featured_image | default: product.featured_image
   assign artist = product.metafields.custom.artist.value
   assign fabrics = product.metafields.custom.fabrics.value
+  assign heads = product.metafields.custom.colors.value
+
+  # The same choices, under the same names, as on the adopt page, so an order reads alike from either.
+  assign head_label = 'journey.head' | t
+  assign outer_label = 'journey.fabric_outer' | t
+  assign inner_label = 'journey.fabric_inner' | t
 
   # A name is charged for by adding this product to the cart alongside the doll.
   assign addon = section.settings.embroidery_product
@@ -108,28 +114,85 @@
         {%- endfor -%}
       {%- endunless -%}
 
-      {%- if fabrics.size > 0 -%}
-        {%- comment -%} Fabrics are picked by colour; the chosen one's name is written beside the label. {%- endcomment -%}
-        <fieldset class="option">
+      {%- comment -%}
+        Colours are picked as round dots; the chosen one's name is written beside its label.
+        The head colour comes first, then the two body fabrics: one outside, one lining the
+        inside, each beside a small sketch of the body with its part filled in.
+      {%- endcomment -%}
+      {%- if heads.size > 0 -%}
+        <fieldset class="option" data-choice>
           <legend>
-            {{ 'products.fabric' | t }}
-            <span class="option__chosen" data-fabric-name>{{ fabrics.first.name.value | escape }}</span>
+            {{ head_label }}
+            <span class="option__chosen" data-choice-name>{{ heads.first.name.value | escape }}</span>
           </legend>
           <div class="dots">
-            {%- for fabric in fabrics -%}
-              <label class="dot" title="{{ fabric.name.value | escape }}">
+            {%- for color in heads -%}
+              <label class="dot" title="{{ color.name.value | escape }}">
                 <input
                   type="radio"
-                  name="properties[{{ 'products.fabric' | t }}]"
-                  value="{{ fabric.name.value | escape }}"
-                  data-fabric
+                  name="properties[{{ head_label }}]"
+                  value="{{ color.name.value | escape }}"
+                  data-hex="{{ color.swatch.value }}"
                   {% if forloop.first %}checked{% endif %}
                 >
-                <span class="dot__fill" style="--swatch: {{ fabric.swatch.value }}"></span>
-                <span class="visually-hidden">{{ fabric.name.value | escape }}</span>
+                <span class="dot__fill" style="--swatch: {{ color.swatch.value }}"></span>
+                <span class="visually-hidden">{{ color.name.value | escape }}</span>
               </label>
             {%- endfor -%}
           </div>
+        </fieldset>
+      {%- endif -%}
+
+      {%- if fabrics.size > 0 -%}
+        {%- liquid
+          assign inner_start = 2
+          if fabrics.size < 2
+            assign inner_start = 1
+          endif
+        -%}
+        <fieldset class="option" data-body>
+          <legend>{{ 'products.fabrics' | t }}</legend>
+          {%- for side in (1..2) -%}
+            {%- liquid
+              if side == 1
+                assign part = 'outer'
+                assign part_label = outer_label
+                assign part_name = 'products.outside' | t
+                assign start = 1
+              else
+                assign part = 'inner'
+                assign part_label = inner_label
+                assign part_name = 'products.inside' | t
+                assign start = inner_start
+              endif
+              assign start_index = start | minus: 1
+            -%}
+            <div class="option__part" data-choice data-part="{{ part }}">
+              <svg class="fabric-guide__piece option__piece" data-piece="{{ part }}" viewBox="0 0 48 44" aria-hidden="true">
+                <path class="fabric-guide__cloth" d="M9 4 H37 Q43 4 43 10 V26 L27 40 H9 Q5 40 5 36 V8 Q5 4 9 4 Z"/>
+                <path class="fabric-guide__lining" d="M27 40 L43 26 H31 Q27 26 27 30 Z"/>
+              </svg>
+              <p class="option__part-label" id="{{ section.id }}-{{ part }}">
+                {{ part_name }}
+                <span class="option__chosen" data-choice-name>{{ fabrics[start_index].name.value | escape }}</span>
+              </p>
+              <div class="dots" role="radiogroup" aria-labelledby="{{ section.id }}-{{ part }}">
+                {%- for fabric in fabrics -%}
+                  <label class="dot" title="{{ fabric.name.value | escape }}">
+                    <input
+                      type="radio"
+                      name="properties[{{ part_label }}]"
+                      value="{{ fabric.name.value | escape }}"
+                      data-hex="{{ fabric.swatch.value }}"
+                      {% if forloop.index == start %}checked{% endif %}
+                    >
+                    <span class="dot__fill" style="--swatch: {{ fabric.swatch.value }}"></span>
+                    <span class="visually-hidden">{{ fabric.name.value | escape }}</span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
         </fieldset>
       {%- endif -%}
 
@@ -143,10 +206,14 @@
 
       <div class="product-form__buy">
         <div class="stepper">
-          <button type="button" class="stepper__button" data-step="-1" aria-label="{{ 'products.decrease' | t }}">−</button>
+          <button type="button" class="stepper__button" data-step="-1" aria-label="{{ 'products.decrease' | t }}">
+            <svg class="stepper__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/></svg>
+          </button>
           <label class="visually-hidden" for="quantity">{{ 'products.quantity' | t }}</label>
           <input id="quantity" type="number" name="quantity" value="1" min="1" inputmode="numeric">
-          <button type="button" class="stepper__button" data-step="1" aria-label="{{ 'products.increase' | t }}">+</button>
+          <button type="button" class="stepper__button" data-step="1" aria-label="{{ 'products.increase' | t }}">
+            <svg class="stepper__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9M8 3.5v9"/></svg>
+          </button>
         </div>
         <button type="submit" class="button" data-add{% unless current.available %} disabled{% endunless %}>
           {%- if current.available -%}
@@ -157,40 +224,54 @@
         </button>
       </div>
       <p class="form-note" data-add-status role="status"></p>
-    {% endform %}
 
-    <ul class="assure" role="list">
-      {%- if section.settings.delivery_note != blank -%}
-        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5h9v8H2zM11 8.5h3.5l3 3v2H11z"/><circle cx="6" cy="14.5" r="1.6"/><circle cx="14.5" cy="14.5" r="1.6"/></g></svg>{{ section.settings.delivery_note | escape }}</li>
+      {%- comment -%} The promises sit right under the button, where the decision to buy is made. {%- endcomment -%}
+      {%- if section.settings.delivery_note != blank or section.settings.returns_note != blank or section.settings.included_note != blank -%}
+        <ul class="assure" role="list">
+          {%- if section.settings.delivery_note != blank -%}
+            <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5h9v8H2zM11 8.5h3.5l3 3v2H11z"/><circle cx="6" cy="14.5" r="1.6"/><circle cx="14.5" cy="14.5" r="1.6"/></g></svg>{{ section.settings.delivery_note | escape }}</li>
+          {%- endif -%}
+          {%- if section.settings.returns_note != blank -%}
+            <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11"/><path d="M3.5 7.5H12a4.5 4.5 0 0 1 0 9H8"/></g></svg>{{ section.settings.returns_note | escape }}</li>
+          {%- endif -%}
+          {%- if section.settings.included_note != blank -%}
+            <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7.5" r="4.5"/><path d="M7.5 11.5 6.5 17.5 10 15.5l3.5 2-1-6"/></g></svg>{{ section.settings.included_note | escape }}</li>
+          {%- endif -%}
+        </ul>
       {%- endif -%}
-      {%- if section.settings.returns_note != blank -%}
-        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3.5 7.5 7 11"/><path d="M3.5 7.5H12a4.5 4.5 0 0 1 0 9H8"/></g></svg>{{ section.settings.returns_note | escape }}</li>
-      {%- endif -%}
-      {%- if section.settings.included_note != blank -%}
-        <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7.5" r="4.5"/><path d="M7.5 11.5 6.5 17.5 10 15.5l3.5 2-1-6"/></g></svg>{{ section.settings.included_note | escape }}</li>
-      {%- endif -%}
-    </ul>
+    {% endform %}
   </div>
 
-  {%- comment -%} Below the fold, across the page: the doll's story, then the practical fold-outs. {%- endcomment -%}
+  {%- comment -%}
+    Below the fold, across the page: the doll's story with its key facts, and beside it the
+    details, each in a fold-out: how this doll was made, then the merchant's own blocks.
+  {%- endcomment -%}
+  {%- capture making_steps -%}{% render 'product-making', product: product, show: 'steps' %}{%- endcapture -%}
   <div class="product__more">
     <section class="product__story">
       <h2>{{ 'products.about' | t: title: product.title }}</h2>
       {%- if product.description != blank -%}
         <div class="rte">{{ product.description }}</div>
       {%- endif -%}
-      {% render 'product-making', product: product %}
+      {% render 'product-making', product: product, show: 'facts' %}
     </section>
 
-    {%- if section.blocks.size > 0 -%}
-      <div class="product__folds">
+    {%- if making_steps != blank or section.blocks.size > 0 -%}
+      <section class="product__folds">
+        <h2 class="product__folds-title">{{ 'products.details' | t }}</h2>
+        {%- if making_steps != blank -%}
+          <details class="detail">
+            <summary>{{ 'products.making_steps' | t }}</summary>
+            {{ making_steps }}
+          </details>
+        {%- endif -%}
         {%- for block in section.blocks -%}
           <details class="detail" {{ block.shopify_attributes }}>
             <summary>{{ block.settings.heading | escape }}</summary>
             <div class="rte">{{ block.settings.content }}</div>
           </details>
         {%- endfor -%}
-      </div>
+      </section>
     {%- endif -%}
   </div>
 
@@ -237,19 +318,19 @@
       "type": "text",
       "id": "delivery_note",
       "label": "Delivery",
-      "default": "Delivered in 5 to 7 working days."
+      "default": "Ships in 5 to 7 days"
     },
     {
       "type": "text",
       "id": "returns_note",
       "label": "Returns",
-      "default": "Returns within 30 days."
+      "default": "30-day returns"
     },
     {
       "type": "text",
       "id": "included_note",
       "label": "Comes with",
-      "info": "For example \"Comes with its adoption certificate.\" Leave empty to hide."
+      "info": "For example \"Adoption certificate included\". Leave empty to hide."
     },
     {
       "type": "header",
