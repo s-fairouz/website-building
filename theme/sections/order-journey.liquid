@@ -39,15 +39,14 @@
       </p>
     </header>
 
-    {%- comment -%} The six stops. Shown once the script has taken over the stepping. {%- endcomment -%}
+    {%- comment -%} The five stops. Shown once the script has taken over the stepping. {%- endcomment -%}
     <nav class="rail" aria-label="{{ 'journey.steps' | t }}" data-rail hidden>
       <ol role="list">
         <li><button type="button" data-goto="0">{{ 'journey.stop_companion' | t }}</button></li>
         <li><button type="button" data-goto="1">{{ for_label }}</button></li>
         <li><button type="button" data-goto="2">{{ shape_label }}</button></li>
         <li><button type="button" data-goto="3">{{ 'journey.stop_look' | t }}</button></li>
-        <li><button type="button" data-goto="4">{{ 'journey.stop_summary' | t }}</button></li>
-        <li><button type="button" data-goto="5">{{ 'journey.adopt' | t }}</button></li>
+        <li><button type="button" data-goto="4">{{ 'journey.adopt' | t }}</button></li>
       </ol>
     </nav>
 
@@ -128,6 +127,7 @@
                   </svg>
                 </span>
                 <span class="half__name">{{ section.settings.girl_title | escape }}</span>
+                {% render 'tone-dots', tones: section.settings.girl_tones %}
                 <span class="half__text">{{ section.settings.girl_text | escape }}</span>
                 <span class="half__check"></span>
               </span>
@@ -141,6 +141,7 @@
                   </svg>
                 </span>
                 <span class="half__name">{{ section.settings.boy_title | escape }}</span>
+                {% render 'tone-dots', tones: section.settings.boy_tones %}
                 <span class="half__text">{{ section.settings.boy_text | escape }}</span>
                 <span class="half__check"></span>
               </span>
@@ -165,7 +166,6 @@
                   </svg>
                 </span>
                 <span class="shape__name">{{ section.settings.no_arms_title | escape }}</span>
-                <span class="shape__selected">{{ 'journey.selected' | t }}</span>
                 <span class="shape__text">{{ section.settings.no_arms_text | escape }}</span>
                 <span class="shape__check"></span>
               </span>
@@ -175,14 +175,13 @@
               <span class="shape__body">
                 <span class="shape__tone">
                   <svg class="shape__sketch" viewBox="0 0 80 70" aria-hidden="true">
-                    <path class="shape__arm" d="M24 40 L12 54"/>
-                    <path class="shape__arm" d="M56 40 L68 54"/>
+                    <rect class="shape__arm" x="15.5" y="38" width="7" height="20" rx="3.5" transform="rotate(40 19 48)"/>
+                    <rect class="shape__arm" x="57.5" y="38" width="7" height="20" rx="3.5" transform="rotate(-40 61 48)"/>
                     <rect class="shape__cloth" x="22" y="40" width="36" height="26" rx="4"/>
                     <circle cx="40" cy="26" r="17"/>
                   </svg>
                 </span>
                 <span class="shape__name">{{ section.settings.arms_title | escape }}</span>
-                <span class="shape__selected">{{ 'journey.selected' | t }}</span>
                 <span class="shape__text">{{ section.settings.arms_text | escape }}</span>
                 <span class="shape__check"></span>
               </span>
@@ -312,21 +311,14 @@
           </div>
         </fieldset>
 
-        {%- comment -%} 5. Summary: the ticket itself is the summary, so this step only introduces it {%- endcomment -%}
-        <div class="step-pane step-pane--plain" data-step>
-          <p class="step-pane__legend">
-            <span class="step-pane__title" tabindex="-1">{{ section.settings.summary_title | escape }}</span>
-            <span class="step-pane__sub">{{ section.settings.summary_text | escape }}</span>
-          </p>
-        </div>
-
-        {%- comment -%} 6. Adopt {%- endcomment -%}
+        {%- comment -%}
+          5. Adopt: the ticket is the summary, so this last step introduces it, and the adopt
+          button takes the place of Continue beside Back.
+        {%- endcomment -%}
         <div class="step-pane step-pane--plain" data-step>
           <p class="step-pane__legend">
             <span class="step-pane__title" tabindex="-1">{{ 'journey.adopt' | t }} <span data-adopt-name></span></span>
-            {%- if section.settings.adopt_text != blank -%}
-              <span class="step-pane__sub">{{ section.settings.adopt_text | escape }}</span>
-            {%- endif -%}
+            <span class="step-pane__sub">{{ 'journey.check' | t }}</span>
           </p>
         </div>
       </div>
@@ -389,6 +381,19 @@
                 <dd>{{ section.settings.delivery_text | escape }}</dd>
               </div>
             {%- endif -%}
+            {%- comment -%} What helps the decision, said once, where the price is checked. {%- endcomment -%}
+            {%- if section.settings.lead_text != blank -%}
+              <div>
+                <dt>{{ 'journey.lead' | t }}</dt>
+                <dd>{{ section.settings.lead_text | escape }}</dd>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.included_text != blank -%}
+              <div>
+                <dt>{{ 'journey.included' | t }}</dt>
+                <dd>{{ section.settings.included_text | escape }}</dd>
+              </div>
+            {%- endif -%}
           </dl>
 
           <p class="ticket__total">
@@ -399,39 +404,33 @@
       </details>
       </div>
 
+      {%- comment -%}
+        The adopt button, then one quiet line of reassurance. With the script, the button moves
+        into the row beside Back, in Continue's place; without it, it stays here under the ticket.
+      {%- endcomment -%}
       <div class="flow__adopt" data-adopt-pane>
-        <button type="submit" class="button" data-journey-add data-label="{{ 'journey.adopt_button' | t: price: '[price]' }}"{% unless has_model %} disabled{% endunless %}>
+        <button type="submit" class="button flow__step" data-journey-add data-label="{{ 'journey.adopt_button' | t: price: '[price]' }}"{% unless has_model %} disabled{% endunless %}>
           {{ 'journey.adopt' | t }}
         </button>
         <p class="form-note" data-journey-status role="status"></p>
 
-        <div class="after">
-          {%- if section.settings.after_title != blank -%}
-            <h2>{{ section.settings.after_title | escape }}</h2>
-          {%- endif -%}
-          <dl class="after__list">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'after' -%}
-                <div {{ block.shopify_attributes }}>
-                  <dt>{{ block.settings.title | escape }}</dt>
-                  <dd>{{ block.settings.text | escape }}</dd>
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </dl>
-          <ul class="flow__promises" role="list">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'promise' -%}
-                <li {{ block.shopify_attributes }}>
-                  <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-                    <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {{ block.settings.text | escape }}
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
-        </div>
+        {%- liquid
+          assign promises = ''
+          for block in section.blocks
+            if block.type == 'promise' and block.settings.text != blank
+              if promises != ''
+                assign promises = promises | append: ' · '
+              endif
+              assign promises = promises | append: block.settings.text
+            endif
+          endfor
+        -%}
+        {%- if promises != '' -%}
+          <p class="flow__trust">
+            {%- render 'icon', name: 'lock' -%}
+            <span>{{ promises | escape }}</span>
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="flow__nav" data-flow-nav hidden>
@@ -454,7 +453,7 @@
   "settings": [
     { "type": "text", "id": "kicker", "label": "Line above the heading", "default": "Step by step" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Order journey" },
-    { "type": "text", "id": "text", "label": "Text", "default": "From the studio to your home: 6 steps designed for moms." },
+    { "type": "text", "id": "text", "label": "Text", "default": "From the studio to your home: 5 steps designed for moms." },
 
     { "type": "header", "content": "Step 1: the doll" },
     { "type": "text", "id": "model_title", "label": "Title", "default": "Choose your companion" },
@@ -464,9 +463,11 @@
     { "type": "text", "id": "for_title", "label": "Title", "default": "Girl or boy?" },
     { "type": "text", "id": "for_text", "label": "Text", "default": "Sets the colors of the doll and its fabric" },
     { "type": "text", "id": "girl_title", "label": "First choice", "default": "Girl" },
-    { "type": "textarea", "id": "girl_text", "label": "First choice, description", "default": "Powder-pink, mauve and floral tones. Pink accessories. Floral or moon fabric." },
+    { "type": "textarea", "id": "girl_tones", "label": "First choice, colors", "info": "One per line, with its color after a bar: Powder pink | #EDD8D8. Shown as dots on the card.", "default": "Powder pink | #EDD8D8\nMauve | #CDBEDC" },
+    { "type": "textarea", "id": "girl_text", "label": "First choice, description", "default": "Pink accessories. Floral or moon fabric." },
     { "type": "text", "id": "boy_title", "label": "Second choice", "default": "Boy" },
-    { "type": "textarea", "id": "boy_text", "label": "Second choice, description", "default": "Sky-blue and sage-green tones. A bow tie. Star or fox fabric." },
+    { "type": "textarea", "id": "boy_tones", "label": "Second choice, colors", "info": "One per line, with its color after a bar: Sky blue | #B8D4E8. Shown as dots on the card.", "default": "Sky blue | #B8D4E8\nSage green | #B5C7B0" },
+    { "type": "textarea", "id": "boy_text", "label": "Second choice, description", "default": "A bow tie. Star or fox fabric." },
 
     { "type": "header", "content": "Step 3: arms" },
     { "type": "text", "id": "shape_title", "label": "Title", "default": "With or without arms?" },
@@ -488,16 +489,11 @@
       "default": "Terracotta flowers | #C87840\nSky-blue stars | #B8D4E8\nPowder-pink moons | #EDD8D8\nWatercolor floral | #D4C0B0\nFlowering foxes | #EAE4D8\nPolar-blue minky | #8EC4D8"
     },
 
-    { "type": "header", "content": "Step 5: summary" },
-    { "type": "text", "id": "summary_title", "label": "Title", "default": "Summary" },
-    { "type": "text", "id": "summary_text", "label": "Text", "default": "One last check before adoption" },
+    { "type": "header", "content": "Step 5: adopt" },
+    { "type": "paragraph", "content": "The order ticket is the summary. These lines sit under its prices, so each fact is said once, where the price is checked." },
     { "type": "text", "id": "delivery_text", "label": "Delivery line", "info": "Keep this in step with the free-shipping amount on the Cart drawer section.", "default": "Free from $50" },
-
-    { "type": "header", "content": "Step 6: adopt" },
-    { "type": "text", "id": "adopt_text", "label": "Text", "default": "Adoption certificate included. Delivery in 5 to 7 business days." },
-
-    { "type": "header", "content": "After the order" },
-    { "type": "text", "id": "after_title", "label": "Title", "default": "After the order" }
+    { "type": "text", "id": "lead_text", "label": "Ready-in line", "info": "Shown after \"Ready in\", for example 5 to 7 days.", "default": "5 to 7 days" },
+    { "type": "text", "id": "included_text", "label": "Included line", "default": "Adoption certificate" }
   ],
   "blocks": [
     {
@@ -508,15 +504,7 @@
     {
       "type": "promise",
       "name": "Reassurance",
-      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Secure payment" }]
-    },
-    {
-      "type": "after",
-      "name": "After the order",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Confirmation email" },
-        { "type": "text", "id": "text", "label": "When", "default": "immediately" }
-      ]
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "info": "Shown in one quiet line under the adopt button.", "default": "Secure payment" }]
     }
   ],
   "presets": [
@@ -526,11 +514,7 @@
         { "type": "model" },
         { "type": "model" },
         { "type": "promise", "settings": { "text": "Secure payment" } },
-        { "type": "promise", "settings": { "text": "Adoption certificate included" } },
-        { "type": "promise", "settings": { "text": "30-day returns" } },
-        { "type": "after", "settings": { "title": "Confirmation email", "text": "immediately" } },
-        { "type": "after", "settings": { "title": "Maker notified", "text": "within 24 hours" } },
-        { "type": "after", "settings": { "title": "Delivery and certificate", "text": "5 to 7 days" } }
+        { "type": "promise", "settings": { "text": "30-day returns" } }
       ]
     }
   ]

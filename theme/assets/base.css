@@ -2170,49 +2170,114 @@ input[type='checkbox'] {
   background: var(--color-brass);
 }
 
-.artist {
+/* A maker's own page. First one white card, like the maker card on the home page: her
+   portrait filling the left, and on the right her name, where she works, her story, a few
+   figures and the way to her dolls. Then a card for her materials, then her dolls. */
+.artist-page {
   display: grid;
-  gap: 2.5rem;
-  align-items: start;
-  padding-top: clamp(1.5rem, 4vw, 3.5rem);
+  gap: var(--gap-head);
+  padding-top: clamp(1.5rem, 4vw, 3rem);
 }
 
-@media (min-width: 48rem) {
-  .artist {
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 4.5rem;
+.artist-card {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 52rem) {
+  .artist-card {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    align-items: stretch;
   }
 }
 
-.artist__portrait {
-  --tile: var(--sage-wash);
+.artist-card__portrait {
+  overflow: hidden;
   aspect-ratio: 4 / 5;
+  border-radius: 20px;
+  background: var(--color-sage);
 }
 
-.artist__info h1 {
-  margin-bottom: 0.2em;
+.artist-card__portrait img,
+.artist-card__portrait svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.artist__place {
+.artist-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(0.5rem, 3vw, 2rem) clamp(0.5rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
+}
+
+.artist-card__name {
+  margin: 0;
+  font-size: clamp(2.75rem, 1.75rem + 4.5vw, 4.5rem);
+  line-height: 1;
+}
+
+.artist-card__place {
+  margin: 0.6rem 0 0;
   color: var(--color-muted);
+  font-size: 1.05rem;
 }
 
-.artist__info .status {
-  margin-bottom: 1.75rem;
+.artist-card__bio {
+  max-width: 34em;
+  margin: 1.5rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-.artist__info h2 {
-  margin-top: 1.5em;
-  font-size: 1.75rem;
+.artist-card__body .figures {
+  margin-top: var(--gap-action);
 }
 
-.artist__info .rte {
-  max-width: 36em;
+.artist-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: var(--gap-action);
 }
 
-.artist__info > .link {
-  display: inline-block;
-  margin-top: 1.75rem;
+/* Her materials: one white card with a leaf in the soft blush disc beside the words. */
+.artist-note {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 4vw, 2.25rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.artist-note .tint {
+  grid-row: auto;
+}
+
+.artist-note__title {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 1.9rem);
+}
+
+.artist-note p {
+  max-width: 44em;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.artist-dolls {
+  scroll-margin-top: var(--header-h);
 }
 
 /* Cart page: each doll on its own white card; beside them, one card with the gift
@@ -2768,21 +2833,24 @@ input[type='checkbox'] {
   margin-bottom: 0;
 }
 
-.story__figures {
+/* Figures: a few large brass numbers, each with what it counts beneath it, in one colour.
+   Used by the story card on the home page and the maker's profile card. */
+.figures {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   margin: 0;
 }
 
-.story__figures dt {
+.figures dt {
   color: var(--brass-deep);
+  font-variant-numeric: lining-nums;
   font-family: var(--font-display);
   font-size: clamp(2.25rem, 1.5rem + 2.5vw, 3.25rem);
   line-height: 1;
 }
 
-.story__figures dd {
+.figures dd {
   margin: 0.5rem 0 0;
   color: var(--color-muted);
   font-size: 0.9rem;
@@ -2802,71 +2870,6 @@ input[type='checkbox'] {
 
 .makers__intro p:not(.eyebrow) {
   margin-bottom: 1.25rem;
-}
-
-/* The makers page with a single maker: a short title row, her card, a note on what she
-   works with, then the dolls she makes. */
-.maker-page {
-  padding-top: clamp(2.5rem, 6vw, 4.5rem);
-}
-
-/* Title on the left, the page's few words on the right, sharing one baseline. */
-.maker-page__head {
-  display: grid;
-  gap: 0.75rem 3rem;
-  align-items: end;
-  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-@media (min-width: 52rem) {
-  .maker-page__head {
-    grid-template-columns: auto minmax(0, 28rem);
-    justify-content: space-between;
-  }
-}
-
-.maker-page__head h1 {
-  margin: 0;
-  font-size: clamp(2.75rem, 1.8rem + 4.5vw, 5rem);
-  line-height: 1;
-}
-
-.maker-page__lede p {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.maker-note {
-  display: grid;
-  gap: 0.75rem 3rem;
-  margin-top: 1.25rem;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border-radius: 28px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-@media (min-width: 52rem) {
-  .maker-note {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-    padding-left: clamp(1.5rem, 4vw, 3rem);
-  }
-}
-
-.maker-note h2 {
-  margin: 0;
-}
-
-.maker-note p {
-  max-width: 38rem;
-  margin: 0 0 1rem;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  line-height: 1.35;
-}
-
-.band__head.maker-page__works {
-  margin-top: clamp(3rem, 7vw, 5rem);
 }
 
 /* A single maker: one wide card, her portrait on the left, and on the right her name,
@@ -2954,29 +2957,6 @@ input[type='checkbox'] {
 
 .maker-feature__place {
   color: var(--color-muted);
-}
-
-.maker-feature__body .maker-feature__bio {
-  max-width: 36rem;
-  margin-top: 1rem;
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  line-height: 1.4;
-}
-
-.maker-feature__body .maker-feature__facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 1rem;
-}
-
-.maker-feature__facts li {
-  padding: 0.25rem 0.8rem;
-  border-radius: 999px;
-  background: var(--hover-wash);
-  font-size: 0.875rem;
-  font-weight: 500;
 }
 
 .maker-feature__makes {
@@ -3326,7 +3306,7 @@ input[type='checkbox'] {
 }
 
 .rail button:not(:disabled):hover {
-  border-bottom-color: var(--color-sage);
+  border-bottom-color: var(--hairline);
 }
 
 .rail button[aria-current='step'] {
@@ -3387,33 +3367,30 @@ input[type='checkbox'] {
     grid-column: 1 / -1;
   }
 
-  /* The last two stops are about the ticket, so it takes the middle of the page. */
-  .flow__form[data-at='5'],
-  .flow__form[data-at='6'] {
+  /* The last stop is about the ticket, so it takes the middle of the page, with Back and
+     Adopt on one row under it and the reassurance line last. */
+  .flow__form[data-at='5'] {
     grid-template-columns: minmax(0, 34rem);
-    grid-template-areas: 'steps' 'ticket' 'adopt' 'nav';
+    grid-template-areas: 'steps' 'ticket' 'nav' 'adopt';
     justify-content: center;
     gap: 2rem;
   }
 
-  .flow__form[data-at='5'] .flow__side,
-  .flow__form[data-at='6'] .flow__side {
+  .flow__form[data-at='5'] .flow__side {
     position: static;
   }
 
-  .flow__form[data-at='6'] .flow__adopt {
+  .flow__form[data-at='5'] .flow__adopt {
     grid-area: adopt;
   }
 
   /* One centred column, so the heading is centred over it and sits close to the ticket. */
-  .flow__form[data-at='5'] .step-pane__legend,
-  .flow__form[data-at='6'] .step-pane__legend {
+  .flow__form[data-at='5'] .step-pane__legend {
     margin-bottom: 0;
     text-align: center;
   }
 
-  .flow__form[data-at='5'] .figure,
-  .flow__form[data-at='6'] .figure {
+  .flow__form[data-at='5'] .figure {
     margin-bottom: 1.25rem;
   }
 }
@@ -3603,11 +3580,9 @@ input[type='checkbox'] {
   }
 }
 
-/* The same thinned-colour recipe as the companion list: pink for one, blue for the other. */
+/* Girl or boy: the colour of the choice is only in the bow, pink for one, blue for the other. */
 .half {
   --swatch: var(--color-blush);
-  --soft: color-mix(in srgb, var(--swatch) 100%, var(--color-surface));
-  --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
   cursor: pointer;
 }
 
@@ -3628,10 +3603,6 @@ input[type='checkbox'] {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.half:hover .half__body {
-  border-color: var(--accent-ring);
-}
-
 .half input:checked + .half__body {
   border-color: var(--accent-ring);
 }
@@ -3646,17 +3617,27 @@ input[type='checkbox'] {
   aspect-ratio: 5 / 2;
   margin-bottom: 0.8rem;
   border-radius: 16px;
-  background: var(--soft);
+  background: var(--color-bg);
+  transition: background-color 0.2s ease;
 }
 
 .half__tone svg {
   width: 3.25rem;
-  fill: var(--color-surface);
+  fill: var(--swatch);
+  stroke: var(--brass-deep);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
 }
 
 .half__name,
-.half__text {
+.half__text,
+.half .tone-dots {
   padding-inline: 0.7rem;
+}
+
+.half .tone-dots {
+  margin: 0.1rem 0 0.35rem;
+  font-size: 0.85rem;
 }
 
 .half__name {
@@ -3693,12 +3674,13 @@ input[type='checkbox'] {
 
 @media (prefers-reduced-motion: reduce) {
   .half__body,
+  .half__tone,
   .half__check {
     transition: none;
   }
 }
 
-/* Step 3: with or without arms, as two white cards with the sketch on a soft mint tile. */
+/* Step 3: with or without arms, as two white cards with the sketch on the shared neutral tile. */
 .shapes {
   display: grid;
   gap: 0.75rem;
@@ -3711,11 +3693,7 @@ input[type='checkbox'] {
   }
 }
 
-/* The same thinned-colour recipe as the other choices, in mint. */
 .shape {
-  --swatch: var(--color-sage);
-  --soft: color-mix(in srgb, var(--swatch) 100%, var(--color-surface));
-  --tint: color-mix(in srgb, var(--swatch) 16%, var(--color-surface));
   cursor: pointer;
 }
 
@@ -3732,10 +3710,6 @@ input[type='checkbox'] {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.shape:hover .shape__body {
-  border-color: var(--accent-ring);
-}
-
 .shape input:checked + .shape__body {
   border-color: var(--accent-ring);
 }
@@ -3750,7 +3724,8 @@ input[type='checkbox'] {
   margin-bottom: 0.8rem;
   padding-block: 1.25rem;
   border-radius: 16px;
-  background: var(--soft);
+  background: var(--color-bg);
+  transition: background-color 0.2s ease;
 }
 
 /* A head on a flat square of cloth with a stitched edge; arms on the second one. */
@@ -3772,14 +3747,10 @@ input[type='checkbox'] {
 }
 
 .shape__arm {
-  fill: none;
-  stroke: var(--color-surface);
-  stroke-width: 6;
-  stroke-linecap: round;
+  fill: var(--color-surface);
 }
 
 .shape__name,
-.shape__selected,
 .shape__text {
   padding-inline: 0.7rem;
 }
@@ -3789,16 +3760,6 @@ input[type='checkbox'] {
   font-size: 2.25rem;
   font-weight: 600;
   line-height: 1;
-}
-
-.shape__selected {
-  visibility: hidden;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.shape input:checked + .shape__body .shape__selected {
-  visibility: visible;
 }
 
 .shape__text {
@@ -3828,6 +3789,7 @@ input[type='checkbox'] {
 
 @media (prefers-reduced-motion: reduce) {
   .shape__body,
+  .shape__tone,
   .shape__check,
   .shape__sketch {
     transition: none;
@@ -4153,108 +4115,43 @@ input[type='checkbox'] {
   font-variant-numeric: tabular-nums;
 }
 
-/* The last stop: one large button with nothing under it, then a card that says what
-   happens after the order and what comes with it. */
-.flow__adopt[hidden] {
-  display: none;
+/* Under the last stop's buttons: a message if adding fails, and one quiet line of
+   reassurance with a lock, in the muted text colour. No pills, no colour. */
+.flow__adopt {
+  order: 1;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  margin-top: -0.75rem;
 }
 
-.flow__adopt .button {
-  width: 100%;
-  padding-block: 1.15rem;
-  font-size: 1.05rem;
+.flow__adopt[hidden] {
+  display: none;
 }
 
 .flow__adopt .form-note:empty {
   display: none;
 }
 
-.after {
-  margin-block: 1.5rem 2rem;
-  padding: clamp(1.25rem, 4vw, 1.75rem);
-  border-radius: 22px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-.after h2 {
-  margin: 0 0 1.25rem;
-  font-size: 1.6rem;
-}
-
-.after__list {
-  margin: 0;
-}
-
-/* Three moments in order: a dot for each, joined by a line, with its timing in a pill. */
-.after__list > div {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  padding: 0 0 1.1rem 1.75rem;
-}
-
-.after__list > div:last-child {
-  padding-bottom: 0;
-}
-
-.after__list > div::before {
-  content: '';
-  position: absolute;
-  top: 0.45rem;
-  left: 0;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background: var(--brass-deep);
-}
-
-.after__list > div:not(:last-child)::after {
-  opacity: 0.6;
-  content: '';
-  position: absolute;
-  top: 1.2rem;
-  bottom: -0.45rem;
-  left: calc(0.375rem - 1px);
-  width: 2px;
-  background: var(--sage-wash);
-}
-
-.after__list dt {
-  font-weight: 600;
-}
-
-.after__list dd {
-  margin: 0;
-  padding: 0.2rem 0.75rem;
-  border-radius: 999px;
-  background: var(--color-sky);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* What comes with every order, as ticked pills closing the card. */
-.after .flow__promises {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-line);
-}
-
-.flow__promises li {
+.flow__trust {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.8rem 0.3rem 0.6rem;
-  border-radius: 999px;
-  background: var(--color-band);
-  font-size: 0.875rem;
-  font-weight: 500;
+  gap: 0.45rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.flow__trust .icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Without the script every step shows, and the adopt button stays here, full width. */
+.flow__adopt > .button {
+  width: 100%;
 }
 
 .flow__nav {
@@ -4267,8 +4164,13 @@ input[type='checkbox'] {
   display: none;
 }
 
-.flow__nav [data-next] {
+.flow__nav [data-next],
+.flow__nav [data-journey-add] {
   margin-left: auto;
+}
+
+.flow__nav [data-journey-add][hidden] {
+  display: none;
 }
 
 /* Back and Continue each carry a soft arrow pointing the way they go; it nudges that way
@@ -4326,507 +4228,332 @@ input[type='checkbox'] {
   }
 }
 
-/* Adoption certificate: a keepsake page. The names and the photo lead on one large card;
-   the facts, the making and the maker follow on quieter cards beneath it. */
+/* Document pages (the adoption certificate, About): the page's title, then one white card
+   with a photo beside the words, then how a doll is made beside who makes it, then one soft
+   link onward. White cards, muted text, linen number discs; no other colour. */
 
-.record__page {
+.doc-page {
   display: grid;
-  gap: 1.25rem;
-  max-width: 62rem;
-  margin-inline: auto;
+  gap: var(--gap-head);
 }
 
-.record__card {
-  padding: clamp(1.25rem, 4vw, 2rem);
-  border-radius: 22px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-/* The opening card: photo beside the two names. */
-.record__hero {
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: center;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  border-radius: 28px;
-}
-
-@media (min-width: 48rem) {
-  .record__hero {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  }
-}
-
-/* The photo has a line of white stitching sewn just inside its edge. */
-.record__photo {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border-radius: 20px;
-  background: var(--rose-wash);
-}
-
-.record__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.record__photo::after {
-  content: '';
-  position: absolute;
-  inset: 0.6rem;
-  border: 1.5px dashed var(--color-surface);
-  border-radius: 14px;
-  pointer-events: none;
-}
-
-.record__intro {
-  padding: 0.5rem clamp(0.25rem, 2vw, 1.5rem) 1rem;
-}
-
-.record__intro p {
+.doc-intro h1 {
   margin: 0;
 }
 
-.record__intro .record__kind {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-style: italic;
-}
-
-.record__intro h1 {
-  margin-block: 0.1em 0.25em;
-  font-size: clamp(2.75rem, 1.75rem + 4.5vw, 5rem);
-  line-height: 1;
-}
-
-.record__date {
-  font-weight: 600;
-}
-
-.record__tagline {
-  color: var(--color-muted);
-}
-
-/* The gift message, on a soft pink note. */
-.record__message {
-  margin: 1.75rem 0 0;
-  padding: 1.1rem 1.25rem;
-  border-radius: 18px;
-  background: var(--color-blush);
-}
-
-.record__message p {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  font-style: italic;
-  line-height: 1.3;
-}
-
-.record__message footer {
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-/* The facts: six small cards, each with a drawing on a soft pink tile, the same pink as
-   the gift note above. One colour only, so the page stays calm. */
-.record__facts {
-  display: grid;
-  gap: 0.75rem;
-  margin: 0;
-}
-
-@media (min-width: 36rem) {
-  .record__facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 60rem) {
-  .record__facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.record__facts > div {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-content: center;
-  column-gap: 1rem;
-  padding: 1rem 1.25rem 1rem 1rem;
-  border-radius: 22px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-.record__icon {
-  grid-row: span 2;
-  align-self: center;
-  box-sizing: content-box;
-  padding: 0.75rem;
-  border-radius: 16px;
-  background: var(--color-bg);
-  fill: none;
-  stroke: var(--color-text);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.record__facts dt {
-  align-self: end;
-  color: var(--color-muted);
-  font-size: 0.875rem;
-}
-
-.record__facts dd {
-  align-self: start;
-  margin: 0.1rem 0 0;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.record__pair {
-  display: grid;
-  gap: 1.25rem;
-}
-
-@media (min-width: 48rem) {
-  .record__pair {
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-    grid-auto-flow: column;
-  }
-}
-
-.record__card .record__heading {
-  margin: 0 0 1.25rem;
-  font-size: 1.6rem;
-}
-
-/* Making steps: a ticked dot for each, joined by a line down the side. */
-.record__steps li {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 0.9rem;
-  padding-bottom: 1.25rem;
-}
-
-.record__steps li:last-child {
-  padding-bottom: 0;
-}
-
-.record__steps li:not(:last-child)::before {
-  content: '';
-  position: absolute;
-  top: 1.5rem;
-  bottom: 0;
-  left: calc(0.75rem - 1px);
-  width: 2px;
-  background: var(--sage-wash);
-}
-
-.record__tick {
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: var(--brass-deep);
-  color: var(--color-surface);
-}
-
-.record__step {
-  font-weight: 600;
-  line-height: 1.5rem;
-}
-
-.record__when {
-  grid-column: 2;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
-
-.record__maker {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.record__portrait {
-  flex: none;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  background: var(--sage-wash);
-  object-fit: cover;
-  object-position: 50% 20%;
-  object-view-box: inset(16% 25% 44% 25%);
-}
-
-.record__maker p {
-  margin: 0;
-}
-
-.record__name {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 1.1;
-}
-
-.record__name a {
-  text-decoration: none;
-}
-
-.record__name a:hover {
-  text-decoration: underline 1px;
-}
-
-.record__place {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-}
-
-/* The maker's record, as small pills. */
-.record__card .record__about {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 1rem;
-}
-
-.record__about li {
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  background: var(--sage-wash);
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.record__story {
-  margin: 1.25rem 0 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-style: italic;
-  line-height: 1.4;
-}
-
-/* The close: the maker's words and signature, with the shop and number as the seal. */
-.record__sign {
-  display: grid;
-  gap: 1.5rem 2.5rem;
-  align-items: end;
-  padding: clamp(1.25rem, 4vw, 2rem);
-  border-radius: 22px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-}
-
-@media (min-width: 48rem) {
-  .record__sign {
-    grid-template-columns: 1fr auto;
-  }
-}
-
-.record__sign p {
-  max-width: 36rem;
-  margin: 0;
-}
-
-.record__sign .record__signature {
-  margin-top: 0.75rem;
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-style: italic;
-  line-height: 1.1;
-}
-
-.record__seal {
-  display: grid;
-  gap: 0.1rem;
-}
-
-@media (min-width: 48rem) {
-  .record__seal {
-    text-align: right;
-  }
-}
-
-.record__shop {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-}
-
-.record__number {
-  font-size: 0.9rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.record__share {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem 2rem;
-  padding: 0.5rem clamp(0.25rem, 2vw, 1rem) 0;
-}
-
-.record__share p {
-  flex: 1 1 16rem;
-  margin: 0;
-}
-
-/* About page: the story beside a photo on one large card, the making as a row of
-   numbered cards, and a soft closing band that leads to the maker. */
-
-.about {
-  padding-top: clamp(2rem, 5vw, 3.5rem);
-}
-
-.about__page {
-  display: grid;
-  gap: clamp(3rem, 7vw, 5rem);
-}
-
-.about__hero {
+.doc-card {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  border-radius: 28px;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  border-radius: 22px;
   background: var(--color-card);
   box-shadow: var(--shadow);
 }
 
 @media (min-width: 52rem) {
-  .about__hero--photo {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  .doc-card {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    align-items: stretch;
   }
 }
 
-.about__intro {
-  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.5rem, 3vw, 2.5rem);
-}
-
-.about__intro h1 {
-  margin: 0 0 0.5em;
-  font-size: clamp(2.75rem, 1.8rem + 4.5vw, 5rem);
-  line-height: 1;
-}
-
-.about__intro .rte {
-  max-width: 34rem;
-  font-size: 1.1rem;
-}
-
-/* The first paragraph is the one to read; it is set in the heading face. */
-.about__intro .rte > p:first-child {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  line-height: 1.3;
-}
-
-.about__photo {
-  position: relative;
+.doc-card__photo {
   overflow: hidden;
   aspect-ratio: 4 / 5;
   border-radius: 20px;
-  background: var(--rose-wash);
+  background: var(--color-bg);
 }
 
-.about__photo img {
+.doc-card__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.about__photo::after {
-  content: '';
-  position: absolute;
-  inset: 0.6rem;
-  border: 1.5px dashed var(--color-surface);
-  border-radius: 14px;
-  pointer-events: none;
+.doc-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(0.5rem, 3vw, 2rem) clamp(0.5rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
 }
 
-.about__making h2 {
-  margin: 0 0 1.5rem;
+/* About: two short paragraphs, so a wider photo keeps the card full. */
+.about .doc-card__photo {
+  aspect-ratio: 5 / 4;
 }
 
-.about__making .about__steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: 1rem;
-  counter-reset: step;
+.doc-card__text {
+  max-width: 34em;
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-.about__steps li {
-  padding: 1.25rem 1.25rem 1.5rem;
-  border-radius: 22px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
-  counter-increment: step;
+.doc-card__text p:last-child {
+  margin-bottom: 0;
 }
 
-/* The step's number, on a soft pink tile. */
-.about__steps li::before {
-  content: counter(step);
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: 1.25rem;
-  border-radius: 16px;
-  background: var(--color-sage);
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-style: italic;
+.doc-card__number {
+  margin: 0 0 0.75rem;
+  color: var(--brass-deep);
+  font-size: 0.85rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.doc-card__title {
+  margin: 0;
+  font-size: clamp(2.75rem, 1.75rem + 4.5vw, 4.5rem);
   line-height: 1;
 }
 
-.about__steps h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1.6rem;
+.doc-card__date {
+  margin: 0.6rem 0 0;
+  color: var(--color-muted);
+  font-size: 1.05rem;
 }
 
-.about__steps p {
+/* A gift message reads like handwriting: the display face in italic, with who wrote it. */
+.doc-card__message,
+.maker-mini__message {
+  margin: 1.75rem 0 0;
+}
+
+.doc-card__message p,
+.maker-mini__message p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.doc-card__message footer,
+.maker-mini__message footer {
+  margin-top: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.doc-card__message footer::before,
+.maker-mini__message footer::before {
+  content: '— ';
+}
+
+/* What the doll is made of: the dotted lines of the order ticket, with no rule above them. */
+.ticket__lines.doc-card__facts {
+  margin-top: var(--gap-action);
+  padding-block: 0;
+  border-top: 0;
+}
+
+/* How it was made, beside who made it. */
+.doc-split {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 52rem) {
+  .doc-split {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.doc-panel {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border-radius: 22px;
+  background: var(--color-card);
+  box-shadow: var(--shadow);
+}
+
+.doc-panel__title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 1.9rem);
+}
+
+/* The steps: the doll page's numbered list, with a date line under each. */
+.step-list {
+  gap: 1.1rem;
+}
+
+/* Two classes, so these win over the doll page's list they build on: the number sits level
+   with the step's title, and the line joins the numbers. */
+.making-steps.step-list li {
+  align-items: flex-start;
+}
+
+.making-steps.step-list li:not(:last-child)::after {
+  bottom: -1.1rem;
+}
+
+.step-list__title {
+  display: block;
+  font-weight: 600;
+}
+
+.step-list__when {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.maker-mini__who {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.maker-mini__portrait {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 25%;
+}
+
+.maker-mini__who p {
+  margin: 0;
+}
+
+.maker-mini__name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.maker-mini__place {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.maker-mini .more {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.maker-mini__message {
+  margin-bottom: var(--gap-action);
+}
+
+.maker-mini__text {
+  margin: 1.25rem 0 var(--gap-action);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Sharing a photo: one muted line, then the soft link pill, on the page's left edge. */
+.doc-onward {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.doc-onward p {
   margin: 0;
   color: var(--color-muted);
 }
 
-.about__close {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem 3rem;
-  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 3rem);
-  border-radius: 28px;
-  background: var(--color-card);
-  box-shadow: var(--shadow);
+/* A plain page's title starts the page itself, with no band around it. A section that
+   follows it (the contact form, the questions) keeps the same gap as inside the page. */
+.doc-page--head {
+  padding-top: clamp(1.5rem, 4vw, 3rem);
 }
 
-.about__close h2 {
-  margin: 0 0 0.3em;
+.doc-follow {
+  display: grid;
+  gap: var(--gap-head);
+  margin-top: var(--gap-head);
 }
 
-.about__close p {
-  max-width: 34rem;
+.doc-intro .band__sub > p {
   margin: 0;
 }
 
-.about__actions {
+/* One card per sub-heading of a page's text (Shipping, Returns, Repairs), side by side. */
+.doc-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 52rem) {
+  .doc-grid {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+}
+
+.doc-panel__text {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.doc-panel__text > :last-child {
+  margin-bottom: 0;
+}
+
+/* The contact form takes the wider side; the card of useful links sits beside it. */
+@media (min-width: 52rem) {
+  .doc-split--wide {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+}
+
+.contact-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.contact-form .field {
+  margin: 0;
+}
+
+.contact-form .button {
+  justify-self: start;
+}
+
+@media (min-width: 40rem) {
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.contact-form__row .field + .field {
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 40rem) {
+  .contact-form__row .field + .field {
+    margin-top: 0;
+  }
+}
+
+.doc-aside__text {
+  margin: 0 0 var(--gap-action);
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+.doc-aside__links {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem 1.5rem;
+  gap: 0.75rem;
+}
+
+/* Questions: the doll page's fold-outs on the same white card; the card's padding is the
+   document card's, not the doll page's slimmer one. */
+.doc-panel.product__folds {
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2rem);
+}
+
+.doc-panel.product__folds .detail:first-child {
+  border-top: 0;
 }
 
 /* ==========================================================================
@@ -4853,7 +4580,8 @@ input[type='checkbox'] {
 }
 
 /* Choices: the companion rows, girl or boy, arms, fabric. The card stays white the whole
-   time. Reaching for it lifts it; choosing it gives it a blush ring and a sage tick. */
+   time. Reaching for it lifts it; choosing it gives it an outline in the stepper's colour
+   (the warm sand of the current step's underline) and a sage tick. */
 .roster__row,
 .half__body,
 .shape__body {
@@ -4881,8 +4609,8 @@ input[type='checkbox'] {
 .shape input:checked + .shape__body {
   border-color: transparent;
   background: var(--color-card);
-  box-shadow: 0 0 0 2px var(--color-blush),
-    0 14px 28px -16px color-mix(in srgb, var(--color-blush) 90%, var(--color-text));
+  box-shadow: 0 0 0 2px var(--accent-ring),
+    0 14px 28px -16px color-mix(in srgb, var(--accent-ring) 70%, transparent);
   translate: none;
 }
 
@@ -4898,8 +4626,14 @@ input[type='checkbox'] {
   scale: 0.99;
 }
 
-/* The tick: a plain paper disc until chosen, then sage with a paper edge,
-   so it shows on a pink, blue or green tile alike. */
+/* The picture tile of every choice card: cream at rest and once chosen, linen under the
+   pointer. The choice itself shows in the card's outline and tick. */
+.half:hover .half__tone,
+.shape:hover .shape__tone {
+  background: var(--hover-wash);
+}
+
+/* The tick: a plain paper disc until chosen, then sage with a paper edge. */
 .roster__check,
 .half__check,
 .shape__check {
@@ -5140,19 +4874,22 @@ textarea:focus {
    a linen ground with no border. Typing in one turns it white with a thin warm ring, so it is
    still clear which field is in use. */
 .field--name input,
-.field--soft input {
+.field--soft input,
+.field--soft textarea {
   border-color: transparent;
   background: var(--hover-wash);
   transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .field--name input:hover,
-.field--soft input:hover {
+.field--soft input:hover,
+.field--soft textarea:hover {
   background: color-mix(in srgb, var(--color-brass) 24%, var(--color-card));
 }
 
 .field--name input:focus,
-.field--soft input:focus {
+.field--soft input:focus,
+.field--soft textarea:focus {
   border-color: transparent;
   background: var(--color-card);
   box-shadow: 0 0 0 1.5px var(--edge-focus);

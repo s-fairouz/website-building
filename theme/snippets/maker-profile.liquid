@@ -1,0 +1,121 @@
+{%- comment -%}
+  A maker's profile, the same wherever she is shown (her own page, and the makers page while
+  there is only one maker), in three parts:
+  - one white card with her portrait, her name and where she works, her story, a few figures
+    about her work, and the way to her dolls;
+  - a card for the materials she uses;
+  - her dolls, on the same cards as the catalogue.
+  Accepts:
+  - artist: {Object} an "artist" metaobject
+{%- endcomment -%}
+
+{%- liquid
+  assign portrait = artist.portrait.value
+  assign works = artist.collection.value
+  assign models = works.products_count | default: works.products.size
+  assign pieces = artist.pieces_made.value
+  assign custom = artist.commission_status.value
+-%}
+
+<div class="wrap artist-page">
+  <article class="artist-card">
+    <div class="artist-card__portrait">
+      {%- if portrait -%}
+        <img
+          src="{{ portrait | image_url: width: 900 }}"
+          alt="{{ portrait.alt | default: artist.name.value | escape }}"
+          width="{{ portrait.width }}"
+          height="{{ portrait.height }}"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <div class="artist-card__body">
+      <h1 class="artist-card__name">{{ artist.name.value | escape }}</h1>
+      {%- if artist.location.value != blank -%}
+        <p class="artist-card__place">{{ 'makers.place' | t: place: artist.location.value }}</p>
+      {%- endif -%}
+
+      {%- if artist.bio.value != blank -%}
+        <p class="artist-card__bio">{{ artist.bio.value | escape | newline_to_br }}</p>
+      {%- endif -%}
+
+      {%- comment -%} What a parent wants to know at a glance, as large numbers. {%- endcomment -%}
+      {%- if pieces or models > 0 or custom != blank -%}
+        <dl class="figures">
+          {%- if pieces -%}
+            <div>
+              <dt>{{ pieces }}</dt>
+              <dd>{{ 'makers.figure_pieces' | t: count: pieces }}</dd>
+            </div>
+          {%- endif -%}
+          {%- if models > 0 -%}
+            <div>
+              <dt>{{ models }}</dt>
+              <dd>{{ 'makers.figure_models' | t: count: models }}</dd>
+            </div>
+          {%- endif -%}
+          {%- case custom -%}
+            {%- when 'Limited' -%}
+              <div>
+                <dt>{{ 'makers.custom_limited' | t: remaining: artist.slots_remaining.value, total: artist.slots_total.value }}</dt>
+                <dd>{{ 'makers.figure_custom' | t }}</dd>
+              </div>
+            {%- when 'Open' -%}
+              <div>
+                <dt>{{ 'makers.custom_open' | t }}</dt>
+                <dd>{{ 'makers.figure_custom_plain' | t }}</dd>
+              </div>
+            {%- when 'Waitlist' -%}
+              <div>
+                <dt>{{ 'makers.custom_waitlist' | t }}</dt>
+                <dd>{{ 'makers.figure_custom_plain' | t }}</dd>
+              </div>
+          {%- endcase -%}
+        </dl>
+      {%- endif -%}
+
+      <div class="artist-card__actions">
+        {%- if works.products.size > 0 -%}
+          <a class="button" href="#her-dolls">{{ 'makers.see_dolls' | t }}</a>
+        {%- endif -%}
+        {%- if artist.instagram.value != blank -%}
+          <a class="more" href="{{ artist.instagram.value }}" rel="noopener">
+            {{- 'makers.follow' | t -}}
+            {%- render 'more-arrow' -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </article>
+
+  {%- if artist.philosophy.value != blank -%}
+    <section class="artist-note">
+      <span class="tint">{% render 'icon', name: 'leaf' %}</span>
+      <div>
+        <h2 class="artist-note__title">{{ 'makers.materials_her' | t }}</h2>
+        <p>{{ artist.philosophy.value | escape | newline_to_br }}</p>
+      </div>
+    </section>
+  {%- endif -%}
+</div>
+
+{%- if works.products.size > 0 -%}
+  <section class="band artist-dolls" id="her-dolls">
+    <div class="wrap">
+      <div class="band__head">
+        <div>
+          <h2>{{ 'makers.dolls_her' | t }}</h2>
+          <p class="band__sub">{{ 'makers.dolls_count' | t: count: models }}</p>
+        </div>
+      </div>
+      <ul class="grid" role="list">
+        {%- for product in works.products limit: 8 -%}
+          <li>{% render 'product-card', product: product %}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}

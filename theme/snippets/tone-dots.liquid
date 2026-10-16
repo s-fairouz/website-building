@@ -1,0 +1,36 @@
+{%- comment -%}
+  A row of small overlapping colour dots, the same as on the doll cards, with the colours'
+  names beside them, so a choice shows its colours instead of only naming them.
+  Accepts:
+  - tones: {String} one colour per line, its name then its colour after a bar: Powder pink | #EDD8D8
+{%- endcomment -%}
+
+{%- liquid
+  assign lines = tones | newline_to_br | split: '<br />'
+  assign names = ''
+-%}
+{%- capture dots -%}
+  {%- for line in lines -%}
+    {%- liquid
+      assign parts = line | split: '|'
+      assign name = parts[0] | strip
+      assign hex = parts[1] | strip
+      if name == blank or hex == blank
+        continue
+      endif
+      if names == ''
+        assign names = name
+      else
+        assign names = names | append: ' · ' | append: name
+      endif
+    -%}
+    <span class="card__dot" style="--swatch: {{ hex | escape }}"></span>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if names != '' -%}
+  <span class="card__colours tone-dots">
+    <span class="card__dots" aria-hidden="true">{{ dots }}</span>
+    <span>{{ names | escape }}</span>
+  </span>
+{%- endif -%}

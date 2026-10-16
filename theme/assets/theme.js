@@ -561,10 +561,10 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     button.textContent = button.dataset.label.replace('[price]', price);
   };
 
-  // The ticket is always open beside the questions on a wide screen and on the last two
-  // stops; on a phone it stays folded under the question until tapped.
+  // The ticket is always open beside the questions on a wide screen and on the last stop,
+  // where it is the summary; on a phone it stays folded under the question until tapped.
   const settleTicket = () => {
-    ticket.open = wide.matches || at >= steps.length - 2;
+    ticket.open = wide.matches || at >= steps.length - 1;
   };
 
   const show = (index, focus = true) => {
@@ -580,7 +580,9 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
     });
     form.dataset.at = at + 1;
     back.hidden = at === 0;
+    // On the last stop the adopt button stands in Continue's place, beside Back.
     next.hidden = at === steps.length - 1;
+    button.hidden = at !== steps.length - 1;
     adoptPane.hidden = at !== steps.length - 1;
     settleTicket();
     update();
@@ -605,6 +607,7 @@ document.querySelectorAll('[data-journey]').forEach((journey) => {
   });
   rail.hidden = false;
   nav.hidden = false;
+  nav.append(button);
   show(0, false);
 
   form.addEventListener('submit', async (event) => {

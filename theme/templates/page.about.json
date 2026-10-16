@@ -13,37 +13,41 @@
         "assemble": {
           "type": "step",
           "settings": {
-            "title": "Assemble",
+            "title": "Assembly",
             "text": "Head, arms and cloth are joined and sewn firm. That takes another hour and a half."
           }
         },
         "embroider": {
           "type": "step",
           "settings": {
-            "title": "Embroider",
+            "title": "Embroidery",
             "text": "If you asked for a name, it is embroidered by hand."
           }
         },
         "box": {
           "type": "step",
           "settings": {
-            "title": "Check and box",
+            "title": "Check and gift box",
             "text": "Each doll is checked, then wrapped in its gift box with its adoption certificate."
           }
         }
       },
-      "block_order": ["crochet", "assemble", "embroider", "box"],
+      "block_order": [
+        "crochet",
+        "assemble",
+        "embroider",
+        "box"
+      ],
       "settings": {
         "product": "buni",
         "steps_heading": "How a doll is made",
-        "closing_heading": "Meet the hands behind every stitch",
-        "closing_text": "Isabelle crochets each doll herself, at a table by the window in Lyon.",
-        "button_label": "Meet Isabelle",
-        "button_link": "shopify://pages/makers",
         "link_label": "See all the dolls",
-        "link": "shopify://collections/all"
+        "link": "shopify://collections/all",
+        "maker_text": "She crochets each doll herself, at a table by the window."
       }
     }
   },
-  "order": ["about"]
+  "order": [
+    "about"
+  ]
 }

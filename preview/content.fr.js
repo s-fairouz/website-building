@@ -44,17 +44,17 @@ module.exports = {
   'Crochet': 'Crochet',
   'The body is crocheted by hand, one stitch at a time: about 840 stitches and two hours of work.':
     'Le corps est crocheté à la main, maille après maille : environ 840 mailles et deux heures de travail.',
-  'Assemble': 'Assemblage',
+  'Assembly': 'Assemblage',
   'Head, arms and cloth are joined and sewn firm. That takes another hour and a half.':
     'La tête, les bras et le tissu sont assemblés et cousus solidement. Comptez encore une heure et demie.',
+  'Embroidery': 'Broderie',
   'If you asked for a name, it is embroidered by hand.':
     'Si vous avez demandé un prénom, il est brodé à la main.',
-  'Check and box': 'Contrôle et coffret',
+  'Check and gift box': 'Contrôle et coffret',
   'Each doll is checked, then wrapped in its gift box with its adoption certificate.':
     'Chaque poupée est contrôlée, puis emballée dans son coffret cadeau avec son certificat d’adoption.',
-  'Meet the hands behind every stitch': 'Rencontrez les mains derrière chaque maille',
-  'Isabelle crochets each doll herself, at a table by the window in Lyon.':
-    'Isabelle crochète chaque poupée elle-même, à une table près de la fenêtre, à Lyon.',
+  'She crochets each doll herself, at a table by the window.':
+    'Elle crochète chaque poupée elle-même, à une table près de la fenêtre.',
   'See all the dolls': 'Voir toutes les poupées',
   '<p>Three people make everything in this shop. Each works alone, in small batches, under their own name.</p>':
     '<p>Trois personnes fabriquent tout ce que propose cette boutique. Chacune travaille seule, en petites séries, sous son propre nom.</p>',
@@ -72,8 +72,8 @@ module.exports = {
     'Des chutes des grandes poupées, pour que presque rien ne se perde. Chaque poupée de poche réunit le tissu d’au moins trois autres.',
   '<p>Ask about an order, a repair or a custom doll. We reply within two business days.</p>':
     '<p>Une question sur une commande, une réparation ou une poupée sur mesure ? Nous répondons sous deux jours ouvrés.</p>',
-  '<h2>Shipping</h2><p>Each doll is made to order and ships within about a week. Shipping is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Loved dolls come apart sometimes. Mail yours back and we will restitch it for the cost of shipping.</p>':
-    '<h2>Livraison</h2><p>Chaque poupée est fabriquée à la commande et expédiée sous une semaine environ. Les frais de port sont calculés au moment du paiement, selon votre adresse.</p><h2>Retours</h2><p>Les poupées non utilisées peuvent être retournées sous 30 jours pour un remboursement. Écrivez-nous d’abord : nous vous enverrons une étiquette de retour par e-mail.</p><h2>Réparations</h2><p>Les poupées très aimées se décousent parfois. Renvoyez-nous la vôtre et nous la recoudrons pour le prix du port.</p>',
+  '<h2>Shipping</h2><p>Each doll is made to order and ready in 5 to 7 days. Shipping is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Much-loved dolls sometimes come undone. Mail yours back and we will mend it for the cost of shipping.</p>':
+    '<h2>Livraison</h2><p>Chaque poupée est fabriquée à la commande et prête sous 5 à 7 jours. Les frais de port sont calculés au moment du paiement, selon votre adresse.</p><h2>Retours</h2><p>Les poupées non utilisées peuvent être retournées sous 30 jours pour un remboursement. Écrivez-nous d’abord : nous vous enverrons une étiquette de retour par e-mail.</p><h2>Réparations</h2><p>Les poupées très aimées se défont parfois. Renvoyez-nous la vôtre et nous la réparerons pour le prix du port.</p>',
 
   // Products
   'Cloth doll': 'Poupée de chiffon',
@@ -171,21 +171,23 @@ module.exports = {
     '<p>Chaque poupée est fabriquée à la commande et expédiée sous une semaine environ. Les poupées non utilisées peuvent être retournées sous 30 jours.</p>',
 
   // Questions and answers
-  'What age are the dolls suitable for?': 'À partir de quel âge les poupées conviennent-elles ?',
-  '<p>Our dolls are made for children aged three and up. Faces are embroidered, so there are no button eyes, but clothes fasten with small snaps.</p>':
-    '<p>Nos poupées sont conçues pour les enfants de trois ans et plus. Les visages sont brodés, il n’y a donc pas d’yeux en boutons, mais les vêtements se ferment par de petites pressions.</p>',
+  'What age are the dolls suitable for?':
+    'À partir de quel âge les poupées conviennent-elles ?',
+  '<p>Our dolls are certified for ages 0 to 3. They are crocheted in Oeko-Tex certified cotton, and their faces are embroidered, so there are no small parts to come loose.</p>':
+    '<p>Nos poupées sont certifiées pour les 0 à 3 ans. Elles sont crochetées en coton certifié Oeko-Tex et leur visage est brodé : aucune petite pièce ne peut se détacher.</p>',
   'Can I wash a doll?': 'Peut-on laver une poupée ?',
-  '<p>Spot clean the body with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>':
-    '<p>Nettoyez le corps avec un linge humide et un savon doux. Les vêtements se lavent à la main à l’eau fraîche et sèchent à plat.</p>',
+  '<p>Yes. Wash it by hand in cool water with a mild soap, then let it dry flat.</p>':
+    '<p>Oui. Lavez-la à la main à l’eau fraîche avec un savon doux, puis laissez-la sécher à plat.</p>',
   'How long will my order take?': 'Quel est le délai pour ma commande ?',
-  '<p>Each doll is made to order and takes about a week. We email you a tracking number the day it ships.</p>':
-    '<p>Chaque poupée est fabriquée à la commande, en une semaine environ. Nous vous envoyons un numéro de suivi par e-mail le jour de l’expédition.</p>',
-  'Can you make a doll that looks like my child?': 'Pouvez-vous faire une poupée qui ressemble à mon enfant ?',
-  "<p>Yes. Send us a message with hair, skin and dress colors and we'll reply with a price and a timeline.</p>":
-    '<p>Oui. Écrivez-nous en précisant la couleur des cheveux, de la peau et de la robe : nous vous répondrons avec un prix et un délai.</p>',
+  '<p>Each doll is made to order and ready in 5 to 7 days. We email you a tracking number the day it ships.</p>':
+    '<p>Chaque poupée est fabriquée à la commande et prête sous 5 à 7 jours. Nous vous envoyons un numéro de suivi par e-mail le jour de l’expédition.</p>',
+  'Can I choose the colors?':
+    'Puis-je choisir les couleurs ?',
+  '<p>Yes. On the Adopt page you choose the head color and the two fabrics of the body, outside and inside.</p>':
+    '<p>Oui. Sur la page Adopter, vous choisissez la couleur de la tête et les deux tissus du corps, l’extérieur et l’intérieur.</p>',
   'Can I return a doll?': 'Puis-je retourner une poupée ?',
-  "<p>Unused dolls can be returned within 30 days for a refund. Custom dolls can't be returned unless they arrive damaged.</p>":
-    '<p>Les poupées non utilisées peuvent être retournées sous 30 jours pour un remboursement. Les poupées sur mesure ne sont pas reprises, sauf si elles arrivent abîmées.</p>',
+  '<p>Unused dolls can be returned within 30 days for a refund. Dolls with an embroidered name can’t be returned unless they arrive damaged.</p>':
+    '<p>Les poupées non utilisées peuvent être retournées sous 30 jours pour un remboursement. Les poupées avec un prénom brodé ne sont pas reprises, sauf si elles arrivent abîmées.</p>',
 
   // Home page: promises, story, personalization, reviews, newsletter
   '100% handmade': '100 % fait main',
@@ -255,17 +257,17 @@ module.exports = {
   'Adopt': 'Adopter',
   'Step by step': 'Pas à pas',
   'Kwaii order journey': 'Parcours de commande Kwaii',
-  'From the studio to your home: 6 steps designed for moms.': 'De l’atelier à la maison : 6 étapes pensées pour les mamans.',
+  'From the studio to your home: 5 steps designed for moms.': 'De l’atelier à la maison : 5 étapes pensées pour les mamans.',
   'Choose your companion': 'Choisir son compagnon',
   'Among the dolls of the Kwaii family': 'Parmi les poupées de la famille Kwaii',
   'Girl or boy?': 'Fille ou garçon ?',
   'Sets the colors of the doll and its fabric': 'Détermine les couleurs de la poupée et de son tissu',
   'Girl': 'Fille',
-  'Powder-pink, mauve and floral tones. Pink accessories. Floral or moon fabric.':
-    'Tons rose poudré, mauve et fleuris. Accessoires roses. Tissu fleuri ou à lunes.',
+  'Powder pink | #EDD8D8\nMauve | #CDBEDC': 'Rose poudré | #EDD8D8\nMauve | #CDBEDC',
+  'Pink accessories. Floral or moon fabric.': 'Accessoires roses. Tissu fleuri ou à lunes.',
   'Boy': 'Garçon',
-  'Sky-blue and sage-green tones. A bow tie. Star or fox fabric.':
-    'Tons bleu ciel et vert sauge. Nœud papillon. Tissu à étoiles ou à renards.',
+  'Sky blue | #B8D4E8\nSage green | #B5C7B0': 'Bleu ciel | #B8D4E8\nVert sauge | #B5C7B0',
+  'A bow tie. Star or fox fabric.': 'Nœud papillon. Tissu à étoiles ou à renards.',
   'With or without arms?': 'Avec ou sans bras ?',
   'Two different shapes, the same tenderness': 'Deux silhouettes, la même tendresse',
   'Without arms': 'Sans bras',
@@ -295,17 +297,13 @@ module.exports = {
   'Adopt': 'Adopter',
   'Step by step': 'Pas à pas',
   'Kwaii order journey': 'Parcours de commande Kwaii',
-  'From the studio to your home: 6 steps designed for moms.': 'De l’atelier à la maison : 6 étapes pensées pour les mamans.',
+  'From the studio to your home: 5 steps designed for moms.': 'De l’atelier à la maison : 5 étapes pensées pour les mamans.',
   'Choose your companion': 'Choisir son compagnon',
   'Among the dolls of the Kwaii family': 'Parmi les poupées de la famille Kwaii',
   'Girl or boy?': 'Fille ou garçon ?',
   'Sets the colors of the doll and its fabric': 'Détermine les couleurs de la poupée et de son tissu',
   'Girl': 'Fille',
-  'Powder-pink, mauve and floral tones. Pink accessories. Floral or moon fabric.':
-    'Tons rose poudré, mauve et fleuris. Accessoires roses. Tissu fleuri ou à lunes.',
   'Boy': 'Garçon',
-  'Sky-blue and sage-green tones. A bow tie. Star or fox fabric.':
-    'Tons bleu ciel et vert sauge. Nœud papillon. Tissu à étoiles ou à renards.',
   'With or without arms?': 'Avec ou sans bras ?',
   'Two different shapes, the same tenderness': 'Deux silhouettes, la même tendresse',
   'Without arms': 'Sans bras',
@@ -320,43 +318,30 @@ module.exports = {
   'Embroidered by hand. 12 characters at most.':
     'Brodé à la main. 12 caractères maximum.',
   'e.g. Léa': 'ex : Léa',
-  'Summary': 'Récapitulatif',
-  'One last check before adoption': 'Une dernière vérification avant l’adoption',
   'Free from $50': 'Offerte dès 50 $',
-  'Adoption certificate included. Delivery in 5 to 7 business days.':
-    'Certificat d’adoption offert. Livraison sous 5 à 7 jours ouvrés.',
+  '5 to 7 days': '5 à 7 jours',
   'Secure payment': 'Paiement sécurisé',
   'Adoption certificate included': 'Certificat d’adoption inclus',
   '30-day returns': 'Retours sous 30 jours',
-  'After the order': 'Après la commande',
-  'Confirmation email': 'E-mail de confirmation',
-  'immediately': 'immédiat',
-  'Maker notified': 'Artisane prévenue',
-  'within 24 hours': 'sous 24 h',
-  'Delivery and certificate': 'Livraison et certificat',
-  '5 to 7 days': '5 à 7 jours',
 
   // Adoption certificate page
   'Adoption certificate': 'Certificat d’adoption',
-  '14 May 2025': '14 mai 2025',
-  'A beautiful story begins': 'Une belle histoire qui commence',
+  'Every doll comes with its certificate, signed by the maker. Here is an example.':
+    'Chaque doudou arrive avec son certificat, signé par son artisane. En voici un exemple.',
+  'May 14, 2025': '14 mai 2025',
   'With all my love, so that you are never alone.': 'Avec tout mon amour, pour que tu ne sois jamais seule.',
   'Granny Suzanne': 'Mamie Suzanne',
   'pastel mauve': 'coloris mauve pastel',
-  'Crocheting since 2018': 'Crocheteuse depuis 2018',
-  '4.9 out of 5 from 28 reviews': '4,9 sur 5 pour 28 avis',
-  'I learned amigurumi crochet in Japan, during a stay in Kyoto. Each stitch is placed with the intention that this doll becomes a true companion for life.':
-    'J’ai appris le crochet amigurumi au Japon lors d’un séjour à Kyoto. Chaque maille est posée avec l’intention que cette poupée devienne une vraie compagne de vie.',
   'I hope this doll brings Léa a great deal of gentleness. I placed every stitch thinking of this first companion for life. Take good care of her!':
     'J’espère que cette poupée apportera beaucoup de douceur à Léa. J’ai posé chaque maille en pensant à cette première compagne de vie. Prenez-en bien soin !',
   'Body crocheted': 'Corps principal crocheté',
-  '7 May 2025, 2 hours of work': '7 mai 2025, 2 h de travail',
+  'May 7, 2025, 2 hours of work': '7 mai 2025, 2 h de travail',
   'Parts assembled': 'Pièces assemblées',
-  '9 May 2025, 1½ hours of work': '9 mai 2025, 1 h 30 de travail',
+  'May 9, 2025, 1½ hours of work': '9 mai 2025, 1 h 30 de travail',
   'Name “Léa” embroidered': 'Prénom « Léa » brodé',
-  '11 May 2025, by hand': '11 mai 2025, à la main',
+  'May 11, 2025, by hand': '11 mai 2025, à la main',
   'Quality check and wrapping': 'Contrôle qualité et emballage',
-  '13 May 2025, gift box': '13 mai 2025, coffret',
+  'May 13, 2025, gift box': '13 mai 2025, coffret',
   'Send us a photo of Léa with her doll. It will join the gallery of Kwaii families.':
     'Partagez une photo de Léa avec sa poupée : elle rejoindra la galerie des familles Kwaii.',
   'Send a photo': 'Envoyer une photo',
@@ -412,6 +397,9 @@ module.exports = {
     'Je cherchais quelque chose d’original, pas industriel. Buni est parfait. On voit chaque maille. C’est du vrai artisanat.',
 
   // Contact page
+  'Before you write': 'Avant d’écrire',
+  'Your answer may already be here.': 'Votre réponse se trouve peut-être déjà ici.',
+  'Can’t find your answer?': 'Vous ne trouvez pas votre réponse ?',
   'Message sent. We reply within two business days.': 'Message envoyé. Nous répondons sous deux jours ouvrés.',
 
   // Head colours

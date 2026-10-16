@@ -290,7 +290,7 @@ const pages = {
   'shipping-returns': {
     title: 'Shipping and returns',
     template_suffix: null,
-    content: '<h2>Shipping</h2><p>Each doll is made to order and ships within about a week. Shipping is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Loved dolls come apart sometimes. Mail yours back and we will restitch it for the cost of shipping.</p>',
+    content: '<h2>Shipping</h2><p>Each doll is made to order and ready in 5 to 7 days. Shipping is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Much-loved dolls sometimes come undone. Mail yours back and we will mend it for the cost of shipping.</p>',
   },
 };
 
@@ -301,7 +301,7 @@ const linklists = {
       { title: 'All dolls', url: '/collections/all' },
       { title: 'Adopt', url: '/pages/adopt' },
       { title: 'Certificate', url: '/pages/certificate' },
-      { title: 'Makers', url: '/pages/makers' },
+      { title: 'Our maker', url: '/pages/artist/isabelle' },
       { title: 'About', url: '/pages/about' },
     ],
   },
@@ -331,7 +331,7 @@ const linklists = {
         url: '/pages/about',
         links: [
           { title: 'About', url: '/pages/about' },
-          { title: 'Our maker', url: '/pages/makers' },
+          { title: 'Our maker', url: '/pages/artist/isabelle' },
           { title: 'Instagram', url: 'https://www.instagram.com/' },
         ],
       },

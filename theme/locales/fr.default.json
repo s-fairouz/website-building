@@ -131,11 +131,33 @@
     "status_waitlist": "Sur liste d’attente uniquement",
     "materials": "Matières",
     "instagram": "Suivre {{ name }} sur Instagram",
-    "pieces_by": "Créations de {{ name }}",
+    "pieces_by": "Ses créations",
     "empty": "Ajoutez vos artisans dans Contenu > Métaobjets de votre interface Shopify.",
     "pieces": "{{ count }} créations",
     "see_all": "Tout voir",
-    "meta": "Artisane à {{ place }} · {{ count }} doudous crochetés"
+    "meta": "Artisane à {{ place }} · {{ count }} doudous crochetés",
+    "place": "Artisane à {{ place }}",
+    "figure_pieces": {
+      "one": "doudou crocheté",
+      "other": "doudous crochetés"
+    },
+    "figure_models": {
+      "one": "modèle",
+      "other": "modèles"
+    },
+    "figure_custom": "commandes sur mesure possibles",
+    "figure_custom_plain": "commandes sur mesure",
+    "custom_open": "Ouvertes",
+    "custom_waitlist": "Liste d’attente",
+    "custom_limited": "{{ remaining }} sur {{ total }}",
+    "see_dolls": "Voir ses doudous",
+    "follow": "Suivre sur Instagram",
+    "materials_her": "Ses matières",
+    "dolls_her": "Ses doudous",
+    "dolls_count": {
+      "one": "{{ count }} modèle, fait à la commande",
+      "other": "{{ count }} modèles, faits à la commande"
+    }
   },
   "newsletter": {
     "subscribe": "S’abonner",
@@ -144,7 +166,6 @@
   "journey": {
     "for": "Pour",
     "shape": "Silhouette",
-    "selected": "Sélectionné",
     "fabric_outer": "Tissu extérieur",
     "fabric_inner": "Tissu intérieur",
     "head": "Couleur de la tête",
@@ -161,18 +182,21 @@
     "stop_companion": "Compagnon",
     "stop_look": "Couleurs",
     "stop_name": "Prénom",
-    "stop_summary": "Récapitulatif",
     "ticket": "Votre commande",
     "back": "Retour",
-    "continue": "Continuer"
+    "continue": "Continuer",
+    "check": "Vérifiez votre commande avant l’adoption",
+    "lead": "Délai",
+    "included": "Inclus"
   },
   "record": {
-    "title": "Certificat d’adoption",
     "number": "N° {{ number }}",
     "adopted_on": "Adoption officielle le {{ date }}",
-    "made_in": "Fabriquée à",
-    "maker": "La créatrice de {{ doll }}",
-    "done": "Terminé"
+    "intro_title": "Le certificat d’adoption",
+    "how_made": "La fabrication de {{ doll }}",
+    "the_maker": "L’artisane",
+    "quote": "« {{ text }} »",
+    "meet": "Découvrir {{ name }}"
   },
   "companions": {
     "kind": "{{ kind }}",

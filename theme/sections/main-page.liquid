@@ -1,12 +1,48 @@
-<div class="wrap wrap--narrow page-head">
-  <h1>{{ page.title }}</h1>
-</div>
+{%- comment -%}
+  A plain page, built like the site's other pages: the title on the page grid, then the text.
+  Text with sub-headings (Shipping, Returns, Repairs…) is split into one white card per
+  heading, side by side. Text without sub-headings is short, so it stands under the title as
+  its one line (as on the contact page).
+{%- endcomment -%}
 
-{%- if page.content != blank -%}
-  <div class="wrap wrap--narrow rte page-body">
-    {{ page.content }}
-  </div>
-{%- endif -%}
+{%- liquid
+  assign parts = page.content | split: '<h2>'
+  assign has_headings = false
+  if page.content contains '<h2>'
+    assign has_headings = true
+  endif
+-%}
+
+<div class="wrap doc-page doc-page--head">
+  <header class="doc-intro">
+    <h1>{{ page.title }}</h1>
+    {%- if page.content != blank and has_headings == false -%}
+      <div class="band__sub rte">{{ page.content }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- if has_headings -%}
+    {%- comment -%} Anything before the first heading opens the page, under the title. {%- endcomment -%}
+    {%- assign lead = parts.first | strip -%}
+    {%- if lead != blank -%}
+      <div class="band__sub rte">{{ lead }}</div>
+    {%- endif -%}
+
+    <div class="doc-grid">
+      {%- for part in parts offset: 1 -%}
+        {%- liquid
+          assign pieces = part | split: '</h2>'
+          assign heading = pieces.first
+          assign body = pieces | slice: 1, 50 | join: '</h2>'
+        -%}
+        <section class="doc-panel">
+          <h2 class="doc-panel__title">{{ heading }}</h2>
+          <div class="rte doc-panel__text">{{ body }}</div>
+        </section>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
 
 {% schema %}
 {

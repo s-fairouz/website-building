@@ -57,37 +57,10 @@
             "text": "Secure payment"
           }
         },
-        "certificate": {
-          "type": "promise",
-          "settings": {
-            "text": "Adoption certificate included"
-          }
-        },
         "returns": {
           "type": "promise",
           "settings": {
             "text": "30-day returns"
-          }
-        },
-        "email": {
-          "type": "after",
-          "settings": {
-            "title": "Confirmation email",
-            "text": "immediately"
-          }
-        },
-        "maker": {
-          "type": "after",
-          "settings": {
-            "title": "Maker notified",
-            "text": "within 24 hours"
-          }
-        },
-        "delivery": {
-          "type": "after",
-          "settings": {
-            "title": "Delivery and certificate",
-            "text": "5 to 7 days"
           }
         }
       },
@@ -101,11 +74,7 @@
         "rey",
         "lambi",
         "secure",
-        "certificate",
-        "returns",
-        "email",
-        "maker",
-        "delivery"
+        "returns"
       ],
       "settings": {
         "heading": "Kwaii order journey",

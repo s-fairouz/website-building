@@ -6,8 +6,14 @@
     },
     "form": {
       "type": "contact-form",
-      "settings": {}
+      "settings": {
+        "link_1": "shopify://pages/faq",
+        "link_2": "shopify://pages/shipping-returns"
+      }
     }
   },
-  "order": ["main", "form"]
+  "order": [
+    "main",
+    "form"
+  ]
 }

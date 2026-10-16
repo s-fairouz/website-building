@@ -11,41 +11,52 @@
           "type": "question",
           "settings": {
             "question": "What age are the dolls suitable for?",
-            "answer": "<p>Our dolls are made for children aged three and up. Faces are embroidered, so there are no button eyes, but clothes fasten with small snaps.</p>"
+            "answer": "<p>Our dolls are certified for ages 0 to 3. They are crocheted in Oeko-Tex certified cotton, and their faces are embroidered, so there are no small parts to come loose.</p>"
           }
         },
         "wash": {
           "type": "question",
           "settings": {
             "question": "Can I wash a doll?",
-            "answer": "<p>Spot clean the body with a damp cloth and mild soap. Clothes can be hand washed in cool water and dried flat.</p>"
+            "answer": "<p>Yes. Wash it by hand in cool water with a mild soap, then let it dry flat.</p>"
           }
         },
         "time": {
           "type": "question",
           "settings": {
             "question": "How long will my order take?",
-            "answer": "<p>Each doll is made to order and takes about a week. We email you a tracking number the day it ships.</p>"
+            "answer": "<p>Each doll is made to order and ready in 5 to 7 days. We email you a tracking number the day it ships.</p>"
           }
         },
         "custom": {
           "type": "question",
           "settings": {
-            "question": "Can you make a doll that looks like my child?",
-            "answer": "<p>Yes. Send us a message with hair, skin and dress colors and we'll reply with a price and a timeline.</p>"
+            "question": "Can I choose the colors?",
+            "answer": "<p>Yes. On the Adopt page you choose the head color and the two fabrics of the body, outside and inside.</p>"
           }
         },
         "returns": {
           "type": "question",
           "settings": {
             "question": "Can I return a doll?",
-            "answer": "<p>Unused dolls can be returned within 30 days for a refund. Custom dolls can't be returned unless they arrive damaged.</p>"
+            "answer": "<p>Unused dolls can be returned within 30 days for a refund. Dolls with an embroidered name can’t be returned unless they arrive damaged.</p>"
           }
         }
       },
-      "block_order": ["age", "wash", "time", "custom", "returns"],
-      "settings": {}
+      "block_order": [
+        "age",
+        "wash",
+        "time",
+        "custom",
+        "returns"
+      ],
+      "settings": {
+        "link": "shopify://pages/contact"
+      }
     }
   },
-  "order": ["main", "faq"]
+  "order": [
+    "main",
+    "faq"
+  ]
 }

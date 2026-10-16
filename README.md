@@ -53,7 +53,8 @@ Each maker is a Shopify *metaobject*, and each product points to its maker. Set 
 
 2. In the same definition, turn on **Web pages** and choose the `artist` template, so each maker gets a profile page.
 3. Add your makers under **Content > Metaobjects**.
-4. Create a page called "Makers" with the `makers` template, and link it from the main menu.
+4. Create a page called "Makers" with the `makers` template. With one maker it shows her profile, the same as her own page; with several it lists them, each leading to her page.
+5. In the main and footer menus, link "Our maker" straight to her profile page (the URL shown on her entry under **Content > Metaobjects**). Once you have several makers, link "Our makers" to the Makers page instead.
 
 ## Personalized and made-to-order products
 

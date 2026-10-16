@@ -1,67 +1,94 @@
 {%- comment -%}
-  The About page in one section: the page's title and text beside a photo, how a doll is
-  made as a row of numbered cards, and a closing invitation to meet the maker.
-  The title and text come from the page itself; the photo is a doll's second photo.
+  The About page, built like the certificate page: the page's title, then the page's text on
+  a white card beside a photo, then how a doll is made beside who makes it, then a way on.
+  The title and text come from the page itself; the photo is a doll's second photo, and the
+  maker is that doll's maker.
 {%- endcomment -%}
 
 {%- liquid
   assign doll = section.settings.product
   assign photo = doll.images[1] | default: doll.featured_image
+  assign artist = doll.metafields.custom.artist.value
+  assign portrait = artist.portrait.value
 -%}
 
 <section class="band about">
-  <div class="wrap about__page">
-    <header class="about__hero{% if photo %} about__hero--photo{% endif %}">
-      <div class="about__intro">
-        <h1>{{ page.title }}</h1>
-        {%- if page.content != blank -%}
-          <div class="rte">{{ page.content }}</div>
-        {%- endif -%}
-      </div>
-      {%- if photo -%}
-        <div class="about__photo">
-          <img
-            src="{{ photo | image_url: width: 900 }}"
-            alt="{{ photo.alt | escape }}"
-            width="{{ photo.width }}"
-            height="{{ photo.height }}"
-          >
-        </div>
-      {%- endif -%}
+  <div class="wrap doc-page">
+    <header class="doc-intro">
+      <h1>{{ page.title }}</h1>
     </header>
 
-    {%- if section.blocks.size > 0 -%}
-      <div class="about__making">
-        {%- if section.settings.steps_heading != blank -%}
-          <h2>{{ section.settings.steps_heading | escape }}</h2>
+    {%- if page.content != blank -%}
+      <article class="doc-card">
+        {%- if photo -%}
+          <div class="doc-card__photo">
+            <img
+              src="{{ photo | image_url: width: 900 }}"
+              alt="{{ photo.alt | escape }}"
+              width="{{ photo.width }}"
+              height="{{ photo.height }}"
+            >
+          </div>
         {%- endif -%}
-        <ol class="about__steps" role="list">
-          {%- for block in section.blocks -%}
-            <li {{ block.shopify_attributes }}>
-              <h3>{{ block.settings.title | escape }}</h3>
-              <p>{{ block.settings.text | escape }}</p>
-            </li>
-          {%- endfor -%}
-        </ol>
-      </div>
+        <div class="doc-card__body">
+          <div class="rte doc-card__text">{{ page.content }}</div>
+        </div>
+      </article>
     {%- endif -%}
 
-    {%- if section.settings.closing_heading != blank -%}
-      <div class="about__close">
-        <div>
-          <h2>{{ section.settings.closing_heading | escape }}</h2>
-          {%- if section.settings.closing_text != blank -%}
-            <p>{{ section.settings.closing_text | escape }}</p>
+    <div class="doc-split">
+      {%- if section.blocks.size > 0 -%}
+        <section class="doc-panel">
+          {%- if section.settings.steps_heading != blank -%}
+            <h2 class="doc-panel__title">{{ section.settings.steps_heading | escape }}</h2>
           {%- endif -%}
-        </div>
-        <div class="about__actions">
-          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
-            <a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+          <ol class="making-steps step-list" role="list">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}>
+                <span class="making-steps__number" aria-hidden="true">{{ forloop.index }}</span>
+                <span>
+                  <span class="step-list__title">{{ block.settings.title | escape }}</span>
+                  {%- if block.settings.text != blank -%}
+                    <span class="step-list__when">{{ block.settings.text | escape }}</span>
+                  {%- endif -%}
+                </span>
+              </li>
+            {%- endfor -%}
+          </ol>
+        </section>
+      {%- endif -%}
+
+      {%- if artist -%}
+        <section class="doc-panel maker-mini">
+          <h2 class="doc-panel__title">{{ 'record.the_maker' | t }}</h2>
+          <div class="maker-mini__who">
+            {%- if portrait -%}
+              <img class="maker-mini__portrait" src="{{ portrait | image_url: width: 240 }}" alt="" width="64" height="64" loading="lazy">
+            {%- endif -%}
+            <div>
+              <p class="maker-mini__name">{{ artist.name.value | escape }}</p>
+              {%- if artist.location.value != blank -%}
+                <p class="maker-mini__place">{{ 'makers.place' | t: place: artist.location.value }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- if section.settings.maker_text != blank -%}
+            <p class="maker-mini__text">{{ section.settings.maker_text | escape }}</p>
           {%- endif -%}
-          {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-            <a class="link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
-          {%- endif -%}
-        </div>
+          <a class="more" href="{{ artist.system.url }}">
+            {{- 'record.meet' | t: name: artist.name.value -}}
+            {%- render 'more-arrow' -%}
+          </a>
+        </section>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+      <div class="doc-onward">
+        <a class="more" href="{{ section.settings.link }}">
+          {{- section.settings.link_label | escape -}}
+          {%- render 'more-arrow' -%}
+        </a>
       </div>
     {%- endif -%}
   </div>
@@ -80,16 +107,13 @@
       "type": "product",
       "id": "product",
       "label": "Doll in the photo",
-      "info": "Shows this doll's second photo, or its first if it has only one."
+      "info": "Shows this doll's second photo, or its first if it has only one. Its maker is shown beside the steps."
     },
     { "type": "text", "id": "steps_heading", "label": "Heading above the steps", "default": "How a doll is made" },
-    { "type": "header", "content": "Closing band" },
-    { "type": "text", "id": "closing_heading", "label": "Heading" },
-    { "type": "textarea", "id": "closing_text", "label": "Text" },
-    { "type": "text", "id": "button_label", "label": "Button label" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "text", "id": "link_label", "label": "Second link label" },
-    { "type": "url", "id": "link", "label": "Second link" }
+    { "type": "textarea", "id": "maker_text", "label": "Line about the maker", "default": "She crochets each doll herself, at a table by the window." },
+    { "type": "header", "content": "Link under the cards" },
+    { "type": "text", "id": "link_label", "label": "Link label" },
+    { "type": "url", "id": "link", "label": "Link" }
   ],
   "blocks": [
     {

@@ -11,9 +11,9 @@
 {%- endcapture -%}
 
 {%- comment -%}
-  On a page of its own (no section heading) a single maker gets the whole page: the page's
-  title and text, her card, what she works with, and the dolls she makes. On the home page
-  the card is introduced by her name instead of a section heading.
+  On a page of its own (no section heading) a single maker gets her profile, the same one as
+  on her own page, so both read alike. On the home page she gets a wide card introduced by her
+  name. With several makers, the section lists them on cards, each leading to her own page.
 {%- endcomment -%}
 {%- liquid
   assign own_page = false
@@ -22,24 +22,24 @@
   endif
 -%}
 
-<section class="band{% if own_page %} maker-page{% endif %}{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %}">
+{%- if own_page -%}
+  {%- for artist in artists limit: 1 -%}
+    {% render 'maker-profile', artist: artist %}
+  {%- endfor -%}
+{%- else -%}
+<section class="band{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %}">
   <div class="wrap">
     {%- if artists.size == 1 -%}
-      {%- comment -%} One maker: a wide card of her own, with her portrait and the dolls she makes. {%- endcomment -%}
+      {%- comment -%}
+        One maker on the home page: a wide card with her portrait, her name with one quiet line
+        under it (where she works and how many dolls she has made), the section's text, and the
+        way to her page.
+      {%- endcomment -%}
       {%- for artist in artists limit: 1 -%}
         {%- liquid
           assign portrait = artist.portrait.value
           assign works = artist.collection.value.products
         -%}
-        {%- if own_page and page -%}
-          <header class="maker-page__head">
-            <h1>{{ page.title }}</h1>
-            {%- if page.content != blank -%}
-              <div class="maker-page__lede">{{ page.content }}</div>
-            {%- endif -%}
-          </header>
-        {%- endif -%}
-
         <article class="maker-feature">
           <div class="maker-feature__portrait">
             {%- if portrait -%}
@@ -60,21 +60,11 @@
               <div class="maker-feature__intro">{{ intro }}</div>
             {%- endif -%}
 
-            {%- comment -%}
-              On the home page the maker is introduced in one quiet line under her name: where she
-              works and how many dolls she has made. Her own page adds her bio, what she specialises
-              in and whether she takes custom orders; her dolls are shown under it, so they are not
-              repeated here.
-            {%- endcomment -%}
             <div class="maker-feature__who">
               <h2 class="maker-feature__name">
                 <a href="{{ artist.system.url }}">{{ artist.name.value | escape }}</a>
               </h2>
-              {%- if own_page -%}
-                {%- if artist.location.value != blank -%}
-                  <p class="maker-feature__place">{{ artist.location.value | escape }}</p>
-                {%- endif -%}
-              {%- elsif artist.location.value != blank and artist.pieces_made.value -%}
+              {%- if artist.location.value != blank and artist.pieces_made.value -%}
                 <p class="maker-feature__place">{{ 'makers.meta' | t: place: artist.location.value, count: artist.pieces_made.value }}</p>
               {%- elsif artist.location.value != blank -%}
                 <p class="maker-feature__place">{{ artist.location.value | escape }}</p>
@@ -82,23 +72,8 @@
             </div>
 
             {%- comment -%} Without a section heading, the section's text follows her name. {%- endcomment -%}
-            {%- if own_page == false and section.settings.heading == blank and section.settings.text != blank -%}
+            {%- if section.settings.heading == blank and section.settings.text != blank -%}
               <p class="maker-feature__text">{{ section.settings.text | escape }}</p>
-            {%- endif -%}
-
-            {%- if own_page -%}
-              {%- if artist.bio.value != blank -%}
-                <p class="maker-feature__bio">{{ artist.bio.value | escape }}</p>
-              {%- endif -%}
-
-              <ul class="maker-feature__facts" role="list">
-                {%- if artist.pieces_made.value -%}
-                  <li>{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</li>
-                {%- endif -%}
-                {%- if artist.specialty.value != blank -%}
-                  <li>{{ artist.specialty.value | escape }}</li>
-                {%- endif -%}
-              </ul>
             {%- endif -%}
 
             {%- if works.size == 0 and artist.makes.value != blank -%}
@@ -115,40 +90,9 @@
                   {%- render 'more-arrow' -%}
                 </a>
               {%- endif -%}
-              {%- if own_page -%}
-                {% render 'commission-status', artist: artist %}
-              {%- endif -%}
             </div>
           </div>
         </article>
-
-        {%- if own_page -%}
-          {%- if artist.philosophy.value != blank -%}
-            <div class="maker-note">
-              <h2>{{ 'makers.materials' | t }}</h2>
-              <div>
-                <p>{{ artist.philosophy.value | escape }}</p>
-                {%- if artist.instagram.value != blank -%}
-                  <a class="link" href="{{ artist.instagram.value }}" rel="noopener">
-                    {{- 'makers.instagram' | t: name: artist.name.value -}}
-                  </a>
-                {%- endif -%}
-              </div>
-            </div>
-          {%- endif -%}
-
-          {%- if works.size > 0 -%}
-            <div class="band__head maker-page__works">
-              <h2>{{ 'makers.pieces_by' | t: name: artist.name.value }}</h2>
-              <a class="link" href="{{ artist.collection.value.url }}">{{ 'makers.see_all' | t }}</a>
-            </div>
-            <ul class="companions__list" role="list">
-              {%- for doll in works limit: 8 -%}
-                <li>{% render 'product-card', product: doll %}</li>
-              {%- endfor -%}
-            </ul>
-          {%- endif -%}
-        {%- endif -%}
       {%- endfor -%}
     {%- else -%}
       {%- if section.settings.heading != blank -%}
@@ -205,6 +149,7 @@
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

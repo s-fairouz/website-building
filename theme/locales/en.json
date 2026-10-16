@@ -131,11 +131,33 @@
     "status_waitlist": "Waitlist only",
     "materials": "Materials",
     "instagram": "Follow {{ name }} on Instagram",
-    "pieces_by": "Made by {{ name }}",
+    "pieces_by": "Her creations",
     "empty": "Add your makers under Content > Metaobjects in the Shopify admin.",
     "pieces": "{{ count }} pieces made",
     "see_all": "See them all",
-    "meta": "Maker in {{ place }} · {{ count }} dolls crocheted"
+    "meta": "Maker in {{ place }} · {{ count }} dolls crocheted",
+    "place": "Maker in {{ place }}",
+    "figure_pieces": {
+      "one": "doll crocheted",
+      "other": "dolls crocheted"
+    },
+    "figure_models": {
+      "one": "model",
+      "other": "models"
+    },
+    "figure_custom": "custom orders open",
+    "figure_custom_plain": "custom orders",
+    "custom_open": "Open",
+    "custom_waitlist": "Waitlist",
+    "custom_limited": "{{ remaining }} of {{ total }}",
+    "see_dolls": "See her dolls",
+    "follow": "Follow on Instagram",
+    "materials_her": "Her materials",
+    "dolls_her": "Her dolls",
+    "dolls_count": {
+      "one": "{{ count }} model, made to order",
+      "other": "{{ count }} models, made to order"
+    }
   },
   "newsletter": {
     "subscribe": "Subscribe",
@@ -144,7 +166,6 @@
   "journey": {
     "for": "For",
     "shape": "Shape",
-    "selected": "Selected",
     "fabric_outer": "Outside fabric",
     "fabric_inner": "Inside fabric",
     "head": "Head color",
@@ -161,18 +182,21 @@
     "stop_companion": "Companion",
     "stop_look": "Colors",
     "stop_name": "Name",
-    "stop_summary": "Summary",
     "ticket": "Your order",
     "back": "Back",
-    "continue": "Continue"
+    "continue": "Continue",
+    "check": "Check your order before adopting",
+    "lead": "Ready in",
+    "included": "Included"
   },
   "record": {
-    "title": "Certificate of adoption",
     "number": "No. {{ number }}",
     "adopted_on": "Adopted on {{ date }}",
-    "made_in": "Made in",
-    "maker": "Who made {{ doll }}",
-    "done": "Done"
+    "intro_title": "The adoption certificate",
+    "how_made": "How {{ doll }} was made",
+    "the_maker": "The maker",
+    "quote": "“{{ text }}”",
+    "meet": "Meet {{ name }}"
   },
   "companions": {
     "kind": "the {{ kind }}",
