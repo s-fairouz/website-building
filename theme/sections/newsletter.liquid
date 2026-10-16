@@ -1,15 +1,21 @@
 <section class="band{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %} newsletter" id="newsletter">
-  <div class="wrap wrap--narrow">
+  {%- comment -%}
+    One card the width of the page, like the sections above it: what the letter is on the
+    left, the email field on the right. On a phone the two stack.
+  {%- endcomment -%}
+  <div class="wrap">
     <div class="newsletter__card">
-    {%- if section.settings.kicker != blank -%}
-      <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
-    {%- endif -%}
-    {%- if section.settings.heading != blank -%}
-      <h2>{{ section.settings.heading | escape }}</h2>
-    {%- endif -%}
-    {%- if section.settings.text != blank -%}
-      <p class="lede">{{ section.settings.text | escape }}</p>
-    {%- endif -%}
+    <div class="newsletter__intro">
+      {%- if section.settings.kicker != blank -%}
+        <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="lede">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+    </div>
 
     {% form 'customer', class: 'newsletter__form' %}
       <input type="hidden" name="contact[tags]" value="newsletter">
@@ -22,7 +28,7 @@
       {%- endif -%}
 
       <div class="newsletter__row">
-        <div class="field">
+        <div class="field field--soft">
           <label for="newsletter-email">{{ 'contact.email' | t }}</label>
           <input id="newsletter-email" type="email" name="contact[email]" autocomplete="email" required>
         </div>

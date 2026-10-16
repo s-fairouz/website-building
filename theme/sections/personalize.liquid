@@ -5,13 +5,19 @@
 
 <section class="band{% if section.settings.background != 'none' and section.settings.background != blank %} band--{{ section.settings.background }}{% endif %} personalize">
   <div class="wrap personalize__inner">
-    {%- comment -%} A sample of the embroidery: the name as it would be stitched. {%- endcomment -%}
+    {%- comment -%}
+      A sample of the embroidery on one white card: the name as it would be stitched, and under
+      it, on the same card, what the sample shows, beside a needle and thread.
+    {%- endcomment -%}
     <figure class="personalize__card">
       <div class="personalize__sample" aria-hidden="true">
         <p>{{ section.settings.sample_name | escape }}</p>
       </div>
       {%- if section.settings.caption != blank -%}
-        <figcaption>{{ section.settings.caption | escape }}</figcaption>
+        <figcaption>
+          <span class="tint">{% render 'icon', name: 'name' %}</span>
+          {{ section.settings.caption | escape }}
+        </figcaption>
       {%- endif -%}
     </figure>
 
@@ -30,7 +36,7 @@
         {%- assign addon_text = addon_variant.price | money -%}
         <p class="personalize__price">
           <strong>+ {{ addon_text }}</strong>
-          {{ 'products.name_days' | t: days: section.settings.embroidery_days }}
+          {%- if section.settings.embroidery_days > 0 %} · {{ 'products.name_extra' | t: days: section.settings.embroidery_days }}{% endif -%}
         </p>
       {%- endif -%}
 
@@ -96,7 +102,7 @@
     {
       "type": "range",
       "id": "embroidery_days",
-      "label": "Extra working days for a name",
+      "label": "Extra business days for a name",
       "min": 0,
       "max": 10,
       "step": 1,

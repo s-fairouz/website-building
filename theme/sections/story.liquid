@@ -1,30 +1,37 @@
+{%- comment -%}
+  The shop's story on one white card the width of the page, like the cards around it:
+  the title, a short text and a link on the left, and on the right a few figures about the
+  work (the facts: a number as the title, what it counts as the text).
+{%- endcomment -%}
 <section class="band story">
-  <div class="wrap story__inner">
-    <div class="story__copy">
-      {%- if section.settings.kicker != blank -%}
-        <p class="eyebrow">{{ section.settings.kicker | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2>{{ section.settings.heading | escape }}</h2>
-      {%- endif -%}
-      {%- if section.settings.text != blank -%}
-        <div class="rte">{{ section.settings.text }}</div>
-      {%- endif -%}
-      {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-        <a class="link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+  <div class="wrap">
+    <div class="story__card">
+      <div class="story__copy">
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+          <a class="more" href="{{ section.settings.link }}">
+            {{- section.settings.link_label | escape -}}
+            {%- render 'more-arrow' -%}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <dl class="story__figures">
+          {%- for block in section.blocks -%}
+            <div {{ block.shopify_attributes }}>
+              <dt>{{ block.settings.title | escape }}</dt>
+              <dd>{{ block.settings.text | escape }}</dd>
+            </div>
+          {%- endfor -%}
+        </dl>
       {%- endif -%}
     </div>
-
-    {%- if section.blocks.size > 0 -%}
-      <dl class="story__facts">
-        {%- for block in section.blocks -%}
-          <div {{ block.shopify_attributes }}>
-            <dt>{{ block.settings.title | escape }}</dt>
-            <dd>{{ block.settings.text | escape }}</dd>
-          </div>
-        {%- endfor -%}
-      </dl>
-    {%- endif -%}
   </div>
 </section>
 
@@ -35,20 +42,15 @@
   "settings": [
     {
       "type": "text",
-      "id": "kicker",
-      "label": "Line above the heading"
-    },
-    {
-      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "A doll is not just a toy."
+      "default": "Our story"
     },
     {
       "type": "richtext",
       "id": "text",
       "label": "Text",
-      "default": "<p>Say why you make dolls, in two short paragraphs.</p>"
+      "default": "<p>Say why you make dolls, in a few lines.</p>"
     },
     {
       "type": "text",
@@ -64,31 +66,27 @@
   "blocks": [
     {
       "type": "fact",
-      "name": "Fact",
+      "name": "Figure",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Title",
-          "default": "Made by hand"
+          "label": "Number",
+          "info": "Short, for example 840 or 4 h 30.",
+          "default": "840"
         },
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
-          "default": "In the makers' own studios"
+          "label": "What it counts",
+          "default": "stitches in every doll"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Story",
-      "blocks": [
-        { "type": "fact" },
-        { "type": "fact" },
-        { "type": "fact" }
-      ]
+      "name": "Story"
     }
   ]
 }

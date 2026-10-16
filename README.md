@@ -29,7 +29,7 @@ The preview imitates Shopify; it is not Shopify. Checkout, real payments and the
    | Questions and answers | `faq` |
    | Shipping and returns | Default page |
 
-6. Under **Content > Menus**, edit **Main menu** and **Footer menu** to link to your collections and pages.
+6. Under **Content > Menus**, edit **Main menu** and **Footer menu** to link to your collections and pages. In the footer menu, nest links under a top-level item to make a column: for example "Boutique", "Aide" and "Kwaii", each with its links dragged under it. The top-level item becomes the column heading.
 7. In **Customize**, open the home page hero and choose a **Featured doll**.
 8. For filters on collection and search pages, install Shopify's free **Search & Discovery** app and choose which filters to show.
 

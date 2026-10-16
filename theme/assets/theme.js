@@ -133,6 +133,40 @@ document.querySelectorAll('[data-dropdown]').forEach((dropdown) => {
   });
 });
 
+// "See more dolls": brings the next page's cards into the grid without leaving the page.
+// The address follows, so a refresh or a shared link shows the same page, and keyboard
+// focus moves to the first new doll. If the page can't be fetched, the link is followed.
+document.addEventListener('click', async (event) => {
+  const link = event.target.closest('[data-load-more-link]');
+  if (!link || link.getAttribute('aria-disabled') === 'true') return;
+  const grid = document.querySelector('[data-load-more-grid]');
+  if (!grid) return;
+  event.preventDefault();
+
+  const block = link.closest('[data-load-more]');
+  const label = link.textContent;
+  link.setAttribute('aria-disabled', 'true');
+  link.textContent = link.dataset.textLoading;
+
+  try {
+    const response = await fetch(link.href);
+    if (!response.ok) throw new Error(response.statusText);
+    const next = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const cards = [...next.querySelectorAll('[data-load-more-grid] > li')];
+    grid.append(...cards);
+    const nextBlock = next.querySelector('[data-load-more]');
+    if (nextBlock) block.replaceWith(nextBlock);
+    else block.remove();
+    history.replaceState(history.state, '', link.href);
+    const first = cards[0] && cards[0].querySelector('a');
+    if (first) first.focus();
+  } catch {
+    link.textContent = label;
+    link.removeAttribute('aria-disabled');
+    window.location.href = link.href;
+  }
+});
+
 // Cart drawer
 
 const drawer = document.querySelector('[data-cart-drawer]');

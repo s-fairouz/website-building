@@ -116,7 +116,7 @@ const makers = [
   maker({
     handle: 'isabelle', name: 'Isabelle', location: 'Lyon, France',
     status: 'Limited', remaining: 2, total: 5, hair: 'brown', skin: 'light', top: 'C3D4C5', pieces: 47, specialty: 'All eight companions', makes: 'Buni, Zara, Ted, Pachi, Tenta, Wooly, Rey, Lambi',
-    bio: 'Isabelle trained as a costume maker and spent ten years sewing for theatre before she made her first doll. She works at a table by the window, one doll at a time, and names each one before she embroiders its face.',
+    bio: 'Isabelle trained as a costume maker and spent ten years sewing for theater before she made her first doll. She works at a table by the window, one doll at a time, and names each one before she embroiders its face.',
     philosophy: 'Unbleached cotton for bodies, linen for clothes, and wool she cards herself for stuffing. Nothing synthetic touches a doll that leaves her table.',
   }),
 ];
@@ -131,7 +131,7 @@ const fabrics = [
   ['Terracotta flowers', 'C87840'],
   ['Sky-blue stars', 'B8D4E8'],
   ['Powder-pink moons', 'EDD8D8'],
-  ['Watercolour floral', 'D4C0B0'],
+  ['Watercolor floral', 'D4C0B0'],
   ['Flowering foxes', 'EAE4D8'],
   ['Polar-blue minky', '8EC4D8'],
 ].map(([name, hex]) => ({ system: { handle: name.toLowerCase().replace(/\W+/g, '-') }, name: field(name), swatch: field(`#${hex}`) }));
@@ -142,7 +142,7 @@ const MAKING = {
   technique: 'Crocheted by hand',
   making_time: 'About 4½ hours',
   stitches: 'About 840, placed one by one',
-  making_steps: ['Body crocheted, 2 hours', 'Parts assembled, 1½ hours', 'Name embroidered in gold thread', 'Checked and boxed'],
+  making_steps: ['Body crocheted, 2 hours', 'Parts assembled, 1½ hours', 'Name embroidered by hand', 'Checked and boxed'],
 };
 
 let nextId = 1000;
@@ -213,9 +213,9 @@ const products = [
     ['buni', 'Buni', 'Rabbit', 3400, [['Cream and terracotta', 'F4EEE4'], ['Powder pink', 'EDD8D8'], ['Sky blue', 'B8D4E8']]],
     ['zara', 'Zara', 'Giraffe', 3600, [['Golden mustard', 'D4921C'], ['Honey', 'E8C27A'], ['Sand', 'E6D5B8']]],
     ['ted', 'Ted', 'Bear', 3400, [['Glacier blue', '8EC4D8'], ['Caramel', 'C89A6A'], ['Cream', 'F4EEE4']]],
-    ['pachi', 'Pachi', 'Elephant', 3600, [['Pearl blue-grey', 'B8C4C8'], ['Powder pink', 'EDD8D8'], ['Sage green', 'B5C7B0']]],
-    ['tenta', 'Tenta', 'Octopus', 3600, [['Blue-grey', 'C0CCDA'], ['Lilac', 'CDBEDC'], ['Coral', 'E8A090']]],
-    ['wooly', 'Wooly', 'Lamb', 3500, [['Old rose', 'D4907A'], ['Cream', 'F4EEE4'], ['Dove grey', 'CFCAC4']]],
+    ['pachi', 'Pachi', 'Elephant', 3600, [['Pearl blue-gray', 'B8C4C8'], ['Powder pink', 'EDD8D8'], ['Sage green', 'B5C7B0']]],
+    ['tenta', 'Tenta', 'Octopus', 3600, [['Blue-gray', 'C0CCDA'], ['Lilac', 'CDBEDC'], ['Coral', 'E8A090']]],
+    ['wooly', 'Wooly', 'Lamb', 3500, [['Old rose', 'D4907A'], ['Cream', 'F4EEE4'], ['Dove gray', 'CFCAC4']]],
     ['rey', 'Rey', 'Zebra', 3600, [['Bright terracotta', 'C87840'], ['Sky blue', 'B8D4E8']]],
     ['lambi', 'Lambi', 'Doe', 3600, [['Rose terracotta', 'C4826A'], ['Caramel', 'C89A6A'], ['Sage green', 'B5C7B0']]],
   ].map(([handle, title, type, price, tones, madeBy = 'isabelle']) =>
@@ -280,7 +280,7 @@ const pages = {
   contact: {
     title: 'Contact us',
     template_suffix: 'contact',
-    content: '<p>Ask about an order, a repair or a custom doll. We reply within two working days.</p>',
+    content: '<p>Ask about an order, a repair or a custom doll. We reply within two business days.</p>',
   },
   faq: {
     title: 'Questions and answers',
@@ -290,7 +290,7 @@ const pages = {
   'shipping-returns': {
     title: 'Shipping and returns',
     template_suffix: null,
-    content: '<h2>Shipping</h2><p>Each doll is made to order and ships within about a week. Postage is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Loved dolls come apart sometimes. Post yours back and we will restitch it for the cost of postage.</p>',
+    content: '<h2>Shipping</h2><p>Each doll is made to order and ships within about a week. Shipping is calculated at checkout from your address.</p><h2>Returns</h2><p>Unused dolls can be returned within 30 days for a refund. Send us a message first and we will email a returns label.</p><h2>Repairs</h2><p>Loved dolls come apart sometimes. Mail yours back and we will restitch it for the cost of shipping.</p>',
   },
 };
 
@@ -305,14 +305,36 @@ const linklists = {
       { title: 'About', url: '/pages/about' },
     ],
   },
+  // Nested like a Shopify menu: each top-level item is a footer column, its links under it.
   footer: {
     links: [
-      { title: 'Adoption certificate', url: '/pages/certificate' },
-      { title: 'Questions and answers', url: '/pages/faq' },
-      { title: 'Shipping and returns', url: '/pages/shipping-returns' },
-      { title: 'Contact us', url: '/pages/contact' },
-      { title: 'Instagram', url: 'https://www.instagram.com/' },
-      { title: 'About', url: '/pages/about' },
+      {
+        title: 'Shop',
+        url: '/collections/all',
+        links: [
+          { title: 'All dolls', url: '/collections/all' },
+          { title: 'Adopt a doll', url: '/pages/adopt' },
+          { title: 'Adoption certificate', url: '/pages/certificate' },
+        ],
+      },
+      {
+        title: 'Help',
+        url: '/pages/faq',
+        links: [
+          { title: 'Questions and answers', url: '/pages/faq' },
+          { title: 'Shipping and returns', url: '/pages/shipping-returns' },
+          { title: 'Contact us', url: '/pages/contact' },
+        ],
+      },
+      {
+        title: 'Kwaii',
+        url: '/pages/about',
+        links: [
+          { title: 'About', url: '/pages/about' },
+          { title: 'Our maker', url: '/pages/makers' },
+          { title: 'Instagram', url: 'https://www.instagram.com/' },
+        ],
+      },
     ],
   },
 };

@@ -4,6 +4,7 @@
       <ul class="promises__list" role="list">
       {%- for block in section.blocks -%}
         <li class="promise" {{ block.shopify_attributes }}>
+          <span class="tint">{% render 'icon', name: block.settings.icon %}</span>
           <p class="promise__title">{{ block.settings.title | escape }}</p>
           {%- if block.settings.text != blank -%}
             <p class="promise__text">{{ block.settings.text | escape }}</p>
@@ -34,6 +35,22 @@
           "type": "text",
           "id": "text",
           "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "hand", "label": "Yarn and hook" },
+            { "value": "soft", "label": "Cloud" },
+            { "value": "name", "label": "Needle and thread" },
+            { "value": "certificate", "label": "Rosette" },
+            { "value": "france", "label": "Place" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "time", "label": "Clock" },
+            { "value": "heart", "label": "Heart" }
+          ],
+          "default": "hand"
         }
       ]
     }
@@ -42,10 +59,10 @@
     {
       "name": "Promises",
       "blocks": [
-        { "type": "promise", "settings": { "title": "100% handmade", "text": "Crocheted by a maker, one at a time" } },
-        { "type": "promise", "settings": { "title": "Soft materials", "text": "Chosen for small hands" } },
-        { "type": "promise", "settings": { "title": "Name embroidered", "text": "Added by hand on request" } },
-        { "type": "promise", "settings": { "title": "Made to last", "text": "Repairs whenever it needs them" } }
+        { "type": "promise", "settings": { "title": "100% handmade", "text": "Crocheted by a maker, one at a time", "icon": "hand" } },
+        { "type": "promise", "settings": { "title": "Soft materials", "text": "Chosen for small hands", "icon": "soft" } },
+        { "type": "promise", "settings": { "title": "Name embroidered", "text": "Added by hand on request", "icon": "name" } },
+        { "type": "promise", "settings": { "title": "Made to last", "text": "Repairs whenever it needs them", "icon": "heart" } }
       ]
     }
   ]

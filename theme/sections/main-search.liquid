@@ -29,7 +29,7 @@
             <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'search.browse_all' | t }}</a>
           </div>
         {%- else -%}
-          <ul class="grid" role="list">
+          <ul class="grid" role="list" data-load-more-grid>
             {%- for item in search.results -%}
               <li>
                 {%- if item.object_type == 'product' -%}
@@ -41,9 +41,8 @@
             {%- endfor -%}
           </ul>
 
-          {%- if paginate.pages > 1 -%}
-            <nav class="pagination" aria-label="{{ 'general.pages' | t }}">{{ paginate | default_pagination }}</nav>
-          {%- endif -%}
+          {%- assign shown = paginate.current_offset | plus: search.results.size -%}
+          {% render 'load-more', paginate: paginate, shown: shown %}
         {%- endif -%}
     </div>
   {% endpaginate %}

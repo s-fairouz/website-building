@@ -12,11 +12,12 @@
 
 {%- comment -%}
   On a page of its own (no section heading) a single maker gets the whole page: the page's
-  title and text, her card, what she works with, and the dolls she makes.
+  title and text, her card, what she works with, and the dolls she makes. On the home page
+  the card is introduced by her name instead of a section heading.
 {%- endcomment -%}
 {%- liquid
   assign own_page = false
-  if artists.size == 1 and section.settings.heading == blank
+  if artists.size == 1 and section.settings.heading == blank and template.name != 'index'
     assign own_page = true
   endif
 -%}
@@ -59,47 +60,48 @@
               <div class="maker-feature__intro">{{ intro }}</div>
             {%- endif -%}
 
+            {%- comment -%}
+              On the home page the maker is introduced in one quiet line under her name: where she
+              works and how many dolls she has made. Her own page adds her bio, what she specialises
+              in and whether she takes custom orders; her dolls are shown under it, so they are not
+              repeated here.
+            {%- endcomment -%}
             <div class="maker-feature__who">
               <h2 class="maker-feature__name">
                 <a href="{{ artist.system.url }}">{{ artist.name.value | escape }}</a>
               </h2>
-              {%- if artist.location.value != blank -%}
+              {%- if own_page -%}
+                {%- if artist.location.value != blank -%}
+                  <p class="maker-feature__place">{{ artist.location.value | escape }}</p>
+                {%- endif -%}
+              {%- elsif artist.location.value != blank and artist.pieces_made.value -%}
+                <p class="maker-feature__place">{{ 'makers.meta' | t: place: artist.location.value, count: artist.pieces_made.value }}</p>
+              {%- elsif artist.location.value != blank -%}
                 <p class="maker-feature__place">{{ artist.location.value | escape }}</p>
               {%- endif -%}
             </div>
 
-            {%- if own_page and artist.bio.value != blank -%}
-              <p class="maker-feature__bio">{{ artist.bio.value | escape }}</p>
+            {%- comment -%} Without a section heading, the section's text follows her name. {%- endcomment -%}
+            {%- if own_page == false and section.settings.heading == blank and section.settings.text != blank -%}
+              <p class="maker-feature__text">{{ section.settings.text | escape }}</p>
             {%- endif -%}
 
-            <ul class="maker-feature__facts" role="list">
-              {%- if artist.pieces_made.value -%}
-                <li>{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</li>
+            {%- if own_page -%}
+              {%- if artist.bio.value != blank -%}
+                <p class="maker-feature__bio">{{ artist.bio.value | escape }}</p>
               {%- endif -%}
-              {%- if artist.specialty.value != blank -%}
-                <li>{{ artist.specialty.value | escape }}</li>
-              {%- endif -%}
-            </ul>
 
-            {%- if works.size > 0 and own_page == false -%}
-              <ul class="maker-feature__works" role="list" aria-label="{{ 'makers.pieces_by' | t: name: artist.name.value | escape }}">
-                {%- for doll in works limit: 8 -%}
-                  {%- if doll.featured_image -%}
-                    <li>
-                      <a href="{{ doll.url }}" title="{{ doll.title | escape }}">
-                        <img
-                          src="{{ doll.featured_image | image_url: width: 160 }}"
-                          alt="{{ doll.title | escape }}"
-                          width="160"
-                          height="200"
-                          loading="lazy"
-                        >
-                      </a>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
+              <ul class="maker-feature__facts" role="list">
+                {%- if artist.pieces_made.value -%}
+                  <li>{{ 'makers.pieces' | t: count: artist.pieces_made.value }}</li>
+                {%- endif -%}
+                {%- if artist.specialty.value != blank -%}
+                  <li>{{ artist.specialty.value | escape }}</li>
+                {%- endif -%}
               </ul>
-            {%- elsif works.size == 0 and artist.makes.value != blank -%}
+            {%- endif -%}
+
+            {%- if works.size == 0 and artist.makes.value != blank -%}
               <p class="maker-feature__makes">{{ artist.makes.value | escape }}</p>
             {%- endif -%}
 
@@ -107,7 +109,15 @@
               {%- if section.settings.link_label != blank -%}
                 <a class="button" href="{{ artist.system.url }}">{{ section.settings.link_label | escape }}</a>
               {%- endif -%}
-              {% render 'commission-status', artist: artist %}
+              {%- if section.settings.story_label != blank and section.settings.story_link != blank -%}
+                <a class="more" href="{{ section.settings.story_link }}">
+                  {{- section.settings.story_label | escape -}}
+                  {%- render 'more-arrow' -%}
+                </a>
+              {%- endif -%}
+              {%- if own_page -%}
+                {% render 'commission-status', artist: artist %}
+              {%- endif -%}
             </div>
           </div>
         </article>
@@ -134,28 +144,7 @@
             </div>
             <ul class="companions__list" role="list">
               {%- for doll in works limit: 8 -%}
-                {%- assign tone = doll.metafields.custom.colors.value.first -%}
-                <li>
-                  <a class="companion" href="{{ doll.url }}" {% if tone %}style="--swatch: {{ tone.swatch.value }}"{% endif %}>
-                    {%- if doll.featured_image -%}
-                      <span class="companion__tone companion__tone--photo">
-                        <img
-                          class="companion__photo"
-                          src="{{ doll.featured_image | image_url: width: 600 }}"
-                          alt="{{ doll.featured_image.alt | escape }}"
-                          width="600"
-                          height="750"
-                          loading="lazy"
-                        >
-                      </span>
-                    {%- endif -%}
-                    <span class="companion__name">{{ doll.title }}</span>
-                    <span class="companion__kind">{{ 'companions.kind' | t: kind: doll.type | downcase }}</span>
-                    <span class="companion__foot">
-                      <span class="companion__price">{{ doll.price | money }}</span>
-                    </span>
-                  </a>
-                </li>
+                <li>{% render 'product-card', product: doll %}</li>
               {%- endfor -%}
             </ul>
           {%- endif -%}
@@ -259,6 +248,17 @@
       "type": "url",
       "id": "link",
       "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "story_label",
+      "label": "Second link label",
+      "info": "With a single maker, a softer link beside her button, for example to your story."
+    },
+    {
+      "type": "url",
+      "id": "story_link",
+      "label": "Second link"
     }
   ],
   "presets": [

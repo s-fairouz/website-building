@@ -19,15 +19,14 @@
         <a class="button" href="{{ collection.url }}">{{ 'collections.clear' | t }}</a>
       </div>
     {%- else -%}
-      <ul class="grid" role="list">
+      <ul class="grid" role="list" data-load-more-grid>
         {%- for product in collection.products -%}
           <li>{% render 'product-card', product: product %}</li>
         {%- endfor -%}
       </ul>
 
-      {%- if paginate.pages > 1 -%}
-        <nav class="pagination" aria-label="{{ 'general.pages' | t }}">{{ paginate | default_pagination }}</nav>
-      {%- endif -%}
+      {%- assign shown = paginate.current_offset | plus: collection.products.size -%}
+      {% render 'load-more', paginate: paginate, shown: shown %}
     {%- endif -%}
   </div>
 {% endpaginate %}

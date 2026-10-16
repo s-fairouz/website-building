@@ -3,11 +3,10 @@
     "skip_to_content": "Skip to content",
     "search_label": "Search the shop",
     "cart": "Cart",
-    "menu_main": "Main",
-    "menu_footer": "Footer",
-    "language": "Language",
+    "menu_main": "Main menu",
+    "menu_footer": "Footer menu",
+    "language_current": "Language: {{ name }}",
     "update_language": "Change language",
-    "pages": "Pages",
     "placeholder_title": "Your doll's name",
     "placeholder_text": "Add products in your Shopify admin to fill this row.",
     "close": "Close",
@@ -43,17 +42,22 @@
     "fabrics": "Body fabrics",
     "outside": "Outside",
     "inside": "Inside",
-    "name_days": "and {{ days }} more working days",
     "materials": "Made of",
     "technique": "How it’s made",
-    "making_time": "Handwork",
+    "making_time": "Making time",
     "stitches": "Stitches",
     "making_steps": "How this doll was made",
     "details": "Details",
     "about": "About {{ title }}",
     "ready_in": "ready in {{ min }}–{{ max }} days",
     "decrease": "One fewer",
-    "increase": "One more"
+    "increase": "One more",
+    "height_cm": "{{ cm }} cm",
+    "colour_count": {
+      "one": "{{ count }} color",
+      "other": "{{ count }} colors"
+    },
+    "name_extra": "{{ days }} more days"
   },
   "collections": {
     "title": "Collections",
@@ -69,7 +73,10 @@
     "count": {
       "one": "{{ count }} doll",
       "other": "{{ count }} dolls"
-    }
+    },
+    "load_more": "See more dolls",
+    "loading": "Loading…",
+    "shown": "{{ shown }} of {{ total }}"
   },
   "search": {
     "title": "Search",
@@ -127,7 +134,8 @@
     "pieces_by": "Made by {{ name }}",
     "empty": "Add your makers under Content > Metaobjects in the Shopify admin.",
     "pieces": "{{ count }} pieces made",
-    "see_all": "See them all"
+    "see_all": "See them all",
+    "meta": "Maker in {{ place }} · {{ count }} dolls crocheted"
   },
   "newsletter": {
     "subscribe": "Subscribe",
@@ -139,7 +147,7 @@
     "selected": "Selected",
     "fabric_outer": "Outside fabric",
     "fabric_inner": "Inside fabric",
-    "head": "Head colour",
+    "head": "Head color",
     "doll": "Doll",
     "version": "Version",
     "embroidery": "Embroidery",
@@ -151,10 +159,10 @@
     "adopt_button": "Adopt — {{ price }}",
     "steps": "Steps",
     "stop_companion": "Companion",
-    "stop_look": "Colours",
+    "stop_look": "Colors",
     "stop_name": "Name",
     "stop_summary": "Summary",
-    "ticket": "Order ticket",
+    "ticket": "Your order",
     "back": "Back",
     "continue": "Continue"
   },

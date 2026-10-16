@@ -32,7 +32,7 @@
           "type": "question",
           "settings": {
             "question": "Can you make a doll that looks like my child?",
-            "answer": "<p>Yes. Send us a message with hair, skin and dress colours and we'll reply with a price and a timeline.</p>"
+            "answer": "<p>Yes. Send us a message with hair, skin and dress colors and we'll reply with a price and a timeline.</p>"
           }
         },
         "returns": {

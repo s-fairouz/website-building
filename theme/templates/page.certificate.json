@@ -5,7 +5,7 @@
       "blocks": {
         "body": { "type": "step", "settings": { "title": "Body crocheted", "text": "7 May 2025, 2 hours of work" } },
         "parts": { "type": "step", "settings": { "title": "Parts assembled", "text": "9 May 2025, 1½ hours of work" } },
-        "name": { "type": "step", "settings": { "title": "Name “Léa” embroidered", "text": "11 May 2025, gold thread" } },
+        "name": { "type": "step", "settings": { "title": "Name “Léa” embroidered", "text": "11 May 2025, by hand" } },
         "checked": { "type": "step", "settings": { "title": "Quality check and wrapping", "text": "13 May 2025, gift box" } }
       },
       "block_order": ["body", "parts", "name", "checked"],

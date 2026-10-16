@@ -177,8 +177,43 @@ blockTag('style', function* (ctx, emitter) {
   emitter.write('</style>');
 });
 
+// {% paginate collection.products by 12 %}: like Shopify, the list is cut to the page asked
+// for in ?page=, and `paginate` says where it is, with links to the pages either side that
+// keep the rest of the query (filters, sorting).
 blockTag('paginate', function* (ctx, emitter) {
-  ctx.push({ paginate: { current_page: 1, pages: 1, parts: [] } });
+  const [, listPath, sizeExpr] = this.args.match(/^\s*([\w.]+)\s+by\s+([\w.]+)/) || [];
+  const list = (listPath && this.liquid.evalValueSync(listPath, ctx)) || [];
+  const size = Math.max(1, parseInt(this.liquid.evalValueSync(sizeExpr, ctx), 10) || 50);
+  const { path: currentPath, locale, query = '' } = ctx.globals.request;
+  const params = new URLSearchParams(query);
+  const pages = Math.max(1, Math.ceil(list.length / size));
+  const current = Math.min(pages, Math.max(1, parseInt(params.get('page'), 10) || 1));
+  const pageUrl = (number) => {
+    const next = new URLSearchParams(params);
+    if (number === 1) next.delete('page');
+    else next.set('page', number);
+    const search = next.toString();
+    return (locale.root_url + currentPath).replace(/(.)\/$/, '$1') + (search ? `?${search}` : '');
+  };
+
+  // The list is read through its parent (collection.products), so the parent is copied
+  // with the cut list in its place for the duration of the tag.
+  const [root, key] = listPath.split('.');
+  const scope = {
+    paginate: {
+      current_page: current,
+      current_offset: (current - 1) * size,
+      items: list.length,
+      pages,
+      page_size: size,
+      parts: [],
+      previous: current > 1 ? { title: '«', url: pageUrl(current - 1), is_link: true } : null,
+      next: current < pages ? { title: '»', url: pageUrl(current + 1), is_link: true } : null,
+    },
+  };
+  if (key) scope[root] = { ...this.liquid.evalValueSync(root, ctx), [key]: list.slice((current - 1) * size, current * size) };
+
+  ctx.push(scope);
   yield this.liquid.renderer.renderTemplates(this.templates, ctx, emitter);
   ctx.pop();
 });
@@ -270,7 +305,8 @@ function buildContext(template, requestPath, locale, globals = {}) {
   const linklists = Object.fromEntries(
     Object.entries(data.linklists).map(([handle, list]) => [
       handle,
-      { links: list.links.map((link) => ({ ...link, active: link.url === requestPath })) },
+      // Like Shopify, every link has a list of nested links, empty when it has none.
+      { links: list.links.map((link) => ({ links: [], ...link, active: link.url === requestPath })) },
     ])
   );
   const content = {
@@ -285,7 +321,7 @@ function buildContext(template, requestPath, locale, globals = {}) {
   };
   const ctx = {
     ...localize(content, locale),
-    request: { locale, path: requestPath },
+    request: { locale, path: requestPath, query: globals.request_query || '' },
     localization: { available_languages: LOCALES, language: locale },
     template: { name, suffix },
     canonical_url: `http://localhost:${PORT}${locale.root_url}${requestPath}`,
@@ -538,7 +574,7 @@ async function handle(req, res) {
     res.end();
   };
   const page = async (template, globals, status = 200) =>
-    send(status, await renderPage(template, requestPath, locale, { customer_posted: query.get('customer_posted') === 'true', ...globals }));
+    send(status, await renderPage(template, requestPath, locale, { customer_posted: query.get('customer_posted') === 'true', request_query: url.search, ...globals }));
   const notFound = () => page('404', { page_title: 'Page not found' }, 404);
 
   let match;

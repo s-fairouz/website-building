@@ -1,53 +1,82 @@
+{%- comment -%}
+  The footer: the shop's name, the footer menu in headed columns, and a last row with the
+  copyright and the language. It sits on its own white surface, so no lines are needed to
+  set it apart. The name stands alone: by the footer, the page has already said what the
+  shop is.
+
+  Columns come from the menu itself: each top-level item is a heading and its nested items
+  are the links under it. A top-level item without nested items is shown as a plain link.
+{%- endcomment -%}
+
 <footer class="site-footer">
-  <div class="wrap site-footer__inner">
-    <div class="site-footer__about">
+  <div class="wrap">
+    <div class="site-footer__top">
       <p class="site-footer__name">{{ shop.name }}</p>
-      {%- if section.settings.text != blank -%}
-        <p>{{ section.settings.text | escape }}</p>
+
+      {%- assign menu = section.settings.menu -%}
+      {%- if menu.links.size > 0 -%}
+        <nav class="site-footer__menu" aria-label="{{ 'general.menu_footer' | t }}">
+          {%- liquid
+            assign loose = false
+            for link in menu.links
+              if link.links.size == 0
+                assign loose = true
+              endif
+            endfor
+          -%}
+          {%- for link in menu.links -%}
+            {%- if link.links.size > 0 -%}
+              <div class="site-footer__group">
+                <p class="site-footer__heading">{{ link.title }}</p>
+                <ul class="site-footer__links" role="list">
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if loose -%}
+            <ul class="site-footer__links site-footer__group" role="list">
+              {%- for link in menu.links -%}
+                {%- if link.links.size == 0 -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </nav>
       {%- endif -%}
     </div>
 
-    {%- assign menu = section.settings.menu -%}
-    {%- if menu.links.size > 0 -%}
-      <nav aria-label="{{ 'general.menu_footer' | t }}">
-        <ul class="site-footer__links" role="list">
-          {%- for link in menu.links -%}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-          {%- endfor -%}
-        </ul>
-      </nav>
-    {%- endif -%}
+    <div class="site-footer__bottom">
+      <p class="site-footer__legal">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
 
-    {%- if localization.available_languages.size > 1 -%}
-      {% form 'localization', class: 'language-form' %}
-        <details class="dropdown dropdown--up" data-dropdown>
-          <summary class="pill pill--tool">
-            {{ 'general.language' | t }}: {{ localization.language.endonym_name | capitalize }}
-          </summary>
-          <div class="dropdown__panel">
-            {%- for language in localization.available_languages -%}
-              <label class="dropdown__option">
-                <input
-                  type="radio"
-                  name="locale_code"
-                  value="{{ language.iso_code }}"
-                  {% if language.iso_code == localization.language.iso_code %}checked{% endif %}
-                >
-                <span lang="{{ language.iso_code }}">{{ language.endonym_name | capitalize }}</span>
-              </label>
-            {%- endfor -%}
-            <button type="submit" class="button facets__apply">{{ 'general.update_language' | t }}</button>
-          </div>
-        </details>
-      {% endform %}
-    {%- endif -%}
-  </div>
-
-  <div class="wrap">
-    <p class="site-footer__legal">
-      &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-      {%- if section.settings.note != blank %}. {{ section.settings.note | escape }}{% endif -%}
-    </p>
+      {%- if localization.available_languages.size > 1 -%}
+        {% form 'localization', class: 'language-form' %}
+          <details class="dropdown dropdown--up" data-dropdown>
+            {%- assign language_name = localization.language.endonym_name | capitalize -%}
+            <summary class="pill pill--tool">
+              {{ 'general.language_current' | t: name: language_name }}
+            </summary>
+            <div class="dropdown__panel">
+              {%- for language in localization.available_languages -%}
+                <label class="dropdown__option">
+                  <input
+                    type="radio"
+                    name="locale_code"
+                    value="{{ language.iso_code }}"
+                    {% if language.iso_code == localization.language.iso_code %}checked{% endif %}
+                  >
+                  <span lang="{{ language.iso_code }}">{{ language.endonym_name | capitalize }}</span>
+                </label>
+              {%- endfor -%}
+              <button type="submit" class="button facets__apply">{{ 'general.update_language' | t }}</button>
+            </div>
+          </details>
+        {% endform %}
+      {%- endif -%}
+    </div>
   </div>
 </footer>
 
@@ -56,21 +85,10 @@
   "name": "Footer",
   "settings": [
     {
-      "type": "text",
-      "id": "text",
-      "label": "Short description",
-      "default": "“From thread to stitch!”"
-    },
-    {
-      "type": "text",
-      "id": "note",
-      "label": "Note beside the copyright",
-      "default": "Made with love"
-    },
-    {
       "type": "link_list",
       "id": "menu",
       "label": "Menu",
+      "info": "Nest links under a top-level item to make a column: the top-level item is the column's heading.",
       "default": "footer"
     }
   ]

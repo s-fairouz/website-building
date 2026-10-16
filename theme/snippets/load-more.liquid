@@ -1,0 +1,17 @@
+{%- comment -%}
+  Under a paginated grid: a button that brings in the next page of dolls without leaving the
+  page, and how many are shown of how many. Without JavaScript the button is a plain link to
+  the next page, so it still works. Nothing shows on the last page.
+  Accepts:
+  - paginate: {Object} the paginate object
+  - shown: {Number} how many items are shown up to the end of this page
+{%- endcomment -%}
+
+{%- if paginate.next -%}
+  <div class="load-more" data-load-more>
+    <a class="button" href="{{ paginate.next.url }}" data-load-more-link data-text-loading="{{ 'collections.loading' | t }}">
+      {{- 'collections.load_more' | t -}}
+    </a>
+    <p class="load-more__count" aria-live="polite">{{ 'collections.shown' | t: shown: shown, total: paginate.items }}</p>
+  </div>
+{%- endif -%}

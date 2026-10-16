@@ -1,14 +1,18 @@
 {%- comment -%}
-  Renders one product in a grid: the photo, then its name, what it is and its price.
-  The whole card is one link to the product; the round arrow is part of that link.
+  Renders one doll in a grid: the photo, then its name and price, what it is and how tall,
+  and the head colours it comes in. The whole card is one link to the doll's page.
+  Things every doll shares (made to order, who made it) are said once by the page, not on each card.
   Accepts:
   - product: {Object} the product to show
+  - badge: {String} optional, a tag for the photo such as "Favourite of mums"
 {%- endcomment -%}
 
 {%- liquid
   assign image = product.featured_image
   assign hover_image = product.images[1]
   assign variant = product.selected_or_first_available_variant
+  assign colours = product.metafields.custom.colors.value
+  assign height = product.metafields.custom.height_cm.value
 -%}
 
 <article class="card{% unless product.available %} card--sold-out{% endunless %}">
@@ -36,34 +40,42 @@
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
 
-      {%- comment -%} One tag at most, on the photo. {%- endcomment -%}
+      {%- comment -%} One tag at most, and only when it tells this doll apart from the others. {%- endcomment -%}
       {%- if product.available == false -%}
         <span class="flag flag--plain">{{ 'products.sold_out' | t }}</span>
       {%- elsif product.compare_at_price > product.price -%}
         <span class="flag">{{ 'products.sale' | t }}</span>
       {%- elsif variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 and variant.inventory_quantity <= 5 -%}
-        <span class="flag flag--ready">{{ 'products.in_stock' | t: count: variant.inventory_quantity }}</span>
-      {%- elsif product.metafields.custom.lead_time_min_days.value -%}
-        <span class="flag flag--ready">{{ 'products.made_to_order' | t }}</span>
+        <span class="flag flag--plain">{{ 'products.in_stock' | t: count: variant.inventory_quantity }}</span>
+      {%- elsif badge != blank -%}
+        <span class="flag flag--plain">{{ badge | escape }}</span>
       {%- endif -%}
     </div>
 
     <div class="card__body">
-      <h3 class="card__title">{{ product.title }}</h3>
-      {%- if product.type != blank -%}
-        <p class="card__kind">{{ 'companions.kind' | t: kind: product.type | downcase }}</p>
+      <div class="card__row">
+        <h3 class="card__title">{{ product.title }}</h3>
+        {% render 'price', product: product %}
+      </div>
+
+      {%- if product.type != blank or height -%}
+        <p class="card__kind">
+          {{- product.type | capitalize -}}
+          {%- if product.type != blank and height %} · {% endif -%}
+          {%- if height -%}{{ 'products.height_cm' | t: cm: height }}{%- endif -%}
+        </p>
       {%- endif -%}
 
-      <div class="card__foot">
-        {% render 'price', product: product %}
-        {%- if product.available -%}
-          <span class="card__go" aria-hidden="true">
-            <svg viewBox="0 0 16 16" width="14" height="14">
-              <path d="M4.5 11.5 11.5 4.500M5.5 4.500h6v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      {%- if colours.size > 1 -%}
+        <p class="card__colours">
+          <span class="card__dots" aria-hidden="true">
+            {%- for colour in colours limit: 4 -%}
+              <span class="card__dot" style="--swatch: {{ colour.swatch.value }}"></span>
+            {%- endfor -%}
           </span>
-        {%- endif -%}
-      </div>
+          {{ 'products.colour_count' | t: count: colours.size }}
+        </p>
+      {%- endif -%}
     </div>
   </a>
 </article>

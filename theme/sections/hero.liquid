@@ -23,9 +23,6 @@
           <a class="link" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label | escape }}</a>
         {%- endif -%}
       </div>
-      {%- if section.settings.tagline != blank -%}
-        <p class="hero__tagline">{{ section.settings.tagline | escape }}</p>
-      {%- endif -%}
     </div>
 
     <div class="hero__figure">
@@ -105,11 +102,6 @@
       "type": "url",
       "id": "secondary_link",
       "label": "Second link"
-    },
-    {
-      "type": "text",
-      "id": "tagline",
-      "label": "Tagline under the buttons"
     },
     {
       "type": "product",

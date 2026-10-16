@@ -5,9 +5,8 @@
     "cart": "Panier",
     "menu_main": "Menu principal",
     "menu_footer": "Pied de page",
-    "language": "Langue",
+    "language_current": "Langue : {{ name }}",
     "update_language": "Changer de langue",
-    "pages": "Pages",
     "placeholder_title": "Le nom de votre poupée",
     "placeholder_text": "Ajoutez des produits dans votre interface Shopify pour remplir cette rangée.",
     "close": "Fermer",
@@ -29,11 +28,11 @@
     "engraving_label": "Prénom à broder (facultatif)",
     "engraving_hint": "12 lettres maximum, brodées à la main.",
     "name_hint_days": "12 lettres maximum, brodées à la main · {{ days }} jours de plus",
-    "letters_left": "encore [count]",
+    "letters_left": "Il reste [count]",
     "name_placeholder": "ex : Léa",
-    "lead_time": "Fabriqué à la commande. Expédition actuelle sous {{ min }} à {{ max }} jours ouvrés.",
+    "lead_time": "Fabriquée à la commande. Expédition sous {{ min }} à {{ max }} jours ouvrés.",
     "choose_options": "Choisir les options",
-    "made_to_order": "Fait à la commande",
+    "made_to_order": "Sur commande",
     "in_stock": "{{ count }} en stock",
     "height": "Hauteur",
     "height_value": "{{ cm }} cm ({{ inches }} po)",
@@ -43,17 +42,22 @@
     "fabrics": "Tissus du corps",
     "outside": "Extérieur",
     "inside": "Intérieur",
-    "name_days": "et {{ days }} jours ouvrés de plus",
-    "materials": "Matière",
+    "materials": "Matières",
     "technique": "Fabrication",
     "making_time": "Temps de création",
     "stitches": "Mailles",
     "making_steps": "Les étapes de fabrication de cette poupée",
     "details": "Détails",
     "about": "À propos de {{ title }}",
-    "ready_in": "prête en {{ min }} à {{ max }} jours",
+    "ready_in": "prête sous {{ min }} à {{ max }} jours",
     "decrease": "Un de moins",
-    "increase": "Un de plus"
+    "increase": "Un de plus",
+    "height_cm": "{{ cm }} cm",
+    "colour_count": {
+      "one": "{{ count }} couleur",
+      "other": "{{ count }} couleurs"
+    },
+    "name_extra": "{{ days }} jours de plus"
   },
   "collections": {
     "title": "Collections",
@@ -69,7 +73,10 @@
     "count": {
       "one": "{{ count }} poupée",
       "other": "{{ count }} poupées"
-    }
+    },
+    "load_more": "Voir plus de doudous",
+    "loading": "Chargement…",
+    "shown": "{{ shown }} sur {{ total }}"
   },
   "search": {
     "title": "Recherche",
@@ -78,7 +85,7 @@
     "submit": "Rechercher",
     "no_results": "Aucun résultat pour « {{ terms }} ». Vérifiez l’orthographe ou essayez un mot plus court.",
     "browse_all": "Voir toutes les poupées",
-    "popular": "Poupées préférées",
+    "popular": "Les plus demandées",
     "results_count": {
       "one": "{{ count }} résultat",
       "other": "{{ count }} résultats"
@@ -118,16 +125,17 @@
     "shop": "Voir les poupées"
   },
   "makers": {
-    "made_by": "Fait main par",
+    "made_by": "Fait à la main par",
     "status_open": "Commandes sur mesure ouvertes",
-    "status_limited": "{{ remaining }} créneaux sur mesure restants sur {{ total }}",
+    "status_limited": "Plus que {{ remaining }} commandes sur mesure sur {{ total }}",
     "status_waitlist": "Sur liste d’attente uniquement",
     "materials": "Matières",
     "instagram": "Suivre {{ name }} sur Instagram",
     "pieces_by": "Créations de {{ name }}",
     "empty": "Ajoutez vos artisans dans Contenu > Métaobjets de votre interface Shopify.",
     "pieces": "{{ count }} créations",
-    "see_all": "Tout voir"
+    "see_all": "Tout voir",
+    "meta": "Artisane à {{ place }} · {{ count }} doudous crochetés"
   },
   "newsletter": {
     "subscribe": "S’abonner",
@@ -154,7 +162,7 @@
     "stop_look": "Couleurs",
     "stop_name": "Prénom",
     "stop_summary": "Récapitulatif",
-    "ticket": "Bon de commande",
+    "ticket": "Votre commande",
     "back": "Retour",
     "continue": "Continuer"
   },
@@ -164,7 +172,7 @@
     "adopted_on": "Adoption officielle le {{ date }}",
     "made_in": "Fabriquée à",
     "maker": "La créatrice de {{ doll }}",
-    "done": "Fait"
+    "done": "Terminé"
   },
   "companions": {
     "kind": "{{ kind }}",
