@@ -339,7 +339,7 @@ const linklists = {
   },
 };
 
-const shop = { name: 'Kwaii Dolls', currency: 'USD', customer_accounts_enabled: true, metaobjects: { artist: { values: makers } } };
+const shop = { name: 'Kwaii Dolls', currency: 'EUR', customer_accounts_enabled: true, metaobjects: { artist: { values: makers } } };
 
 const routes = {
   root_url: '/',

@@ -152,6 +152,19 @@ To make French the default in a real store:
 
 The language menu in the footer appears on its own once a second language is published.
 
+## Prices and payments
+
+Prices are not set by the theme: every price on the site comes from the store's currency and price format. The preview shows them as a French store in euros does, `34,00 €`.
+
+1. **Currency:** in **Settings > General > Store defaults**, set the store currency to **Euro (EUR)**. Set this before your first sale; Shopify asks you to contact support to change it afterwards.
+2. **Price format:** in the same place, under **Change formatting**, set both "HTML with currency" and "HTML without currency" to `{{amount_with_comma_separator}} €`, so prices read `34,00 €` as French shoppers expect.
+3. **Payments:** in **Settings > Payments**, activate **Shopify Payments**. No app to install: it is built in, available for French businesses, and takes cards (including Cartes Bancaires), Apple Pay, Google Pay and Shop Pay. You need your company's SIRET and a French IBAN for the payouts.
+4. **Optional:**
+   - add **PayPal** in the same Payments page;
+   - to let parents pay in 3 or 4 instalments, install **Alma** or **Klarna** from the Shopify App Store. Both are common in France.
+
+Two texts mention a price and need changing if your free-shipping amount changes: the order journey's "Delivery line" ("Free from €50") and the cart drawer's free-shipping amount.
+
 ## Where things are
 
 | To change | Edit |

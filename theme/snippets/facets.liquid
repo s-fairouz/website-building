@@ -192,10 +192,10 @@
         {%- endfor -%}
         {%- if filter.type == 'price_range' -%}
           {%- if filter.min_value.value -%}
-            <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}">
+            <input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100.0 }}">
           {%- endif -%}
           {%- if filter.max_value.value -%}
-            <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}">
+            <input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100.0 }}">
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
@@ -278,7 +278,7 @@
                     <input
                       type="number"
                       name="{{ filter.min_value.param_name }}"
-                      {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      {% if filter.min_value.value %}value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %}
                       min="0"
                       step="any"
                       placeholder="0"
@@ -289,10 +289,10 @@
                     <input
                       type="number"
                       name="{{ filter.max_value.param_name }}"
-                      {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                      {% if filter.max_value.value %}value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %}
                       min="0"
                       step="any"
-                      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      placeholder="{{ filter.range_max | divided_by: 100.0 }}"
                     >
                   </label>
                 </div>

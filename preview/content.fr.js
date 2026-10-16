@@ -313,12 +313,12 @@ module.exports = {
   'Terracotta flowers | #C87840\nSky-blue stars | #B8D4E8\nPowder-pink moons | #EDD8D8\nWatercolor floral | #D4C0B0\nFlowering foxes | #EAE4D8\nPolar-blue minky | #8EC4D8':
     'Fleurs terracotta | #C87840\nÉtoiles bleu ciel | #B8D4E8\nLunes rose poudré | #EDD8D8\nFloral aquarelle | #D4C0B0\nRenards fleuris | #EAE4D8\nMinky bleu polaire | #8EC4D8',
   'Personalization': 'Personnalisation',
-  'Name embroidery option: +$4, +3 days': 'Option broderie du prénom : +4 $, +3 jours',
+  'Name embroidery option: +€4, +3 days': 'Option broderie du prénom : +4 €, +3 jours',
   'Embroider a name': 'Broder un prénom',
   'Embroidered by hand. 12 characters at most.':
     'Brodé à la main. 12 caractères maximum.',
   'e.g. Léa': 'ex : Léa',
-  'Free from $50': 'Offerte dès 50 $',
+  'Free from €50': 'Offerte dès 50 €',
   '5 to 7 days': '5 à 7 jours',
   'Secure payment': 'Paiement sécurisé',
   'Adoption certificate included': 'Certificat d’adoption inclus',

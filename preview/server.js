@@ -15,7 +15,10 @@ const THEME = path.join(__dirname, '..', 'theme');
 const PORT = process.env.PORT || 9292;
 
 const read = (...parts) => fs.readFileSync(path.join(THEME, ...parts), 'utf8');
-const money = (cents) => '$' + (Number(cents || 0) / 100).toFixed(2);
+// Prices as a French store in euros shows them, in every language: 34,00 €. On Shopify this
+// comes from the store's currency and money format (Settings > General > Store currency).
+const amount = (cents) => (Number(cents || 0) / 100).toFixed(2).replace('.', ',');
+const money = (cents) => `${amount(cents)} €`;
 const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
@@ -135,7 +138,7 @@ engine.registerFilter('t', function (key, ...args) {
   return text.replace(/{{\s*(\w+)\s*}}/g, (_, name) => escapeHtml(values[name] ?? ''));
 });
 engine.registerFilter('money', money);
-engine.registerFilter('money_without_currency', (cents) => (Number(cents || 0) / 100).toFixed(2));
+engine.registerFilter('money_without_currency', amount);
 engine.registerFilter('asset_url', (name) => `/assets/${name}`);
 engine.registerFilter('stylesheet_tag', (url) => `<link rel="stylesheet" href="${url}">`);
 engine.registerFilter('image_url', (image) => (image ? image.src || String(image) : ''));
